@@ -40,18 +40,20 @@ define gluster::server (
   $pool = 'default'
 ) {
 
-  # we can't join to ourselves, so it only makes sense to operate
-  # on other gluster servers in the same pool
-  if $title != $::fqdn {
+  $binary = $::gluster_binary
+  # we can't do much without the Gluster binary
+  if $binary {
+    # we can't join to ourselves, so it only makes sense to operate
+    # on other gluster servers in the same pool
+    if $title != $::fqdn {
 
-    # and we don't want to attach a server that is already a member
-    # of the current pool
-    $peers = split($::gluster_peer_list, ',' )
-    if ! member($peers, $title) {
-      exec { "gluster peer probe ${title}":
-        path    => '/bin:/usr/bin:/usr/sbin',
-        command => "gluster peer probe ${title}",
-        onlyif  => 'which gluster >/dev/null 2>&1',
+      # and we don't want to attach a server that is already a member
+      # of the current pool
+      $peers = split($::gluster_peer_list, ',' )
+      if ! member($peers, $title) {
+        exec { "gluster peer probe ${title}":
+          command => "${binary} peer probe ${title}",
+        }
       }
     }
   }

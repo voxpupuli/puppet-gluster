@@ -15,6 +15,12 @@ if not binary or not File.executable? binary
 end
 
 if binary then
+	# the Gluster binary command to use
+	Facter.add(:gluster_binary) do
+		setcode do
+			binary
+		end
+	end
 	output = Facter::Util::Resolution.exec("#{binary} peer status")
 	if output =~ /^Number of Peers: (\d+)$/
 		peer_count = $1.to_i

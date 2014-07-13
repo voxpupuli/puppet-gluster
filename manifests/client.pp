@@ -39,6 +39,6 @@ class gluster::client (
   }
 
   package { $client_package:
-    ensure => $version,
+    ensure => $_version,
   }
 }

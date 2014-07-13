@@ -9,26 +9,8 @@ class gluster  (
   $volumes        = undef,
 ) inherits ::gluster::params {
 
-  if $repo  {
-    require ::gluster::repo
-  }
-
-  $_version = $version ? {
-    'LATEST' => 'installed',
-    default  => $version,
-  }
-
-  if $install_server {
-    package { $server_package:
-      ensure => $_version,
-    }
-  }
-
-  if $install_client {
-    package { $client_package:
-      ensure => $_version,
-    }
-  }
+  include ::gluster::install
+  include ::gluster::service
 
   # first we export this server's instance
   @@gluster::server { $::fqdn:
