@@ -2,12 +2,13 @@
 #
 class gluster::install (
   $install_server = $::gluster::params::install_server,
-  $install_client = $::gluster::params::instalL_client,
+  $install_client = $::gluster::params::install_client,
   $server_package = $::gluster::params::server_package,
   $client_package = $::gluster::params::client_package,
   $repo           = $::gluster::params::repo,
   $version        = $::gluster::params::version,
 ) inherits ::gluster::params {
+
   if $repo {
     require ::gluster::repo
   }
@@ -26,6 +27,7 @@ class gluster::install (
   if $install_server {
     package { $server_package:
       ensure => $_version,
+      notify => Class[::gluster::service]
     }
   }
 

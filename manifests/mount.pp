@@ -1,4 +1,4 @@
-class gluster::mount (
+define gluster::mount (
   $volume         = undef,
   $log_level      = undef,
   $log_file       = undef,

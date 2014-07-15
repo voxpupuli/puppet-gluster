@@ -9,7 +9,10 @@
 # transport: the transport to use. Defaults to tcp
 # rebalance: whether to rebalance a volume when new bricks are added
 # bricks: an array of bricks to use for this volume
-# options: a hash of gluster::volume::`options for the volume
+# options: an array of volume options for the volume
+#          https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options
+# remove_options: whether to permit the removal of active options that
+#                 are not defined for this volume.  Default: false
 #
 # === Examples
 #
@@ -21,11 +24,10 @@
 #                'srv1.local:/export/brick2/brick',
 #                'srv2.local:/export/brick2/brick',
 #   ],
-#   options => {
-#                'server.allow-insecure' =>
-#                  { 'value'             => 'on' },
-#                }
-#
+#   options => [
+#                'server.allow-insecure: on',
+#                'nfs.ports-insecure: on',
+#              ],
 # }
 #
 # === Authors
@@ -37,13 +39,20 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume (
-  $stripe = false,
-  $replica = false,
-  $transport = 'tcp',
-  $rebalance = true,
-  $bricks = undef
-  $options = undef,
+  $stripe         = false,
+  $replica        = false,
+  $transport      = 'tcp',
+  $rebalance      = true,
+  $bricks         = undef,
+  $options        = undef,
+  $remove_options = false,
 ) {
+
+  # we'll likely use this later
+  $options_volume = {
+    'volume' => $title,
+  }
+
   # basic sanity checking
   if $stripe {
     if ! is_integer( $stripe ) {
@@ -68,7 +77,8 @@ define gluster::volume (
   }
 
   if $options {
-    validate_hash( $options )
+    validate_array( $options )
+    $_options = sort( $options )
   }
 
   validate_array( $bricks )
@@ -93,32 +103,44 @@ define gluster::volume (
         command => "${binary} volume create ${title} ${args}",
       }
 
+      # if we have volume options, activate them now
+      #
+      # Note: $options is an array, but create_resources requires
+      #       a hash of hashes.  We do some contortions to get the
+      #       array into the hash of hashes that looks like:
+      #
+      #       option.name:
+      #         value: value
+      #
+      # Note 2: we're using the $_options variable, which contains the
+      #         sorted list of options.
+      if $_options {
+        $yaml = join( regsubst( $_options, ': ', ":\n  value: ", G), "\n")
+        $hoh = parseyaml($yaml)
+
+        # safety check
+        validate_hash($hoh)
+
+        create_resources(::gluster::volume::option, $hoh, $options_volume)
+      }
+
       # don't forget to start the new volume!
       exec { "gluster start volume ${title}":
         command => "${binary} volume start ${title}",
         require => Exec["gluster create volume ${title}"],
       }
 
-      # if we have volume options, activate them now
-      if $options {
-        $options_volume = {
-          'volume' => $title,
-        }
-        create_resources(::gluster::volume::option, $options, $options_volume)
-      }
-
     } else {
       # this volume exists
 
-      # our fact lists bricks comma-separated, but we use them space-separated here
-      $vol_bricks = regsubst( getvar( "::gluster_volume_${title}_bricks" ), ',', ' ', 'G')
-      if $_bricks != $vol_bricks {
+      # our fact lists bricks comma-separated, but we need an array
+      $vol_bricks = split( getvar( "::gluster_volume_${title}_bricks" ), ',')
+      if $bricks != $vol_bricks {
         # this resource's list of bricks does not match the existing
         # volume's list of bricks
-        $vol_bricks_array = split($vol_bricks, ' ')
-        $new_bricks = difference($bricks, $vol_bricks_array)
+        $new_bricks = difference($bricks, $vol_bricks)
 
-        $vol_count = count($vol_bricks_array)
+        $vol_count = count($vol_bricks)
         if count($bricks) > $vol_count {
           # adding bricks
 
@@ -156,10 +178,45 @@ define gluster::volume (
       }
 
       # did the options change?
-      $current_options = get_var("gluster_volume_${title}_options")
-      if $current_options != $options {
-        # get a hash of the differences
-        # and apply those
+      $current_options = sort( split(getvar("gluster_volume_${title}_options"), ',') )
+      if $current_options != $_options {
+        #
+        # either of $current_options or $_options may be empty.
+        # we need to account for this situation
+        #
+        if is_array($current_options) and is_array($_options) {
+          $to_remove = difference($current_options, $_options)
+          $to_add = difference($_options, $current_options)
+        } else {
+          if is_array($current_options) {
+            # $_options is not an array, so remove all currently set options
+            $to_remove = $current_options
+          } elsif is_array($_options) {
+            # $current_options is not an array, so add all our defined options
+            $to_add = $_options
+          }
+        }
+        if ! empty($to_remove) {
+          # we have some options active that are not defined here. Remove them
+          #
+          # the syntax to remove ::gluster::volume::options is a little different
+          # so build up the hash correctly
+          #
+          $remove_yaml = join( regsubst( $to_remove, ': .+$', ":\n  remove: true", G ), "\n" )
+          $remove = parseyaml($remove_yaml)
+          if $remove_options {
+            create_resources( ::gluster::volume::option, $remove, $options_volume )
+          } else {
+            $r = join( keys($remove), ', ' )
+            notice("NOT REMOVING the following options for volume ${title}: ${r}.")
+          }
+        }
+        if ! empty($to_add) {
+          # we have some options defined that are not active. Add them
+          $add_yaml = join( regsubst( $to_add, ': ', ":\n  value: ", G ), "\n" )
+          $add = parseyaml($add_yaml)
+          create_resources( ::gluster::volume::option, $add, $options_volume )
+        }
       }
     }
   }

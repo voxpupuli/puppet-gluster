@@ -1,4 +1,5 @@
 class gluster::params {
+
   # parameters dealing with installation
   $install_server = true
   $install_client = true
