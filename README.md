@@ -53,7 +53,7 @@ If the list of volume options active on a volume do not match the list of option
 Note that adding or removing options does not (currently) restart the volume.
 
 ### gluster::volume::option ###
-This defined type applies (Gluster options)[https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options] to a volume.
+This defined type applies [Gluster options](https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options) to a volume.
 
 To remove an option, set the `remove` parameter to `true`.
 
