@@ -9,14 +9,14 @@ class gluster::repo::rpm (
     fail ('Version not specified: unable to define repo!')
   }
 
-  $repo_base = 'https://download.gluster.org/pub/gluster/glusterfs/'
+  $repo_base = 'https://download.gluster.org/pub/gluster/glusterfs'
   if $version == "LATEST" {
     $repo_ver = $version
   } else {
     if $version =~ /^\d\.\d$/ {
-      $repo_ver = "${version}/LATEST/"
+      $repo_ver = "${version}/LATEST"
     } elsif $version =~ /^(\d)\.(\d)\.(\d)$/ {
-      $repo_ver = "${1}.${2}/${version}/"
+      $repo_ver = "${1}.${2}/${version}"
     } else {
       fail("${version} doesn't make sense!") 
     }
@@ -32,7 +32,7 @@ class gluster::repo::rpm (
     fail("Architecture ${::architecture} not yet supported.")
   }
 
-  $repo_url = "${repo_base}/${repo_ver}/RHEL/epel-${::operatingsystemrelease}/${arch}/"
+  $repo_url = "${repo_base}/${repo_ver}/RHEL/epel-${::operatingsystemmajrelease}/${arch}/"
   $repo_key = "${repo_key_path}${repo_key_name}"
   if $repo_key_source {
     file { $repo_key:
