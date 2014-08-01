@@ -1,18 +1,21 @@
 class gluster  (
-  $pool           = $::gluster::params::pool,
-  $volumes        = undef,
+  $pool    = $::gluster::params::pool,
+  $export  = $::gluster::params::export_resources,
+  $volumes = undef,
 ) inherits ::gluster::params {
 
   include ::gluster::install
   include ::gluster::service
 
-  # first we export this server's instance
-  @@gluster::server { $::fqdn:
-    pool => $pool,
-  }
+  if $export {
+    # first we export this server's instance
+    @@gluster::server { $::fqdn:
+      pool => $pool,
+    }
 
-  # then we collect all instances
-  Gluster::Server <<| pool == $pool |>>
+    # then we collect all instances
+    Gluster::Server <<| pool == $pool |>>
+  }
 
   if $volumes {
     validate_hash( $volumes )

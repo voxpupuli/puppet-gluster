@@ -43,6 +43,7 @@ class gluster::params {
   # parameters dealing with a Gluster server instance
   $service_enable = true
   $pool = 'default'
+  $export_resources = true
 
   # parameters dealing with bricks
 
