@@ -114,14 +114,18 @@ define gluster::volume (
       #
       # Note 2: we're using the $_options variable, which contains the
       #         sorted list of options.
-      if $_options {
+      if $_options and defined ( Exec["gluster create volume ${title}"] ) {
         $yaml = join( regsubst( $_options, ': ', ":\n  value: ", G), "\n")
         $hoh = parseyaml($yaml)
 
         # safety check
         validate_hash($hoh)
+        $new_volume_defaults = {
+          volume  => $title,
+          require => Exec["gluster create volume ${title}"],
+        }
 
-        create_resources(::gluster::volume::option, $hoh, $options_volume)
+        create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)
       }
 
       # don't forget to start the new volume!
@@ -178,19 +182,24 @@ define gluster::volume (
       }
 
       # did the options change?
-      $current_options = sort( split(getvar("gluster_volume_${title}_options"), ',') )
-      if $current_options != $_options {
+      $current_options = getvar("gluster_volume_${title}_options")
+      if $current_options {
+        $_current = sort( split($current_options, ',') )
+      } else {
+        $_current = []
+      }
+      if $_current != $_options {
         #
         # either of $current_options or $_options may be empty.
         # we need to account for this situation
         #
-        if is_array($current_options) and is_array($_options) {
-          $to_remove = difference($current_options, $_options)
-          $to_add = difference($_options, $current_options)
+        if is_array($_current) and is_array($_options) {
+          $to_remove = difference($_current, $_options)
+          $to_add = difference($_options, $_current)
         } else {
-          if is_array($current_options) {
+          if is_array($_current) {
             # $_options is not an array, so remove all currently set options
-            $to_remove = $current_options
+            $to_remove = $_current
           } elsif is_array($_options) {
             # $current_options is not an array, so add all our defined options
             $to_add = $_options
