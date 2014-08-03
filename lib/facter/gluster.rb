@@ -2,6 +2,7 @@ peer_count = 0
 peer_list = ''
 volume_bricks = {}
 volume_options = {}
+volume_ports = {}
 
 binary = Facter.value('gluster_custom_binary')
 if not binary or not File.executable? binary
@@ -40,6 +41,8 @@ if binary then
 				if options then
 					volume_options[vol] = options
 				end
+				output = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
+				volume_ports[vol] = output.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
 			end
 		end
 	end
@@ -77,6 +80,15 @@ if binary then
 					Facter.add("gluster_volume_#{vol}_options".to_sym) do
 						setcode do
 							opts.join(',')
+						end
+					end
+				end
+			end
+			if volume_ports
+				volume_ports.each do |vol,ports|
+					Facter.add("gluster_volume_#{vol}_ports".to_sym) do
+						setcode do
+							ports.join(',')
 						end
 					end
 				end
