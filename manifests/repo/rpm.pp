@@ -3,8 +3,12 @@
 #
 # enable the upstream Gluster Yum repo
 #
+# Note that we're using the $version variable without explicit scope.
+# Because this class inherits gluster::params, 
+#
 # === Parameters
 #
+# version: the version to use when building the repo URL
 # repo_key_name: the filename of this repo's GPG key
 # repo_key_path: the path to this repo's GPG key on the target system
 # repo_key_source: where to find this repo's GPG key
@@ -24,8 +28,9 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo::rpm (
-  $repo_key_name = $::gluster::params::repo_gpg_key_name,
-  $repo_key_path = $::gluster::params::repo_gpg_key_path,
+  $version         = $::gluster::params::version,
+  $repo_key_name   = $::gluster::params::repo_gpg_key_name,
+  $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
 ) inherits ::gluster::repo {
 
@@ -35,7 +40,7 @@ class gluster::repo::rpm (
   }
 
   $repo_base = 'https://download.gluster.org/pub/gluster/glusterfs'
-  if $version == "LATEST" {
+  if $version == 'LATEST' {
     $repo_ver = $version
   } else {
     if $version =~ /^\d\.\d$/ {
@@ -43,7 +48,7 @@ class gluster::repo::rpm (
     } elsif $version =~ /^(\d)\.(\d)\.(\d)$/ {
       $repo_ver = "${1}.${2}/${version}"
     } else {
-      fail("${version} doesn't make sense!") 
+      fail("${version} doesn't make sense!")
     }
   }
 
