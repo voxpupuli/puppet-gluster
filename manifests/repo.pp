@@ -1,9 +1,37 @@
-class gluster::repo inherits ::gluster::params
+#
+# == Class gluster::repo
+#
+# enables an upstream GlusterFS repository
+#
+# Note that this module is a wrapper for sub-classes that implement
+# the specific repository type, ie:  gluster::repo::yum
+#
+# === Parameters
+#
+# None!
+#
+# === Examples
+#
+# class { ::gluster::repo }
+#
+# === Authors
+#
+# Scott Merrill <smerrill@covermymeds.com>
+#
+# === Copyright
+#
+# Copyright 2014 CoverMyMeds, unless otherwise noted
+#
+class gluster::repo (
+  $version = $::gluster::params::version,
+) inherits ::gluster::params
 {
-  if $repo {
-    case $::osfamily {
-      'RedHat': { include gluster::repo::rpm }
-      default: { fail("${::osfamily} not yet supported!") }
+  case $::osfamily {
+    'RedHat': {
+      class { '::gluster::repo::rpm':
+        version => $version
+      }
     }
+    default: { fail("${::osfamily} not yet supported!") }
   }
 }

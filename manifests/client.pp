@@ -30,7 +30,11 @@ class gluster::client (
   $version        = $::gluster::params::version,
 ) inherits gluster::params {
   if $repo {
-    require ::gluster::repo
+    if ! defined ( Class[::gluster::repo] ) {
+      class { '::gluster::repo':
+        version => $version,
+      }
+    }
   }
 
   $_version = $version ? {

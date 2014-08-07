@@ -1,3 +1,24 @@
+#
+# == Class gluster::params
+#
+# establishes various defaults for use in other gluster manifests
+#
+# === Parameters
+#
+# None!
+#
+# === Examples
+#
+# None!  This clas should not be called in your manifests.
+#
+# === Authors
+#
+# Scott Merrill <smerrill@covermymeds.com>
+#
+# === Copyright
+#
+# Copyright 2014 CoverMyMeds, unless otherwise noted
+#
 class gluster::params {
 
   # parameters dealing with installation
@@ -22,7 +43,7 @@ class gluster::params {
         default => false,
       }
     }
-    
+
     # we're not using the upstream repo, so we should have a vendor-defined
     # package at this point.  If we don't, we can't continue!
     if ! $vendor_server_package {

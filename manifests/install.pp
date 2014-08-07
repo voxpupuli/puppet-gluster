@@ -1,4 +1,32 @@
+# == Class gluster::install
+#
 # install the Gluster packages
+#
+# === Parameters
+#
+# install_server: whether or not to install the server components
+# install_client: whether or not to install the client components
+# server_package: the server package name
+# client_package: the client package name
+# repo: whether or not to use a repo, or the distribution's default packages
+# version: the Gluster version to install
+#
+# === Example
+#
+# class { gluster::install:
+#   install_server => true,
+#   install_client => true,
+#   repo           => true,
+#   version        => 3.5,
+# }
+#
+# === Authors
+#
+# Scott Merrill <smerrill@covermymeds.com>
+#
+# === Copyright
+#
+# Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
   $install_server = $::gluster::params::install_server,
@@ -10,7 +38,11 @@ class gluster::install (
 ) inherits ::gluster::params {
 
   if $repo {
-    require ::gluster::repo
+    if ! defined ( Class[::gluster::repo] ) {
+      class { '::gluster::repo':
+        version => $version,
+      }
+    }
   }
 
   $_version = $version ? {

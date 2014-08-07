@@ -1,3 +1,28 @@
+#
+# == Class gluster::repo::rpm
+#
+# enable the upstream Gluster Yum repo
+#
+# === Parameters
+#
+# repo_key_name: the filename of this repo's GPG key
+# repo_key_path: the path to this repo's GPG key on the target system
+# repo_key_source: where to find this repo's GPG key
+#
+# === Examples
+#
+# class { gluster::repo::rpm:
+#   repo_key_source => 'puppet:///modules/secure/gluster-repo-rpm-key',
+# }
+#
+# === Authors
+#
+# Scott Merrill <smerrill@covermymeds.com>
+#
+# === Copyright
+#
+# Copyright 2014 CoverMyMeds, unless otherwise noted
+#
 class gluster::repo::rpm (
   $repo_key_name = $::gluster::params::repo_gpg_key_name,
   $repo_key_path = $::gluster::params::repo_gpg_key_path,
