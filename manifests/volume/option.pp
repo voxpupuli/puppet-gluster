@@ -40,6 +40,10 @@ define gluster::volume::option (
   $remove  = false,
 ) {
 
+  if ! $volume {
+    fail('Volume is a mandatory parameter to gluster::volume::option!')
+  }
+
   if $remove {
     $cmd = "reset ${volume} ${title}"
   } else {

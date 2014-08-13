@@ -120,9 +120,12 @@ define gluster::volume (
 
         # safety check
         validate_hash($hoh)
+        # we need to ensure that these are applied AFTER the volume is created
+        # but BEFORE the volume is started
         $new_volume_defaults = {
           volume  => $title,
           require => Exec["gluster create volume ${title}"],
+          before  => Exec["gluster start volume ${title}"],
         }
 
         create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)
@@ -214,6 +217,7 @@ define gluster::volume (
           $remove_yaml = join( regsubst( $to_remove, ': .+$', ":\n  remove: true", G ), "\n" )
           $remove = parseyaml($remove_yaml)
           if $remove_options {
+            # $options_volume was defined way up top
             create_resources( ::gluster::volume::option, $remove, $options_volume )
           } else {
             $r = join( keys($remove), ', ' )
@@ -224,6 +228,7 @@ define gluster::volume (
           # we have some options defined that are not active. Add them
           $add_yaml = join( regsubst( $to_add, ': ', ":\n  value: ", G ), "\n" )
           $add = parseyaml($add_yaml)
+          # $options_volume was defined way up top
           create_resources( ::gluster::volume::option, $add, $options_volume )
         }
       }

@@ -43,15 +43,15 @@ This class manages the `glusterd` service.
 ### init.pp ###
 This class implements a basic Gluster server.
 
-In the default configuration, this class exports a `gluster::server` defined type for itself, and then collects any other exported `gluster::server` resources for the same pool for instantiation.
+In the default configuration, this class exports a `gluster::peer` defined type for itself, and then collects any other exported `gluster::peer` resources for the same pool for instantiation.
 
-This default configuration makes it easy to implement a Gluster storage pool by simply assigning the `gluster` class to your Gluster servers: they'll each export their `gluster::server` resources, and then instantiate the other servers' `gluster::server` resources.  
+This default configuration makes it easy to implement a Gluster storage pool by simply assigning the `gluster` class to your Gluster servers: they'll each export their `gluster::peer` resources, and then instantiate the other servers' `gluster::peer` resources.  
 
 The use of exported resources assume you're using PuppetDB, or some other backing mechanism to support exported resources.
 
 ## Defines ##
-### gluster::server ###
-This defined type creates a Gluster peering relationship.  The name of the type should be the fully-qualified domain name of a peer to which to connect. An optional `pool` parameter permits you to configure different storage pools built from different hosts.
+### gluster::peer ###
+This defined type creates a Gluster peering relationship.  The name of the resource should be the fully-qualified domain name of a peer to which to connect. An optional `pool` parameter permits you to configure different storage pools built from different hosts.
 
 With the exported resource implementation in `init.pp`, the first server to be defined in the pool will find no peers, and therefore not do anything.  The second server to execute this module will collect the first server's exported resource and initiate the `gluster peer probe`, thus creating the storage pool.
 

@@ -3,9 +3,6 @@
 #
 # enable the upstream Gluster Yum repo
 #
-# Note that we're using the $version variable without explicit scope.
-# Because this class inherits gluster::params, 
-#
 # === Parameters
 #
 # version: the version to use when building the repo URL
@@ -13,7 +10,13 @@
 # repo_key_path: the path to this repo's GPG key on the target system
 # repo_key_source: where to find this repo's GPG key
 #
+# Currently only released versions are supported.  If you want to use
+# QA releases or pre-releases, you'll need to edit line 54 below
+
 # === Examples
+#
+# Enable the Yum repo, and use the public key stored in a local module
+# called "secure":
 #
 # class { gluster::repo::rpm:
 #   repo_key_source => 'puppet:///modules/secure/gluster-repo-rpm-key',
@@ -32,7 +35,7 @@ class gluster::repo::rpm (
   $repo_key_name   = $::gluster::params::repo_gpg_key_name,
   $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
-) inherits ::gluster::repo {
+) {
 
   # basic sanity check
   if ! $version {

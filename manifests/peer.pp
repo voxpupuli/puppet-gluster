@@ -1,6 +1,6 @@
-# == Define: gluster::server
+# == Define: gluster::peer
 #
-# Creates a Gluster server. Intended to be exported by each member of
+# Connects to a Gluster peer. Intended to be exported by each member of
 # a Gluster Trusted Storage Pool. Each server should also collect all
 # such exported resources for local realization.
 #
@@ -14,11 +14,16 @@
 #
 # === Examples
 #
-# @@gluster::server{ $::fqdn:
+# Export this host's gluster::peer resource, and then collect all others:
+# @@gluster::peer { $::fqdn:
 #   pool => 'production',
 # }
+# Gluster::Peer <<| pool == 'production' |>>
 #
-# Gluster::Server <<| pool == 'production' |>>
+# You can also explicitly define peers:
+# gluster::peer { 'gluster1.example.com':
+#   pool => 'pool1',
+# }
 #
 # === Authors
 #
@@ -36,12 +41,14 @@
 #       have been successfully established the first time, so this second
 #       peering attempt only resolves a cosmetic issue, not a functional one.
 #
-define gluster::server (
+define gluster::peer (
   $pool = 'default'
 ) {
 
   $binary = $::gluster_binary
   # we can't do much without the Gluster binary
+  # but we don't necessarily want the Puppet run to fail if the
+  # binary is absent!
   if $binary {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool

@@ -24,8 +24,7 @@
 #
 class gluster::repo (
   $version = $::gluster::params::version,
-) inherits ::gluster::params
-{
+) {
   case $::osfamily {
     'RedHat': {
       class { '::gluster::repo::rpm':

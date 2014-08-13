@@ -9,7 +9,7 @@
 #
 # === Examples
 #
-# None!  This clas should not be called in your manifests.
+# None!  This class should not be called in your manifests.
 #
 # === Authors
 #
