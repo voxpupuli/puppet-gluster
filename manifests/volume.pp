@@ -114,7 +114,7 @@ define gluster::volume (
       #
       # Note 2: we're using the $_options variable, which contains the
       #         sorted list of options.
-      if $_options and defined ( Exec["gluster create volume ${title}"] ) {
+      if $_options {
         $yaml = join( regsubst( $_options, ': ', ":\n  value: ", G), "\n")
         $hoh = parseyaml($yaml)
 
