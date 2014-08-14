@@ -84,7 +84,7 @@ define gluster::mount (
   }
 
   $mount_options = [ "_netdev", "${options}", "${ll}", "${lf}", "${t}", "${dim}", "${r}", ]
-  $_options = join(delete($mount_options, ''), ' ')
+  $_options = join(delete($mount_options, ''), ',')
 
   mount { $title:
     ensure  => $ensure,
