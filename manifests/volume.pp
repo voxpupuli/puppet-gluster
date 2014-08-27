@@ -39,6 +39,7 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume (
+  $force          = false,
   $stripe         = false,
   $replica        = false,
   $transport      = 'tcp',
@@ -54,6 +55,12 @@ define gluster::volume (
   }
 
   # basic sanity checking
+  if str2bool($force) {
+    $_force = 'force'
+  } else {
+    $_force = ''
+  }
+
   if $stripe {
     if ! is_integer( $stripe ) {
       fail("Stripe value ${stripe} is not an integer")
@@ -89,6 +96,7 @@ define gluster::volume (
     "${_replica}",
     "${_transport}",
     "${_bricks}",
+    "${_force}",
   ]
 
   $args = join(delete($cmd_args, ''), ' ')
@@ -110,7 +118,7 @@ define gluster::volume (
       # now see what the difference is
       $missing_bricks = difference( $brick_hosts, $pool_members)
 
-      if $missing_bricks {
+      if ! empty($missing_bricks) {
         notice("Not creating Gluster volume ${title}: some bricks are not in the pool")
       } else {
         exec { "gluster create volume ${title}":
