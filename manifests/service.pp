@@ -22,11 +22,13 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::service (
-  $ensure = $::gluster::params::service_enable
+  $ensure = $::gluster::params::service_ensure,
+  $enable = $::gluster::params::service_enable,
 ) {
 
   service { 'glusterd':
     ensure     => $ensure,
+    enable     => $enable,
     hasrestart => true,
     hasstatus  => true,
   }
