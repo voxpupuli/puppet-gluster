@@ -1,5 +1,5 @@
 #
-# == Class gluster::repo::rpm
+# == Class gluster::repo::yum
 #
 # enable the upstream Gluster Yum repo
 #
@@ -18,7 +18,7 @@
 # Enable the Yum repo, and use the public key stored in a local module
 # called "secure":
 #
-# class { gluster::repo::rpm:
+# class { gluster::repo::yum:
 #   repo_key_source => 'puppet:///modules/secure/gluster-repo-rpm-key',
 # }
 #
@@ -30,7 +30,7 @@
 #
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
-class gluster::repo::rpm (
+class gluster::repo::yum (
   $version         = $::gluster::params::version,
   $repo_key_name   = $::gluster::params::repo_gpg_key_name,
   $repo_key_path   = $::gluster::params::repo_gpg_key_path,

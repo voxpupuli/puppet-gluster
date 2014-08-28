@@ -27,7 +27,7 @@ class gluster::repo (
 ) {
   case $::osfamily {
     'RedHat': {
-      class { '::gluster::repo::rpm':
+      class { '::gluster::repo::yum':
         version => $version
       }
     }

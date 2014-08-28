@@ -20,6 +20,8 @@ The `gluster_binary` fact will look for an [external fact](http://docs.puppetlab
 ### params.pp ###
 This class establishes a number of default values used by the other classes.
 
+You should not need to include or reference this class directly.
+
 ### repo.pp ###
 This class optionally enables the upstream [Gluster.org](http://download.gluster.org/pub/) repositories.  
 
@@ -49,6 +51,8 @@ This default configuration makes it easy to implement a Gluster storage pool by 
 
 The use of exported resources assume you're using PuppetDB, or some other backing mechanism to support exported resources.
 
+If a `volumes` parameter is passed, the defined Gluster volume(s) can be created at the same time as the storage pool. See the volume defined type below for more details.
+
 ## Defines ##
 ### gluster::peer ###
 This defined type creates a Gluster peering relationship.  The name of the resource should be the fully-qualified domain name of a peer to which to connect. An optional `pool` parameter permits you to configure different storage pools built from different hosts.
@@ -64,7 +68,11 @@ This defined type creates a Gluster volume. You can specify a stripe count, a re
 
 Note that creating brick filesystems is up to you. May I recommend the [Puppet Labs LVM module](https://forge.puppetlabs.com/puppetlabs/lvm) ?
 
-If the list of volume options active on a volume do not match the list of options passed to this defined type, no options will be removed by default. You must set the `$remove_options` parameter to `true` in order for this defined type to remove options.
+When creating a new volume, this defined type will ensure that all of the servers hosting bricks in the volume are members of the storage pool. In this way, you can define the volume at the time you create servers, and once the last peer joins the pool the volume will be created.
+
+Any volume options defined will be applied after the volume is created but before it the volume is started.
+
+In the event that the list of volume options active on a volume do not match the list of options passed to this defined type, no options will be removed by default. You must set the `$remove_options` parameter to `true` in order for this defined type to remove options.
 
 Note that adding or removing options does not (currently) restart the volume.
 
@@ -75,3 +83,9 @@ To remove an option, set the `remove` parameter to `true`.
 
 ### gluster::mount ###
 This defined type mounts a Gluster volume.  Most of the parameters to this defined type match either the gluster FUSE options or the [Puppet mount](http://docs.puppetlabs.com/references/3.4.stable/type.html#mount) options.
+
+## Contributing ##
+Pull requests are warmly welcomed!
+
+## Copyright ##
+Copyright 2014 [CoverMyMeds](https://www.covermymeds.com/)
