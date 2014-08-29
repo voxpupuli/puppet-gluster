@@ -88,4 +88,4 @@ This defined type mounts a Gluster volume.  Most of the parameters to this defin
 Pull requests are warmly welcomed!
 
 ## Copyright ##
-Copyright 2014 [CoverMyMeds](https://www.covermymeds.com/) and released under the terms of the [Apache Software License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+Copyright 2014 [CoverMyMeds](https://www.covermymeds.com/) and released under the terms of the [MIT License](http://opensource.org/licenses/MIT).
