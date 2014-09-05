@@ -24,9 +24,7 @@ if binary then
 		end
 	end
 	output = Facter::Util::Resolution.exec("#{binary} peer status")
-	if output =~ /^Number of Peers: (\d+)$/
-		peer_count = $1.to_i
-	end
+	peer_count = $1.to_i if output =~ /^Number of Peers: (\d+)$/
 	if peer_count > 0 then
 		peer_list = output.scan(/^Hostname: (.+)$/).flatten.join(',')
 		# note the stderr redirection here
@@ -35,14 +33,17 @@ if binary then
 		if output != "No volumes present in cluster" then
 			output.split.each do |vol|
 				output = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
+				status = $1 if output.scan =~ /^Status: (.+)$/
 				bricks = output.scan(/^Brick[^:]+: (.+)$/).flatten
 				volume_bricks[vol] = bricks
 				options = output.scan(/^(\w+\.[^:]+: .+)$/).flatten
 				if options then
 					volume_options[vol] = options
 				end
-				output = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
-				volume_ports[vol] = output.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
+				if status == "Started" then
+				  output = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
+				  volume_ports[vol] = output.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
+				end
 			end
 		end
 	end
