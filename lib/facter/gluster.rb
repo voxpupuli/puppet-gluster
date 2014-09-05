@@ -32,17 +32,17 @@ if binary then
 		output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
 		if output != "No volumes present in cluster" then
 			output.split.each do |vol|
-				output = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
-				status = $1 if output.scan =~ /^Status: (.+)$/
-				bricks = output.scan(/^Brick[^:]+: (.+)$/).flatten
+				info = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
+				vol_status = $1 if info =~ /^Status: (.+)$/
+				bricks = info.scan(/^Brick[^:]+: (.+)$/).flatten
 				volume_bricks[vol] = bricks
-				options = output.scan(/^(\w+\.[^:]+: .+)$/).flatten
+				options = info.scan(/^(\w+\.[^:]+: .+)$/).flatten
 				if options then
 					volume_options[vol] = options
 				end
-				if status == "Started" then
-				  output = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
-				  volume_ports[vol] = output.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
+				if vol_status == "Started" then
+				  status = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
+				  volume_ports[vol] = status.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
 				end
 			end
 		end
