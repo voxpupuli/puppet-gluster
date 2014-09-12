@@ -79,7 +79,19 @@ Note that adding or removing options does not (currently) restart the volume.
 ### gluster::volume::option ###
 This defined type applies [Gluster options](https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options) to a volume.
 
-To remove an option, set the `remove` parameter to `true`.
+In order to ensure uniqueness across multiple volumes, the title of each `gluster::volume::option` must include the name of the volume to which it applies.  The format for these titles is `volume:option_name`:
+```puppet
+  gluster::volume::option{ 'g0:nfs.disable':
+    value => 'on',
+  }
+```
+ 
+To remove an option, set the `ensure` parameter to `absent`:
+```puppet
+  gluster::volume::option{ 'g0:server.allow-insecure':
+    ensure => absent,
+  }
+```
 
 ### gluster::mount ###
 This defined type mounts a Gluster volume.  Most of the parameters to this defined type match either the gluster FUSE options or the [Puppet mount](http://docs.puppetlabs.com/references/3.4.stable/type.html#mount) options.

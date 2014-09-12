@@ -4,26 +4,24 @@
 #
 # === Parameters
 #
-# $title: the name of the option to (re)set
-# $volume: the name of the Gluster volume on which to operate
+# $title: the name of the volume, a colon, and the name of the option
 # $value: the value to set for this option
-# $remove: whether to remove a previously-set option
+# $ensure: whether to set or remove an option
 #
 # === Examples
 #
-# gluster::volume::option { 'nfs.disable':
-#   volume => 'gv0',
+# gluster::volume::option { 'gv0:nfs.disable':
 #   value  => 'on',
 # }
 #
-# gluster::volume::option { 'server.allow-insecure':
-#   volume => 'gv0',
+# gluster::volume::option { 'gv0:server.allow-insecure':
 #   value  => 'on',
 # }
 #
-# gluster::volume::option { 'feature.read-only':
-#   volume => 'gv0',
-#   remove => true,
+#
+# To remove a previously-set option:
+# gluster::volume::option { 'gv0:feature.read-only':
+#   ensure => absent,
 # }
 #
 # === Authors
@@ -35,22 +33,26 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume::option (
-  $volume = undef,
-  $value   = undef,
-  $remove  = false,
+  $value  = undef,
+  $ensure = true,
 ) {
 
-  if ! $volume {
-    fail('Volume is a mandatory parameter to gluster::volume::option!')
+  $arr = split( $title, ':' )
+  $count = count($arr)
+  # do we have more than one array element?
+  if $count != 2 {
+    fail("${title} does not parse as volume:option")
   }
+  $vol = $arr[0]
+  $opt = $arr[1]
 
-  if $remove {
-    $cmd = "reset ${volume} ${title}"
+  if $ensure == 'absent' {
+    $cmd = "reset ${vol} ${opt}"
   } else {
-    $cmd = "set ${volume} ${title} ${value}"
+    $cmd = "set ${vol} ${opt} ${value}"
   }
 
-  exec { "gluster option ${title} ${value}":
+  exec { "gluster option ${vol} ${opt} ${value}":
     command => "${::gluster_binary} volume ${cmd}",
   }
 }

@@ -8,6 +8,7 @@
 # replica: the replica count to use for a replica volume
 # transport: the transport to use. Defaults to tcp
 # rebalance: whether to rebalance a volume when new bricks are added
+# heal: whether to heal a replica volume when adding bricks
 # bricks: an array of bricks to use for this volume
 # options: an array of volume options for the volume
 #          https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options
@@ -44,6 +45,7 @@ define gluster::volume (
   $replica        = false,
   $transport      = 'tcp',
   $rebalance      = true,
+  $heal           = true,
   $bricks         = undef,
   $options        = undef,
   $remove_options = false,
@@ -137,7 +139,12 @@ define gluster::volume (
         # Note 2: we're using the $_options variable, which contains the
         #         sorted list of options.
         if $_options {
-          $yaml = join( regsubst( $_options, ': ', ":\n  value: ", G), "\n")
+          # first we need to prefix each array element with the volume name
+          # so that we match the gluster::volume::option title format of
+          #  volume:option
+          $vol_opts = prefix( $_options, "${title}:" )
+          # now we make some YAML, and then parse that to get a Puppet hash
+          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", G), "\n")
           $hoh = parseyaml($yaml)
 
           # safety check
@@ -145,7 +152,6 @@ define gluster::volume (
           # we need to ensure that these are applied AFTER the volume is created
           # but BEFORE the volume is started
           $new_volume_defaults = {
-            volume  => $title,
             require => Exec["gluster create volume ${title}"],
             before  => Exec["gluster start volume ${title}"],
           }
@@ -180,16 +186,23 @@ define gluster::volume (
             if ( count($new_bricks) % $stripe ) != 0 {
               fail("Number of bricks to add is not a multiple of stripe count ${stipe}")
             }
+            $s = "stripe ${stripe}"
+          } else {
+            $s = ''
           }
+
           if $replica {
-            if ( count($new_bricks) % $replica ) != 0 {
+            if ( count($bricks) % $replica ) != 0 {
               fail("Number of bricks to add is not a multiple of replica count ${replica}")
             }
+            $r = "replica ${replica}"
+          } else {
+            $r = ''
           }
 
           $new_bricks_list = join($new_bricks, ' ')
           exec { "gluster add bricks to ${title}":
-            command => "${binary} volume add-brick ${title} ${new_bricks_list}",
+            command => "${binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list}",
           }
 
           if $rebalance {
@@ -198,6 +211,16 @@ define gluster::volume (
               require => Exec["gluster add bricks to ${title}"],
             }
           }
+
+         if $replica and $heal {
+           # there is a delay after which a brick is added before
+           # the self heal daemon comes back to life.
+           # as such, we sleep 5 here before starting the heal
+           exec { "gluster heal ${title}":
+             command => "/bin/sleep 5; ${binary} volume heal ${title} full",
+             require => Exec["gluster add bricks to ${title}"],
+           }
+         }
 
         } elsif count($bricks) < $vol_count {
           # removing bricks
