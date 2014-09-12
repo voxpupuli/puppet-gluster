@@ -51,11 +51,6 @@ define gluster::volume (
   $remove_options = false,
 ) {
 
-  # we'll likely use this later
-  $options_volume = {
-    'volume' => $title,
-  }
-
   # basic sanity checking
   if str2bool($force) {
     $_force = 'force'
@@ -260,11 +255,11 @@ define gluster::volume (
           # the syntax to remove ::gluster::volume::options is a little different
           # so build up the hash correctly
           #
-          $remove_yaml = join( regsubst( $to_remove, ': .+$', ":\n  remove: true", G ), "\n" )
+          $remove_options = prefix( $to_remove, "${title}:" )
+          $remove_yaml = join( regsubst( $remove_options, ': .+$', ":\n  ensure: absent", G ), "\n" )
           $remove = parseyaml($remove_yaml)
           if $remove_options {
-            # $options_volume was defined way up top
-            create_resources( ::gluster::volume::option, $remove, $options_volume )
+            create_resources( ::gluster::volume::option, $remove )
           } else {
             $r = join( keys($remove), ', ' )
             notice("NOT REMOVING the following options for volume ${title}: ${r}.")
@@ -272,10 +267,10 @@ define gluster::volume (
         }
         if ! empty($to_add) {
           # we have some options defined that are not active. Add them
-          $add_yaml = join( regsubst( $to_add, ': ', ":\n  value: ", G ), "\n" )
+          $add_options = prefix( $to_add, "${title}:" )
+          $add_yaml = join( regsubst( $add_options, ': ', ":\n  value: ", G ), "\n" )
           $add = parseyaml($add_yaml)
-          # $options_volume was defined way up top
-          create_resources( ::gluster::volume::option, $add, $options_volume )
+          create_resources( ::gluster::volume::option, $add )
         }
       }
     }
