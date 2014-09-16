@@ -28,7 +28,7 @@ class gluster::client (
   $repo           = $::gluster::params::repo,
   $client_package = $::gluster::params::client_package,
   $version        = $::gluster::params::version,
-) {
+) inherits ::gluster::params {
   if $repo {
     if ! defined ( Class[::gluster::repo] ) {
       class { '::gluster::repo':
