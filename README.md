@@ -34,11 +34,6 @@ If the upstream Gluster repo is enabled, this class will install packages from t
 
 Currently only RHEL 6 and RHEL 7 provide native Gluster packages.
 
-### client.pp ###
-This class installs the Gluster client package.
-
-Usually this is the `gluster-fuse` package, but this can be overridden by class paramaters.
-
 ### service.pp ###
 This class manages the `glusterd` service.
 
