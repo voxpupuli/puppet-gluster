@@ -31,18 +31,26 @@
 class gluster::install (
   $server         = $::gluster::params::install_server,
   $client         = $::gluster::params::install_client,
-  $server_package = $::gluster::params::server_package,
-  $client_package = $::gluster::params::client_package,
   $repo           = $::gluster::params::repo,
   $version        = $::gluster::params::version,
+  $server_package = undef,
+  $client_package = undef,
 ) {
 
   if $repo {
+    # use the upstream package names
+    $_client_package = $::gluster::params::client_package
+    $_server_package = $::gluster::params::server_package
+    # install the correct repo
     if ! defined ( Class[::gluster::repo] ) {
       class { '::gluster::repo':
         version => $version,
       }
     }
+  } else {
+    # use the vendor-supplied package names
+    $_client_package = $::gluster::params::vendor_client_package
+    $_server_package = $::gluster::params::vendor_server_package
   }
 
   $_version = $version ? {
@@ -50,16 +58,18 @@ class gluster::install (
     default  => $version,
   }
 
-  if $client {
-    package { $client_package:
+  if $client and $_client_package {
+    package { $_client_package:
       ensure => $_version,
+      tag    => 'gluster-packages',
     }
   }
 
-  if $server {
-    package { $server_package:
+  if $server and $_server_package {
+    package { $_server_package:
       ensure => $_version,
-      notify => Class[::gluster::service]
+      notify => Class[::gluster::service],
+      tag    => 'gluster-packages',
     }
   }
 

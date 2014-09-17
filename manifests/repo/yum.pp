@@ -83,4 +83,6 @@ class gluster::repo::yum (
     gpgkey   => "file://${repo_key}",
   }
 
+  Yumrepo["glusterfs-${arch}"] -> Package<| tag == 'gluster-packages' |>
+
 }
