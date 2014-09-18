@@ -35,7 +35,7 @@ class gluster::install (
   $version        = $::gluster::params::version,
   $server_package = undef,
   $client_package = undef,
-) {
+) inherits ::gluster::params {
 
   if $repo {
     # use the upstream package names

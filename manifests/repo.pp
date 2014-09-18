@@ -8,11 +8,13 @@
 #
 # === Parameters
 #
-# None!
+# version: the version of the upstream repo to enable
 #
 # === Examples
 #
-# class { ::gluster::repo }
+# class { ::gluster::repo
+#   version => '3.5.2',
+# }
 #
 # === Authors
 #
@@ -24,7 +26,7 @@
 #
 class gluster::repo (
   $version = $::gluster::params::version,
-) {
+) inherits ::gluster::params {
   case $::osfamily {
     'RedHat': {
       class { '::gluster::repo::yum':
