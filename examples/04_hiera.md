@@ -34,7 +34,7 @@ In this way, you could have two servers (srv1.local and srv2.local) operating in
     gluster::repo: true
     gluster::version: '3.6'
 
-/etc/puppet/hieradata/hosts/srv1.local.yaml:
+/etc/puppet/hieradata/hosts/srv2.local.yaml:
 
     ---
     gluster::client: false
