@@ -61,7 +61,7 @@ define gluster_mount (
 
 The corresponding Hiera data structures look like this:
 
-    cmm_gluster::mounts:
+    gluster_mounts:
       admin: gluster1.local:/admin
       data: gluster1.local:/data
 
