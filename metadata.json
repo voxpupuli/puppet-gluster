@@ -1,0 +1,17 @@
+{
+  "name": "covermymeds-gluster",
+  "version": "1.0.0",
+  "author": "CoverMyMeds",
+  "license": "MIT",
+  "summary": "Create and manage Gluster pools, volumes, and mounts",
+  "source": "https://github.com/covermymeds/puppet-gluster",
+  "project_page": "https://forge.puppetlabs.com/covermymeds/gluster",
+  "issues_url": "https://github.com/covermymeds/puppet-gluster/issues",
+  "tags": ["gluster"],
+  "operatingsystem_support": [
+    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "6", "7" ] }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": "4.x" }
+  ]
+}
