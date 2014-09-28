@@ -132,9 +132,9 @@ Note that creating brick filesystems is up to you. May I recommend the [Puppet L
 
 When creating a new volume, this defined type will ensure that all of the servers hosting bricks in the volume are members of the storage pool. In this way, you can define the volume at the time you create servers, and once the last peer joins the pool the volume will be created.
 
-Any volume options defined will be applied after the volume is created but before it the volume is started.
+Any volume options defined will be applied after the volume is created but before the volume is started.
 
-In the event that the list of volume options active on a volume do not match the list of options passed to this defined type, no options will be removed by default. You must set the `$remove_options` parameter to `true` in order for this defined type to remove options.
+In the event that the list of volume options active on a volume does not match the list of options passed to this defined type, no options will be removed by default. You must set the `$remove_options` parameter to `true` in order for this defined type to remove options.
 
 Note that adding or removing options does not (currently) restart the volume.
 
