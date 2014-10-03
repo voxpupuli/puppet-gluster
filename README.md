@@ -119,7 +119,7 @@ With the exported resource implementation in `init.pp`, the first server to be d
 
 Note that the server being probed does not perform any DNS resolution on the server doing the probing. This means that the probed server will report only the IP address of the probing server.  The next time the probed client runs this module, it will execute a `gluster peer probe` against the originally-probing server, thereby updating its list of peers to use the FQDN of the other server.
 
-See [this mailing list post](http://www.gluster.org/pipermail/gluster-users/2013-December/038354.html) for more information.
+See [this mailing list post](http://supercolony.gluster.org/pipermail/gluster-users/2013-December/015365.html) for more information.
 
     gluster::peer { 'srv1.domain:
       pool => 'production',
