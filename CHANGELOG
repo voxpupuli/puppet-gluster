@@ -1,0 +1,4 @@
+* Wed Nov 19 2014 Scott Merrill <smerrill@covermymeds.com> - 1.0.1
+- Add support for Yum priorities on the repo
+* Sat Sep 27 2014 Scott Merrill <smerrill@covermymeds.com> - 1.0.0
+- Initial release

@@ -49,6 +49,10 @@ Currently, only the yum repo type is implemented.
       version => '3.5.2',
     }
 
+Yum priorities are supported, but not activated by default. If you pass a `priority` parameter to this class, the `yum-plugin-priorities` package will be installed, and a priority will be set on the Gluster repository.
+
+This is [useful](http://blog.gluster.org/2014/11/installing-glusterfs-3-4-x-3-5-x-or-3-6-0-on-rhel-or-centos-6-6-2/) in the event that you want to install a version from the upstream repos that is older than that provided by your distribution's repositories.
+
 ### install.pp ###
 This class handles the installation of the Gluster packages (both server and client).
 
@@ -60,8 +64,10 @@ Currently only RHEL 6 and RHEL 7 provide native Gluster packages.
       server  => true,
       client  => true,
       repo    => true,
-      version => 3.5,
+      version => 3.5.1-1.el6,
     }
+
+Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.  The `gluster::repo::yum` class will parse the version number to build the correct URL for the repo, but Puppet's invocation of `yum` will not work as desired unless you specify the full RPM version number.
 
 ### client.pp ###
 This class installs **only** the Gluster client package(s). If you need to install both the server and client, please use the `install.pp` (or `init.pp`) classes.
