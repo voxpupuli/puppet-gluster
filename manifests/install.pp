@@ -41,9 +41,6 @@ class gluster::install (
     # use the upstream package names
     $_client_package = $::gluster::params::client_package
     $_server_package = $::gluster::params::server_package
-    # the repo version controls what package versions are available
-    # so we'll just use "installed" for packages from this repo
-    $_version = 'installed'
     # install the correct repo
     if ! defined ( Class[::gluster::repo] ) {
       class { '::gluster::repo':
@@ -54,13 +51,13 @@ class gluster::install (
     # use the vendor-supplied package names
     $_client_package = $::gluster::params::vendor_client_package
     $_server_package = $::gluster::params::vendor_server_package
-    # the user should be able to select the version from their
-    # distribution's repositories.  It is up to them to pass
-    # the correct value
-    $_version = $version ? {
-      'LATEST' => 'installed',
-      default  => $version,
-    }
+  }
+
+  # if the user didn't specify a version, just use "installed".
+  # if they did specify a version, assume they provided a valid one
+  $_version = $version ? {
+    'LATEST' => 'installed',
+    default  => $version,
   }
 
   if $client and $_client_package {

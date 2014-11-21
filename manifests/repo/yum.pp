@@ -9,6 +9,7 @@
 # repo_key_name: the filename of this repo's GPG key
 # repo_key_path: the path to this repo's GPG key on the target system
 # repo_key_source: where to find this repo's GPG key
+# priority: YUM priority to set for the Gluster repo
 #
 # Currently only released versions are supported.  If you want to use
 # QA releases or pre-releases, you'll need to edit line 54 below
@@ -35,6 +36,7 @@ class gluster::repo::yum (
   $repo_key_name   = $::gluster::params::repo_gpg_key_name,
   $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
+  $priority        = $::gluster::params::repo_priority,
 ) {
 
   # basic sanity check
@@ -48,8 +50,8 @@ class gluster::repo::yum (
   } else {
     if $version =~ /^\d\.\d$/ {
       $repo_ver = "${version}/LATEST"
-    } elsif $version =~ /^(\d)\.(\d)\.(\d)$/ {
-      $repo_ver = "${1}.${2}/${version}"
+    } elsif $version =~ /^(\d)\.(\d)\.(\d).*$/ {
+      $repo_ver = "${1}.${2}/${1}.${2}.${3}"
     } else {
       fail("${version} doesn't make sense!")
     }
@@ -75,12 +77,22 @@ class gluster::repo::yum (
     }
   }
 
+  if $priority {
+    if ! defined( Package['yum-plugin-priorities'] ) {
+      package { 'yum-plugin-priorities':
+        ensure => installed,
+        before => Yumrepo["glusterfs-${arch}"],
+      }
+    }
+  }
+
   yumrepo { "glusterfs-${arch}":
     enabled  => 1,
     baseurl  => $repo_url,
     descr    => "GlusterFS ${arch}",
     gpgcheck => 1,
     gpgkey   => "file://${repo_key}",
+    priority => $priority,
   }
 
   Yumrepo["glusterfs-${arch}"] -> Package<| tag == 'gluster-packages' |>
