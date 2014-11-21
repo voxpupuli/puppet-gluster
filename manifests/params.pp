@@ -33,7 +33,7 @@ class gluster::params {
   $repo_gpg_key_source = "puppet:///modules/${module_name}/${repo_gpg_key_name}"
   # we explicitly do NOT set a priority here. The user must define
   # a priority in order to ensure that it is activated
-  $repo_priority = false
+  $repo_priority = absent
 
   # these packages are the upstream names
   $server_package = 'glusterfs-server'
