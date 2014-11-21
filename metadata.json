@@ -1,6 +1,6 @@
 {
   "name": "covermymeds-gluster",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "CoverMyMeds",
   "license": "MIT",
   "summary": "Create and manage Gluster pools, volumes, and mounts",

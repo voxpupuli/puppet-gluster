@@ -1,3 +1,5 @@
+* Fri Nov 21 2014 Scott Merrill <smerrill@covermymeds.com> - 1.0.3
+- default "priority" to "absent", not false.
 * Fri Nov 21 2014 Scott Merrill <smerrill@covermymeds.com> - 1.0.2
 - update metadata.json project_page to point to GitHub, not the Puppet Forge
 * Wed Nov 19 2014 Scott Merrill <smerrill@covermymeds.com> - 1.0.1
