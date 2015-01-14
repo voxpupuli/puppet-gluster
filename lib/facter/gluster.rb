@@ -41,8 +41,12 @@ if binary then
 					volume_options[vol] = options
 				end
 				if vol_status == "Started" then
-				  status = Facter::Util::Resolution.exec("#{binary} volume status #{vol}")
-				  volume_ports[vol] = status.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
+          # if `gluster volume status` fails for some reason, it spits to stderr,
+          # so we suppress that.
+				  status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
+          if status =~ /^Brick/ then
+				    volume_ports[vol] = status.scan(/^Brick [^\t]+\t+(\d+)/).flatten.uniq.sort
+          end
 				end
 			end
 		end
