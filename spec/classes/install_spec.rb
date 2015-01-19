@@ -22,10 +22,12 @@ describe 'gluster::install', :type => :class do
     end
     context 'when repo is true' do
       let :params do
-        { :server => true }
+        { :repo => true }
       end
       it 'should create gluster::repo' do
-        should create_class('gluster::repo')
+        should create_class('gluster::repo').with(
+          :version => 'LATEST',
+        )
       end
     end
     context 'when repo is false' do

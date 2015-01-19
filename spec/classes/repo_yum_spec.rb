@@ -19,8 +19,11 @@ describe 'gluster::repo::yum', :type => :class do
       expect { subject }.to raise_error(Puppet::Error, /not yet supported/)
     end
   end
-  describe 'latest version on x86_64' do
-    let :facts do { :architecture => 'x86_64', } end
+  describe 'latest version on RHEL 6 x86_64' do
+    let :facts do {
+      :architecture => 'x86_64',
+      :operatingsystemmajrelease => '6',
+    } end
     let :params do
       {
         :version => 'LATEST',
@@ -31,24 +34,38 @@ describe 'gluster::repo::yum', :type => :class do
     end
     it 'should install' do
       should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-      should create_yumrepo('glusterfs-x86_64')
+      should create_yumrepo('glusterfs-x86_64').with(
+        :enabled  => 1,
+        :baseurl  => 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/RHEL/epel-6/x86_64/',
+        :gpgcheck => 1,
+        :gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
+      )
     end
   end
-  describe 'latest version on x86_64 with priority' do
-    let :facts do { :architecture => 'x86_64', } end
+  describe 'latest version on RHEL 6 x86_64 with priority' do
+    let :facts do {
+      :architecture => 'x86_64',
+      :operatingsystemmajrelease => '6',
+    } end
     let :params do
       {
-        :version => 'LATEST',
-        :repo_key_path => '/etc/pki/rpm-gpg/',
-        :repo_key_name => 'RPM-GPG-KEY-gluster.pub',
+        :version         => 'LATEST',
+        :repo_key_path   => '/etc/pki/rpm-gpg/',
+        :repo_key_name   => 'RPM-GPG-KEY-gluster.pub',
         :repo_key_source => 'puppet:///modules/gluster/RPM-GPG-KEY-gluster.pub',
-        :priority => '50',
+        :priority        => '50',
       }
     end
     it 'should install' do
       should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
       should create_package('yum-plugin-priorities')
-      should create_yumrepo('glusterfs-x86_64')
+      should create_yumrepo('glusterfs-x86_64').with(
+        :enabled  => 1,
+        :baseurl  => 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/RHEL/epel-6/x86_64/',
+        :gpgcheck => 1,
+        :gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
+        :priority => '50',
+      )
     end
   end
 end
