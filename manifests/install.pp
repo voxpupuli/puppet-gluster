@@ -38,9 +38,17 @@ class gluster::install (
 ) inherits ::gluster::params {
 
   if $repo {
-    # use the upstream package names
-    $_client_package = $::gluster::params::client_package
-    $_server_package = $::gluster::params::server_package
+    # use the upstream package names if none were supplied
+    if $client_package {
+      $_client_package = $client_package
+    } else {
+      $_client_package = $::gluster::params::client_package
+    }
+    if $server_package {
+      $_server_package = $server_package
+    } else {
+      $_server_package = $::gluster::params::server_package
+    }
     # install the correct repo
     if ! defined ( Class[::gluster::repo] ) {
       class { '::gluster::repo':
@@ -48,9 +56,17 @@ class gluster::install (
       }
     }
   } else {
-    # use the vendor-supplied package names
-    $_client_package = $::gluster::params::vendor_client_package
-    $_server_package = $::gluster::params::vendor_server_package
+    # use the vendor-supplied package names if none were supplied
+    if $client_package {
+      $_client_package = $client_package
+    } else {
+      $_client_package = $::gluster::params::vendor_client_package
+    }
+    if $server_package {
+      $_server_package = $server_package
+    } else {
+      $_server_package = $::gluster::params::vendor_server_package
+    }
   }
 
   # if the user didn't specify a version, just use "installed".
