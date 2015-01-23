@@ -87,12 +87,13 @@ define gluster::mount (
   $_options = join(delete($mount_options, ''), ',')
 
   mount { $title:
-    ensure  => $ensure,
-    atboot  => $atboot,
-    device  => $volume,
-    fstype  => 'glusterfs',
-    dump    => $dump,
-    pass    => $pass,
-    options => $_options,
+    ensure   => $ensure,
+    fstype   => 'glusterfs',
+    remounts => false,
+    atboot   => $atboot,
+    device   => $volume,
+    dump     => $dump,
+    pass     => $pass,
+    options  => $_options,
   }
 }
