@@ -67,7 +67,7 @@ If you would like to specify mounts in hiera, you can add items on `/etc/puppet/
 To create these mounts, add a class to the host with this content:
 
     class profile::gluster {
-      create_resources('gluster::mount', hiera_hash("gluster_mounts"), {})
+      create_resources('gluster::mount', hiera_hash("gluster_mounts", {}))
     }
 
-Mounts can be described in mutiple layers, hiera_hash will collect them and create_resources will make all mounts.
+Mounts can be described in mutiple layers, hiera_hash will collect them and create_resources will make all mounts. If no gluster_mounts are found, none are created.
