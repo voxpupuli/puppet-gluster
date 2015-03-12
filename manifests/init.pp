@@ -43,11 +43,11 @@
 #
 class gluster  (
   $client                 = $::gluster::params::install_client,
-  $client_package         = undef,
+  $client_package         = $::gluster::params::client_package,
   $pool                   = $::gluster::params::pool,
   $repo                   = $::gluster::params::repo,
   $server                 = $::gluster::params::install_server,
-  $server_package         = undef,
+  $server_package         = $::gluster::params::server_package,
   $use_exported_resources = $::gluster::params::export_resources,
   $version                = $::gluster::params::version,
   $volumes                = undef,
