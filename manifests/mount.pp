@@ -85,6 +85,10 @@ define gluster::mount (
 
   $mount_options = [ "${options}", "${ll}", "${lf}", "${t}", "${dim}", "${r}", ]
   $_options = join(delete($mount_options, ''), ',')
+  
+  file { $title:
+    ensure => directory,
+  }
 
   mount { $title:
     ensure   => $ensure,
