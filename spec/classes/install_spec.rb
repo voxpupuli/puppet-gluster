@@ -8,7 +8,9 @@ describe 'gluster::install', :type => :class do
   describe 'installing on an unsupported architecture' do
     let :facts do { :architecture => 'zLinux' } end
     it 'should not install' do
-      expect { subject }.to raise_error(Puppet::Error, /not yet supported/)
+      expect { 
+        should create_class('gluster::repo')
+      }.to raise_error(Puppet::Error, /not yet supported/)
     end
   end
   describe 'installing on Red Hat Enterprise Linux' do

@@ -65,7 +65,7 @@ describe 'gluster', :type => :class do
         }
       end
       it 'should create gluster::volume' do
-        should create_resource('gluster::volume').with(
+        should contain_gluster__volume('data1').with(
           :name => 'data1',
           :replica => 2,
           :bricks  => ['srv1.local:/brick1/brick','srv2.local:/brick1/brick'],
@@ -73,5 +73,22 @@ describe 'gluster', :type => :class do
         )
       end
     end
+
+    context 'when volumes incorrectly defined' do
+      let :params do
+        { :volumes =>
+          {
+            'data1' => ['this', 'is', 'an', 'array' ]
+          }
+        }
+      end
+      it 'should fail' do
+        expect {
+          should contain_gluster__volume('data1')
+        }.to raise_error(Puppet::Error, //)
+      end
+    end
+ 
+
   end
 end

@@ -3,20 +3,26 @@ require 'spec_helper'
 describe 'gluster::repo::yum', :type => :class do
   describe 'version not specified' do
     it 'should not install' do
-      expect { subject }.to raise_error(Puppet::Error, /Version not specified/)
+      expect {
+        should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+      }.to raise_error(Puppet::Error, /Version not specified/)
     end
   end
   describe 'bogus version' do
     let :params do { :version => 'foobar', } end
     it 'should not install' do
-      expect { subject }.to raise_error(Puppet::Error, /doesn't make sense!/)
+      expect {
+        should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+      }.to raise_error(Puppet::Error, /doesn't make sense!/)
     end
   end
   describe 'unsupported architecture' do
     let :facts do { :architecture => 'zLinux', } end
     let :params do { :version => 'LATEST', } end
     it 'should not install' do
-      expect { subject }.to raise_error(Puppet::Error, /not yet supported/)
+      expect {
+        should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+      }.to raise_error(Puppet::Error, /not yet supported/)
     end
   end
   describe 'Red Hat Enterprise Linux' do
