@@ -40,6 +40,7 @@ describe 'gluster::repo::yum', :type => :class do
         }
       end
       it 'should install' do
+        should_not create_package('yum-plugin-priorities')
         should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
         should create_yumrepo('glusterfs-x86_64').with(
           :enabled  => 1,
