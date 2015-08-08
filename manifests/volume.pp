@@ -261,8 +261,8 @@ define gluster::volume (
           if $remove_options {
             create_resources( ::gluster::volume::option, $remove )
           } else {
-            $r = join( keys($remove), ', ' )
-            notice("NOT REMOVING the following options for volume ${title}: ${r}.")
+            $remove_str = join( keys($remove), ', ' )
+            notice("NOT REMOVING the following options for volume ${title}:${remove_str}.")
           }
         }
         if ! empty($to_add) {
