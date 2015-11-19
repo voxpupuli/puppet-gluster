@@ -102,7 +102,19 @@ define gluster::volume (
   if $binary{
     # we need the Gluster binary to do anything!
 
-    if ! member( split( $::gluster_volume_list, ',' ), $title ) {
+    if $::gluster_peer_list != undef{
+      $minimal_requirements = true
+    } else {
+      $minimal_requirements = false
+    }
+
+    if $::gluster_volume_list != undef and member( split( $::gluster_volume_list, ',' ), $title ) {
+      $already_exists = true
+    } else {
+      $already_exists = false
+    }
+
+    if $minimal_requirements and $already_exists == false {
       # this volume has not yet been created
 
       # before we can create it, we need to ensure that all the
@@ -139,7 +151,7 @@ define gluster::volume (
           #  volume:option
           $vol_opts = prefix( $_options, "${title}:" )
           # now we make some YAML, and then parse that to get a Puppet hash
-          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", G), "\n")
+          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", 'G'), "\n")
           $hoh = parseyaml($yaml)
 
           # safety check
@@ -161,7 +173,7 @@ define gluster::volume (
         }
       }
 
-    } else {
+    } elsif $already_exists {
       # this volume exists
 
       # our fact lists bricks comma-separated, but we need an array
@@ -179,7 +191,7 @@ define gluster::volume (
           # number of bricks to add is a factor of that value
           if $stripe {
             if ( count($new_bricks) % $stripe ) != 0 {
-              fail("Number of bricks to add is not a multiple of stripe count ${stipe}")
+              fail("Number of bricks to add is not a multiple of stripe count ${stripe}")
             }
             $s = "stripe ${stripe}"
           } else {
@@ -256,7 +268,7 @@ define gluster::volume (
           # so build up the hash correctly
           #
           $remove_opts = prefix( $to_remove, "${title}:" )
-          $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", G ), "\n" )
+          $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", 'G' ), "\n" )
           $remove = parseyaml($remove_yaml)
           if $remove_options {
             create_resources( ::gluster::volume::option, $remove )
@@ -268,7 +280,7 @@ define gluster::volume (
         if ! empty($to_add) {
           # we have some options defined that are not active. Add them
           $add_opts = prefix( $to_add, "${title}:" )
-          $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", G ), "\n" )
+          $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", 'G' ), "\n" )
           $add = parseyaml($add_yaml)
           create_resources( ::gluster::volume::option, $add )
         }
