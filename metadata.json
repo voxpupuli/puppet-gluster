@@ -9,7 +9,9 @@
   "issues_url": "https://github.com/covermymeds/puppet-gluster/issues",
   "tags": ["gluster"],
   "operatingsystem_support": [
-    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "6", "7" ] }
+    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "6", "7" ] },
+    { "operatingsystem": "Debian", "operatingsystemrelease": [ "7", "8", "9" ] },
+    { "operatingsystem": "Ubuntu", "operatingsystemrelease": [ "12.04", "14.04" ] }
   ],
   "dependencies": [
     { "name": "puppetlabs/stdlib", "version_requirement": "4.x" }

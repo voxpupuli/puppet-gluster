@@ -179,7 +179,7 @@ define gluster::volume (
           # number of bricks to add is a factor of that value
           if $stripe {
             if ( count($new_bricks) % $stripe ) != 0 {
-              fail("Number of bricks to add is not a multiple of stripe count ${stipe}")
+              fail("Number of bricks to add is not a multiple of stripe count ${stripe}")
             }
             $s = "stripe ${stripe}"
           } else {
