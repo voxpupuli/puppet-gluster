@@ -25,7 +25,7 @@ class gluster::params {
   $install_server = true
   $install_client = true
   $version = $::operatingsystem ? {
-    'Ubuntu' => '3.7',
+    'Ubuntu' => '3.6',
     default  => 'LATEST',
   }
   # by default, we'll use the upstream repository
@@ -60,8 +60,8 @@ class gluster::params {
     'Debian': {
       case $::operatingsystem {
         'Debian': {
-          warning( "Need to find Debian repo key/fingerprint and add at glusterfs::params: line 66.")
-          $repo_gpg_key_name = undef
+          # warning( "Need to check this Debian repo key fingerprint.")
+          $repo_gpg_key_name = 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC'
         }
         default: {
           $repo_gpg_key_name = 'F7C73FCC930AC9F83B387A5613E01B7B3FE869A9'
