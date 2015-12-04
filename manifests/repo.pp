@@ -30,7 +30,7 @@ class gluster::repo (
   case $::osfamily {
     'RedHat': {
       class { '::gluster::repo::yum':
-        version => $version
+        version => $version,
       }
     }
     default: { fail("${::osfamily} not yet supported!") }
