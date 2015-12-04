@@ -72,7 +72,7 @@ class gluster::repo::yum (
   if $repo_key_source {
     file { $repo_key:
       ensure => file,
-      source => "${repo_key_source}",
+      source => $repo_key_source,
       before => Yumrepo["glusterfs-${arch}"],
     }
   }

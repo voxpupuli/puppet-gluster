@@ -28,12 +28,13 @@ describe 'gluster', :type => :class do
       end
     end
     context 'specific version and package names defined' do
-      let :params do {
-        :server_package => 'custom-gluster-server',
-        :client_package => 'custom-gluster-client',
-        :version        => '3.1.4',
-        :repo           => false,
-      }
+      let :params do
+        {
+          :server_package => 'custom-gluster-server',
+          :client_package => 'custom-gluster-client',
+          :version        => '3.1.4',
+          :repo           => false,
+        }
       end
       it 'should create gluster::install' do
         should create_class('gluster::install').with(
@@ -58,7 +59,7 @@ describe 'gluster', :type => :class do
           {
             'data1' => {
               'replica' => 2,
-              'bricks'  => ['srv1.local:/brick1/brick','srv2.local:/brick1/brick'],
+              'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
               'options' => ['server.allow-insecure: on'],
             }
           }
@@ -68,7 +69,7 @@ describe 'gluster', :type => :class do
         should contain_gluster__volume('data1').with(
           :name => 'data1',
           :replica => 2,
-          :bricks  => ['srv1.local:/brick1/brick','srv2.local:/brick1/brick'],
+          :bricks  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
           :options => ['server.allow-insecure: on'],
         )
       end
@@ -78,17 +79,15 @@ describe 'gluster', :type => :class do
       let :params do
         { :volumes =>
           {
-            'data1' => ['this', 'is', 'an', 'array' ]
+            'data1' => %w(this is an array)
           }
         }
       end
       it 'should fail' do
-        expect {
+        expect do
           should contain_gluster__volume('data1')
-        }.to raise_error(Puppet::Error, //)
+        end.to raise_error(Puppet::Error, //)
       end
     end
- 
-
   end
 end
