@@ -3,34 +3,36 @@ require 'spec_helper'
 describe 'gluster::repo::yum', :type => :class do
   describe 'version not specified' do
     it 'should not install' do
-      expect {
+      expect do
         should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-      }.to raise_error(Puppet::Error, /Version not specified/)
+      end.to raise_error(Puppet::Error, /Version not specified/)
     end
   end
   describe 'bogus version' do
-    let :params do { :version => 'foobar', } end
+    let(:params) { { :version => 'foobar', } }
     it 'should not install' do
-      expect {
+      expect do
         should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-      }.to raise_error(Puppet::Error, /doesn't make sense!/)
+      end.to raise_error(Puppet::Error, /doesn't make sense!/)
     end
   end
   describe 'unsupported architecture' do
-    let :facts do { :architecture => 'zLinux', } end
-    let :params do { :version => 'LATEST', } end
+    let(:facts) { { :architecture => 'zLinux', } }
+    let(:params) { { :version => 'LATEST', } }
     it 'should not install' do
-      expect {
+      expect do
         should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-      }.to raise_error(Puppet::Error, /not yet supported/)
+      end.to raise_error(Puppet::Error, /not yet supported/)
     end
   end
   describe 'Red Hat Enterprise Linux' do
     context 'latest Gluster on RHEL 6 x86_64' do
-      let :facts do {
-        :architecture => 'x86_64',
-        :operatingsystemmajrelease => '6',
-      } end
+      let :facts do
+        {
+          :architecture => 'x86_64',
+          :operatingsystemmajrelease => '6',
+        }
+      end
       let :params do
         {
           :version => 'LATEST',
@@ -51,10 +53,12 @@ describe 'gluster::repo::yum', :type => :class do
       end
     end
     context 'latest Gluster on RHEL 6 x86_64 with priority' do
-      let :facts do {
-        :architecture => 'x86_64',
-        :operatingsystemmajrelease => '6',
-      } end
+      let :facts do
+        {
+          :architecture => 'x86_64',
+          :operatingsystemmajrelease => '6',
+        }
+      end
       let :params do
         {
           :version         => 'LATEST',

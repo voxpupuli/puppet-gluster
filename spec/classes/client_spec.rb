@@ -18,7 +18,7 @@ describe 'gluster::client', :type => :class do
       end
     end
     context 'when a version number is specified' do
-      let :params do { :version => '3.6.1' } end
+      let(:params) { { :version => '3.6.1' } }
       it 'should include gluster::install with version 3.6.1' do
         should create_class('gluster::install').with(
           :repo           => true,
@@ -28,7 +28,7 @@ describe 'gluster::client', :type => :class do
       end
     end
     context 'when repo is false' do
-      let :params do { :repo => false } end
+      let(:params) { { :repo => false } }
       it 'should include gluster::install with repo=>false' do
         should create_class('gluster::install').with(
           :repo           => false,
