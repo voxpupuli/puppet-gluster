@@ -33,6 +33,14 @@ class gluster::repo (
         version => $version
       }
     }
+    'Debian': {
+      if ! defined( '::apt' ) {
+        fail( "\nPuppetlabs Apt module is required to manage apt repos on ${::operatingsystem}.\nInstall module with \"puppet module install puppetlabs-apt\".\n" )
+      }
+      class { '::gluster::repo::apt':
+        version => $version
+      }
+    }
     default: { fail("${::osfamily} not yet supported!") }
   }
 }

@@ -71,9 +71,17 @@ class gluster::install (
 
   # if the user didn't specify a version, just use "installed".
   # if they did specify a version, assume they provided a valid one
-  $_version = $version ? {
-    'LATEST' => 'installed',
-    default  => $version,
+  case $::osfamily {
+    'Debian': {
+      $_version = 'installed'
+    }
+    default:  {
+      $_version = $version ? {
+        'LATEST' => 'installed',
+        default  => $version,
+      }
+    
+    }
   }
 
   if $client and $_client_package {
