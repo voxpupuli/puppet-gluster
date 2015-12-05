@@ -57,23 +57,40 @@ class gluster::repo::yum (
     }
   }
 
-  # the Gluster repo only supports x86_64 and i386
+  # different repositories for different OS versions
+  $repo_name = $::operatingsystem ? {
+    'Fedora' => 'Fedora/fedora',
+    default  => 'RHEL/epel',
+  }
+
+  # this is a hack as the versions differ across $::operatingsystem names
+  # for RHEL/CentOS/... version 5 gluster repos use i386,
+  # newer versions and all Fedoras use i686
+  $i386arch = $::operatingsystemmajrelease ? {
+    '5' => 'i386',
+    default => 'i686',
+  }
+
+  # the Gluster repo only supports x86_64 and i386/i686
+  # ARM (eg. Pidora) is not yet supported here
   $arch = $::architecture ? {
     'x86_64' => 'x86_64',
-    /i\d86/  => 'i386',
+    /i\d86/  => $i386arch,
     default  => false,
   }
   if ! $arch {
     fail("Architecture ${::architecture} not yet supported.")
   }
 
-  $repo_url = "${repo_base}/${repo_ver}/RHEL/epel-${::operatingsystemmajrelease}/${arch}/"
+  $repo_url = "${repo_base}/${repo_ver}/${repo_name}-${::operatingsystemmajrelease}/${arch}/"
+  $noarch_repo_url = "${repo_base}/${repo_ver}/${repo_name}-${::operatingsystemmajrelease}/noarch/"
+
   $repo_key = "${repo_key_path}${repo_key_name}"
   if $repo_key_source {
     file { $repo_key:
       ensure => file,
       source => "${repo_key_source}",
-      before => Yumrepo["glusterfs-${arch}"],
+      before => Yumrepo["glusterfs-${arch}","glusterfs-noarch"],
     }
   }
 
@@ -81,7 +98,7 @@ class gluster::repo::yum (
     if ! defined( Package['yum-plugin-priorities'] ) {
       package { 'yum-plugin-priorities':
         ensure => installed,
-        before => Yumrepo["glusterfs-${arch}"],
+        before => Yumrepo["glusterfs-${arch}","glusterfs-noarch"],
       }
     }
   }
@@ -95,6 +112,16 @@ class gluster::repo::yum (
     priority => $priority,
   }
 
+  yumrepo { "glusterfs-noarch":
+    enabled  => 1,
+    baseurl  => $noarch_repo_url,
+    descr    => "GlusterFS noarch",
+    gpgcheck => 1,
+    gpgkey   => "file://${repo_key}",
+    priority => $priority,
+  }
+
   Yumrepo["glusterfs-${arch}"] -> Package<| tag == 'gluster-packages' |>
+  Yumrepo["glusterfs-noarch"] -> Package<| tag == 'gluster-packages' |>
 
 }
