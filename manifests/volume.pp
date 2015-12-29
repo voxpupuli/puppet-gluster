@@ -102,7 +102,7 @@ define gluster::volume (
   if $binary{
     # we need the Gluster binary to do anything!
 
-    if ! member( split( $::gluster_volume_list, ',' ), $title ) {
+    if ! member( split( "${::gluster_volume_list}", ',' ), $title ) {
       # this volume has not yet been created
 
       # before we can create it, we need to ensure that all the
