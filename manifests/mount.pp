@@ -56,27 +56,27 @@ define gluster::mount (
 
   if $log_level {
     validate_string($log_level)
-    $ll = $log_level
+    $ll = "log-level=${log_level}"
   }
 
   if $log_file {
     validate_string($log_file)
-    $lf = $log_file
+    $lf = "log-file=${log_file}"
   }
 
   if $transport {
     validate_string($transport)
-    $t = $transport
+    $t = "transport=${transport}"
   }
 
   if $direct_io_mode {
     validate_string($direct_io_mode)
-    $dim = $direct_io_mode
+    $dim = "direct-io-mode=${direct_io_mode}"
   }
 
   if $readdirp {
     validate_bool(str2bool($readdirp))
-    $r = $readdirp
+    $r = "usereaddrip=${readdirp}"
   }
 
   if ! member(['defined', 'present', 'unmounted', 'absent', 'mounted'], $ensure) {
