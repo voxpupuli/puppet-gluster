@@ -1,14 +1,10 @@
 require 'spec_helper'
 
 describe 'gluster::install', :type => :class do
-#  describe 'installing on an unsupported OS' do
-#    let :facts do { :osfamily => 'Amiga' } end
-#    expect { subject }.to raise_error(Puppet::Error, //)
-#  end
   describe 'installing on an unsupported architecture' do
     let :facts do { :architecture => 'zLinux' } end
     it 'should not install' do
-      expect { 
+      expect {
         should create_class('gluster::repo')
       }.to raise_error(Puppet::Error, /not yet supported/)
     end
@@ -72,6 +68,5 @@ describe 'gluster::install', :type => :class do
         should_not create_package('glusterfs-server')
       end
     end
- 
   end
 end

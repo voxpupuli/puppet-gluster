@@ -83,7 +83,7 @@ define gluster::mount (
     fail("Unknown option ${ensure} for ensure")
   }
 
-  $mount_options = [ "${options}", "${ll}", "${lf}", "${t}", "${dim}", "${r}", ]
+  $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
   $_options = join(delete($mount_options, ''), ',')
 
   mount { $title:
