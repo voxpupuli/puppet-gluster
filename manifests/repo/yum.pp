@@ -67,7 +67,7 @@ class gluster::repo::yum (
     fail("Architecture ${::architecture} not yet supported.")
   }
 
-  $repo_url = "${repo_base}/${repo_ver}/RHEL/epel-${::operatingsystemmajrelease}/${arch}/"
+  $repo_url = "${repo_base}/${repo_ver}/EPEL.repo/epel-${::operatingsystemmajrelease}/${arch}/"
   $repo_key = "${repo_key_path}${repo_key_name}"
   if $repo_key_source {
     file { $repo_key:
