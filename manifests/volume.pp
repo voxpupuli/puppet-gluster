@@ -197,7 +197,7 @@ define gluster::volume (
 
           $new_bricks_list = join($new_bricks, ' ')
           exec { "gluster add bricks to ${title}":
-            command => "${binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list}",
+            command => "${binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
           }
 
           if $rebalance {
