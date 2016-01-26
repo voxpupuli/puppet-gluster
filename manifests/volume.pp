@@ -89,11 +89,11 @@ define gluster::volume (
   $_bricks = join( $bricks, ' ' )
 
   $cmd_args = [
-    "${_stripe}",
-    "${_replica}",
-    "${_transport}",
-    "${_bricks}",
-    "${_force}",
+    $_stripe,
+    $_replica,
+    $_transport,
+    $_bricks,
+    $_force,
   ]
 
   $args = join(delete($cmd_args, ''), ' ')
@@ -179,7 +179,7 @@ define gluster::volume (
           # number of bricks to add is a factor of that value
           if $stripe {
             if ( count($new_bricks) % $stripe ) != 0 {
-              fail("Number of bricks to add is not a multiple of stripe count ${stipe}")
+              fail("Number of bricks to add is not a multiple of stripe count ${stripe}")
             }
             $s = "stripe ${stripe}"
           } else {
@@ -207,15 +207,15 @@ define gluster::volume (
             }
           }
 
-         if $replica and $heal {
-           # there is a delay after which a brick is added before
-           # the self heal daemon comes back to life.
-           # as such, we sleep 5 here before starting the heal
-           exec { "gluster heal ${title}":
-             command => "/bin/sleep 5; ${binary} volume heal ${title} full",
-             require => Exec["gluster add bricks to ${title}"],
-           }
-         }
+          if $replica and $heal {
+          # there is a delay after which a brick is added before
+          # the self heal daemon comes back to life.
+          # as such, we sleep 5 here before starting the heal
+            exec { "gluster heal ${title}":
+              command => "/bin/sleep 5; ${binary} volume heal ${title} full",
+              require => Exec["gluster add bricks to ${title}"],
+            }
+          }
 
         } elsif count($bricks) < $vol_count {
           # removing bricks

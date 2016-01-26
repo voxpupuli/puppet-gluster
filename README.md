@@ -1,5 +1,5 @@
-# MOVED TO PUPPET-COMMUNITY
-**This module has been moved to the [Puppet Community](https://github.com/voxpupuli/) organization.  Please update all bookmarks and Puppetfile references.**
+# MOVED TO VOX PUPULI
+**This module has been moved to the [Vox Pupuli](https://github.com/voxpupuli/) organization.  Please update all bookmarks and Puppetfile references.**
 
 Puppet Gluster
 ==============
@@ -44,7 +44,7 @@ This class establishes a number of default values used by the other classes.
 You should not need to include or reference this class directly.
 
 ### repo.pp ###
-This class optionally enables the upstream [Gluster.org](http://download.gluster.org/pub/) repositories.  
+This class optionally enables the upstream [Gluster.org](http://download.gluster.org/pub/) repositories.
 
 Currently, only the yum repo type is implemented.
 
@@ -94,7 +94,7 @@ This class implements a basic Gluster server.
 
 In the default configuration, this class exports a `gluster::peer` defined type for itself, and then collects any other exported `gluster::peer` resources for the same pool for instantiation.
 
-This default configuration makes it easy to implement a Gluster storage pool by simply assigning the `gluster` class to your Gluster servers: they'll each export their `gluster::peer` resources, and then instantiate the other servers' `gluster::peer` resources.  
+This default configuration makes it easy to implement a Gluster storage pool by simply assigning the `gluster` class to your Gluster servers: they'll each export their `gluster::peer` resources, and then instantiate the other servers' `gluster::peer` resources.
 
 The use of exported resources assume you're using PuppetDB, or some other backing mechanism to support exported resources.
 
@@ -120,7 +120,7 @@ If a `volumes` parameter is passed, the defined Gluster volume(s) can be created
 
 Resources
 -------------
- 
+
 ### gluster::peer ###
 This defined type creates a Gluster peering relationship.  The name of the resource should be the fully-qualified domain name of a peer to which to connect. An optional `pool` parameter permits you to configure different storage pools built from different hosts.
 
@@ -169,7 +169,7 @@ In order to ensure uniqueness across multiple volumes, the title of each `gluste
     gluster::volume::option{ 'g0:nfs.disable':
       value => 'on',
     }
- 
+
 To remove an option, set the `ensure` parameter to `absent`:
 
     gluster::volume::option{ 'g0:server.allow-insecure':
