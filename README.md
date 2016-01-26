@@ -1,5 +1,5 @@
 # MOVED TO PUPPET-COMMUNITY
-**This module has been moved to the [Puppet Community](https://github.com/puppet-community/) organization.  Please update all bookmarks and Puppetfile references.**
+**This module has been moved to the [Puppet Community](https://github.com/voxpupuli/) organization.  Please update all bookmarks and Puppetfile references.**
 
 Puppet Gluster
 ==============
