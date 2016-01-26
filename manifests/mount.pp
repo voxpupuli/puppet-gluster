@@ -57,26 +57,36 @@ define gluster::mount (
   if $log_level {
     validate_string($log_level)
     $ll = $log_level
+  } else {
+    $ll = ''
   }
 
   if $log_file {
     validate_string($log_file)
     $lf = $log_file
+  } else {
+    $lf = ''
   }
 
   if $transport {
     validate_string($transport)
     $t = $transport
+  } else {
+    $t = ''
   }
 
   if $direct_io_mode {
     validate_string($direct_io_mode)
     $dim = $direct_io_mode
+  } else {
+    $dim = ''
   }
 
   if $readdirp {
     validate_bool(str2bool($readdirp))
     $r = $readdirp
+  } else {
+    $r = ''
   }
 
   if ! member(['defined', 'present', 'unmounted', 'absent', 'mounted'], $ensure) {
@@ -84,7 +94,7 @@ define gluster::mount (
   }
 
   $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
-  $_options = join(delete_undef_values($mount_options), ',')
+  $_options = join(delete($mount_options, ''), ',')
 
   mount { $title:
     ensure   => $ensure,
