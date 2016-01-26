@@ -139,7 +139,7 @@ define gluster::volume (
           #  volume:option
           $vol_opts = prefix( $_options, "${title}:" )
           # now we make some YAML, and then parse that to get a Puppet hash
-          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", G), "\n")
+          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", 'G'), "\n")
           $hoh = parseyaml($yaml)
 
           # safety check
@@ -256,7 +256,7 @@ define gluster::volume (
           # so build up the hash correctly
           #
           $remove_opts = prefix( $to_remove, "${title}:" )
-          $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", G ), "\n" )
+          $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", 'G' ), "\n" )
           $remove = parseyaml($remove_yaml)
           if $remove_options {
             create_resources( ::gluster::volume::option, $remove )
@@ -268,7 +268,7 @@ define gluster::volume (
         if ! empty($to_add) {
           # we have some options defined that are not active. Add them
           $add_opts = prefix( $to_add, "${title}:" )
-          $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", G ), "\n" )
+          $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", 'G' ), "\n" )
           $add = parseyaml($add_yaml)
           create_resources( ::gluster::volume::option, $add )
         }
