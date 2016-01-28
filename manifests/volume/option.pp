@@ -54,5 +54,10 @@ define gluster::volume::option (
 
   exec { "gluster option ${vol} ${opt} ${value}":
     command => "${::gluster_binary} volume ${cmd}",
+    creates => "/var/run/gluster/ctr_${vol}_${opt}_${value}"
+  }->
+  file { "/var/run/gluster/ctr_${vol}_${opt}_${value}":
+    ensure => present,
+    content => 'Puppet contol file'
   }
 }
