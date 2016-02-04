@@ -13,7 +13,7 @@
 # readdirp: whether or not to use readdirp
 # atboot: whether to add this volume to /etc/fstab
 # options: a comma-separated list of GlusterFS mount options
-# dump: enable or disable dump in /etc/fstab 
+# dump: enable or disable dump in /etc/fstab
 # pass: the sequence value for fsck for this volume in /etc/fstab
 # ensure: one of: defined, present, unmounted, absent, mounted
 #
@@ -83,8 +83,8 @@ define gluster::mount (
     fail("Unknown option ${ensure} for ensure")
   }
 
-  $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
-  $_options = join(delete($mount_options, ''), ',')
+  $mount_options = [ $options, $ll, $lf, $dim, $r, ]
+  $_options = join(delete_undef_values(delete($mount_options, '')), ',')
 
   mount { $title:
     ensure   => $ensure,
