@@ -56,10 +56,12 @@ define gluster::peer (
 
       # and we don't want to attach a server that is already a member
       # of the current pool
-      $peers = split($::gluster_peer_list, ',' )
-      if ! member($peers, $title) {
-        exec { "gluster peer probe ${title}":
-          command => "${binary} peer probe ${title}",
+      if$::gluster_peer_list {
+        $peers = split($::gluster_peer_list, ',' )
+        if ! member($peers, $title) {
+          exec { "gluster peer probe ${title}":
+            command => "${binary} peer probe ${title}",
+          }
         }
       }
     }
