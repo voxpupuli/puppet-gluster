@@ -1,15 +1,20 @@
 {
   "name": "puppet-gluster",
-  "version": "1.0.4",
-  "author": "voxpupuli",
+  "version": "1.1.0",
+  "author": "puppet",
   "license": "MIT",
   "summary": "Create and manage Gluster pools, volumes, and mounts",
-  "source": "https://github.com/voxpupuli/puppet-gluster",
+  "source": "git://github.com/voxpupuli/puppet-gluster",
   "project_page": "https://github.com/voxpupuli/puppet-gluster",
   "issues_url": "https://github.com/voxpupuli/puppet-gluster/issues",
-  "tags": ["gluster"],
+  "tags": [
+    "gluster",
+    "glusterfs",
+    "voxpupuli"
+  ],
   "operatingsystem_support": [
-    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "6", "7" ] }
+    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "6", "7" ] },
+    { "operatingsystem":"RedHat", "operatingsystemrelease":[ "7", "8" ] }
   ],
   "dependencies": [
     { "name": "puppetlabs/stdlib", "version_requirement": "4.x" }
