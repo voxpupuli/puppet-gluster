@@ -102,7 +102,19 @@ define gluster::volume (
   if $binary{
     # we need the Gluster binary to do anything!
 
-    if ! member( split( $::gluster_volume_list, ',' ), $title ) {
+    if $::gluster_peer_list != undef{
+      $minimal_requirements = true
+    } else {
+      $minimal_requirements = false
+    }
+
+    if $::gluster_volume_list != undef and member( split( $::gluster_volume_list, ',' ), $title ) {
+      $already_exists = true
+    } else {
+      $already_exists = false
+    }
+
+    if $minimal_requirements and $already_exists == false {
       # this volume has not yet been created
 
       # before we can create it, we need to ensure that all the
@@ -161,7 +173,7 @@ define gluster::volume (
         }
       }
 
-    } else {
+    } elsif $already_exists {
       # this volume exists
 
       # our fact lists bricks comma-separated, but we need an array
