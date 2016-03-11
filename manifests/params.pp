@@ -41,12 +41,12 @@ class gluster::params {
 
   # and these packages are vendor-defined names
   if $::osfamily == 'RedHat' {
-    $vendor_server_package = $::operatingsystemmajrelease ? {
+    $vendor_server_package = getvar('::operatingsystemmajrelease') ? {
       # RHEL 6 and 7 provide Gluster packages natively
       /(6|7)/ => 'glusterfs',
       default => false
     }
-    $vendor_client_package = $::operatingsystemmajrelease ? {
+    $vendor_client_package = getvar('::operatingsystemmajrelease') ? {
       /(6|7)/ => 'glusterfs-fuse',
       default => false,
     }

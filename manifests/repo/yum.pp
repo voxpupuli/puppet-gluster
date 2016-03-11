@@ -37,7 +37,7 @@ class gluster::repo::yum (
   $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
   $priority        = $::gluster::params::repo_priority,
-) {
+) inherits ::gluster::params {
 
   # basic sanity check
   if ! $version {
@@ -67,8 +67,9 @@ class gluster::repo::yum (
     fail("Architecture ${::architecture} not yet supported.")
   }
 
-  $repo_url = "${repo_base}/${repo_ver}/EPEL.repo/epel-${::operatingsystemmajrelease}/${arch}/"
-  $repo_key = "${repo_key_path}${repo_key_name}"
+  $_operatingsystemmajrelease = getvar('::operatingsystemmajrelease')
+  $repo_url                   = "${repo_base}/${repo_ver}/EPEL.repo/epel-${_operatingsystemmajrelease}/${arch}/"
+  $repo_key                   = "${repo_key_path}${repo_key_name}"
   if $repo_key_source {
     file { $repo_key:
       ensure => file,
