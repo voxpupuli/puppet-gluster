@@ -58,13 +58,14 @@ class gluster::repo::yum (
   }
 
   # the Gluster repo only supports x86_64 and i386
-  $arch = $::architecture ? {
+  $_architecture = getvar('::architecture')
+  $arch          = $_architecture ? {
     'x86_64' => 'x86_64',
     /i\d86/  => 'i386',
     default  => false,
   }
   if ! $arch {
-    fail("Architecture ${::architecture} not yet supported.")
+    fail("Architecture ${_architecture} not yet supported.")
   }
 
   $_operatingsystemmajrelease = getvar('::operatingsystemmajrelease')
