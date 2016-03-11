@@ -27,12 +27,13 @@
 class gluster::repo (
   $version = $::gluster::params::version,
 ) inherits ::gluster::params {
-  case $::osfamily {
+  $_osfamily = getvar('::osfamily')
+  case getvar('::osfamily') {
     'RedHat': {
       class { '::gluster::repo::yum':
         version => $version,
       }
     }
-    default: { fail("${::osfamily} not yet supported!") }
+    default: { fail("${_osfamily} not yet supported!") }
   }
 }
