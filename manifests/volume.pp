@@ -100,17 +100,17 @@ define gluster::volume (
 
   $args = join(delete($cmd_args, ''), ' ')
 
-  $binary = $::gluster_binary
+  $binary = getvar('::gluster_binary')
   if $binary{
     # we need the Gluster binary to do anything!
 
-    if $::gluster_peer_list != undef{
+    if getvar('::gluster_peer_list') != undef{
       $minimal_requirements = true
     } else {
       $minimal_requirements = false
     }
 
-    if $::gluster_volume_list != undef and member( split( $::gluster_volume_list, ',' ), $title ) {
+    if getvar('::gluster_volume_list') != undef and member( split( getvar('::gluster_volume_list'), ',' ), $title ) {
       $already_exists = true
     } else {
       $already_exists = false
@@ -125,7 +125,7 @@ define gluster::volume (
       # first, get a list of unique server names hosting bricks
       $brick_hosts = unique( regsubst( $bricks, '^([^:]+):(.+)$', '\1') )
       # now get a list of all peers, including ourself
-      $pool_members = concat( split( $::gluster_peer_list, ','), [ $::fqdn ] )
+      $pool_members = concat( split( getvar('::gluster_peer_list'), ','), [ $::fqdn ] )
       # now see what the difference is
       $missing_bricks = difference( $brick_hosts, $pool_members)
 
