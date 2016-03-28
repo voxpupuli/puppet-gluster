@@ -5,9 +5,7 @@ volume_options = {}
 volume_ports = {}
 
 binary = Facter.value('gluster_custom_binary')
-# rubocop:disable Style/AndOr
-if !binary or !File.executable? binary
-  # rubocop:enable Style/AndOr
+if !binary || !File.executable?(binary)
   # http://stackoverflow.com/questions/2108727/which-in-ruby-checking-if-program-exists-in-path-from-ruby/5471032#5471032
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
   ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
