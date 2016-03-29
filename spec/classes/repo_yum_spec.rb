@@ -18,7 +18,14 @@ describe 'gluster::repo::yum', type: :class do
   end
   describe 'unsupported architecture' do
     let :facts do { architecture: 'zLinux', } end
-    let :params do { version: 'LATEST', } end
+    let :params do
+      {
+        version: 'LATEST',
+        repo_key_path: '/etc/pki/rpm-gpg/',
+        repo_key_name: 'RPM-GPG-KEY-gluster.pub',
+        repo_key_source: 'puppet:///modules/gluster/RPM-GPG-KEY-gluster.pub',
+      }
+    end
     it 'should not install' do
       expect {
         should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
