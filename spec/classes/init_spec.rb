@@ -8,6 +8,7 @@ describe 'gluster', type: :class do
         operatingsystem: 'RedHat',
         operatingsystemmajrelease: '6',
         architecture: 'x86_64',
+        gluster_binary: '/bin/gluster',
       }
     end
     context 'using all defaults' do
@@ -54,13 +55,14 @@ describe 'gluster', type: :class do
 
     context 'when volumes defined' do
       let :params do
-        { volumes:           {
-          'data1' => {
-            'replica' => 2,
-            'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-            'options' => ['server.allow-insecure: on'],
+        {
+          volumes:  {
+            'data1' => {
+              'replica' => 2,
+              'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
+              'options' => ['server.allow-insecure: on'],
+            }
           }
-        }
         }
       end
       it 'should create gluster::volume' do
