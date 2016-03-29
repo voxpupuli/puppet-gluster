@@ -64,6 +64,8 @@ define gluster::volume (
     } else {
       $_stripe = "stripe ${stripe}"
     }
+  } else {
+    $_stripe = ''
   }
 
   if $replica {
@@ -72,6 +74,8 @@ define gluster::volume (
     } else {
       $_replica = "replica ${replica}"
     }
+  } else {
+    $_replica = ''
   }
 
   if ! member( ['tcp', 'rdma', 'tcp,rdma'], $transport ) {
