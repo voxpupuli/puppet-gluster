@@ -9,7 +9,8 @@ describe 'gluster', type: :class do
         operatingsystemmajrelease: '6',
         architecture: 'x86_64',
         gluster_binary: '/bin/gluster',
-        gluster_peer_list: '10.0.0.1, 10.0.0.2'
+        gluster_peer_list: '10.0.0.1, 10.0.0.2',
+        gluster_volume_list: 'vol1, vol2',
       }
     end
     context 'using all defaults' do
