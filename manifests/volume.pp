@@ -233,7 +233,7 @@ define gluster::volume (
           # removing bricks
           notify{ 'removing bricks is not currently supported.': }
         } else {
-          notify{ "unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${_bricks}\nCurrent: ${vol_bricks}": }
+          notify{ "unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${bricks}\nCurrent: ${vol_bricks}": }
         }
       }
 
