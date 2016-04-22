@@ -117,60 +117,46 @@ define gluster::volume (
     if $minimal_requirements and $already_exists == false {
       # this volume has not yet been created
 
-      # before we can create it, we need to ensure that all the
-      # servers hosting bricks are members of the storage pool
+      exec { "gluster create volume ${title}":
+        command => "${binary} volume create ${title} ${args}",
+      }
+
+      # if we have volume options, activate them now
       #
-      # first, get a list of unique server names hosting bricks
-      $brick_hosts = unique( regsubst( $bricks, '^([^:]+):(.+)$', '\1') )
-      # now get a list of all peers, including ourself
-      $pool_members = concat( split( $::gluster_peer_list, ','), [ $::fqdn ] )
-      # now see what the difference is
-      $missing_bricks = difference( $brick_hosts, $pool_members)
+      # Note: $options is an array, but create_resources requires
+      #       a hash of hashes.  We do some contortions to get the
+      #       array into the hash of hashes that looks like:
+      #
+      #       option.name:
+      #         value: value
+      #
+      # Note 2: we're using the $_options variable, which contains the
+      #         sorted list of options.
+      if $_options {
+        # first we need to prefix each array element with the volume name
+        # so that we match the gluster::volume::option title format of
+        #  volume:option
+        $vol_opts = prefix( $_options, "${title}:" )
+        # now we make some YAML, and then parse that to get a Puppet hash
+        $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", 'G'), "\n")
+        $hoh = parseyaml($yaml)
 
-      if ! empty($missing_bricks) {
-        notice("Not creating Gluster volume ${title}: some bricks are not in the pool")
-      } else {
-        exec { "gluster create volume ${title}":
-          command => "${binary} volume create ${title} ${args}",
-        }
-
-        # if we have volume options, activate them now
-        #
-        # Note: $options is an array, but create_resources requires
-        #       a hash of hashes.  We do some contortions to get the
-        #       array into the hash of hashes that looks like:
-        #
-        #       option.name:
-        #         value: value
-        #
-        # Note 2: we're using the $_options variable, which contains the
-        #         sorted list of options.
-        if $_options {
-          # first we need to prefix each array element with the volume name
-          # so that we match the gluster::volume::option title format of
-          #  volume:option
-          $vol_opts = prefix( $_options, "${title}:" )
-          # now we make some YAML, and then parse that to get a Puppet hash
-          $yaml = join( regsubst( $vol_opts, ': ', ":\n  value: ", 'G'), "\n")
-          $hoh = parseyaml($yaml)
-
-          # safety check
-          validate_hash($hoh)
-          # we need to ensure that these are applied AFTER the volume is created
-          # but BEFORE the volume is started
-          $new_volume_defaults = {
-            require => Exec["gluster create volume ${title}"],
-            before  => Exec["gluster start volume ${title}"],
-          }
-
-          create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)
-        }
-
-        # don't forget to start the new volume!
-        exec { "gluster start volume ${title}":
-          command => "${binary} volume start ${title}",
+        # safety check
+        validate_hash($hoh)
+        # we need to ensure that these are applied AFTER the volume is created
+        # but BEFORE the volume is started
+        $new_volume_defaults = {
           require => Exec["gluster create volume ${title}"],
+          before  => Exec["gluster start volume ${title}"],
         }
+
+        create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)
+      }
+
+      # don't forget to start the new volume!
+      exec { "gluster start volume ${title}":
+        command => "${binary} volume start ${title}",
+        require => Exec["gluster create volume ${title}"],
       }
 
     } elsif $already_exists {
