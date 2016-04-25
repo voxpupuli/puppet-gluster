@@ -96,7 +96,7 @@ define gluster::volume (
     $_force,
   ]
 
-  $args = join(delete($cmd_args, ''), ' ')
+  $args = join(delete_undef_values($cmd_args), ' ')
 
   $binary = $::gluster_binary
   if $binary{
