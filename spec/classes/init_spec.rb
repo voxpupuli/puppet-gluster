@@ -55,6 +55,13 @@ describe 'gluster', :type => :class do
       end
 
       context 'when volumes defined' do
+        let :facts do
+          super().merge(
+            gluster_binary: '/sbin/gluster',
+            gluster_peer_list: 'example1,example2',
+            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+          )
+        end
         let :params do
           { :volumes =>
             {
