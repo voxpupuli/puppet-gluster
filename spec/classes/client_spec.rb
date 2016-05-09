@@ -1,14 +1,13 @@
 require 'spec_helper'
 
-describe 'gluster::client', type: :class do
-  describe 'when installing on Red Hat Enterprise Linux' do
-    let :facts do
-      {
-        osfamily: 'RedHat',
-        architecture: 'x86_64',
-      }
-    end
-    context 'when using all default values' do
+describe 'gluster::client', :type => :class do
+  on_supported_os.each do |os, facts|
+    context "on #{os} with all defaults" do
+      let(:facts) do
+        facts
+      end
+      it { should compile.with_all_deps }
+
       it 'should include gluster::install' do
         should create_class('gluster::install').with(
           repo: true,
