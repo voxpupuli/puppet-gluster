@@ -27,7 +27,11 @@ describe 'gluster::repo::yum', type: :class do
         end
       end
       context 'unsupported architecture' do
-        let :facts do { architecture: 'zLinux', } end
+        let :facts do
+          super().merge(
+            architecture: 'zLinux'
+          )
+        end
         it 'should not install' do
           expect {
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
