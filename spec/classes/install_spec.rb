@@ -47,7 +47,7 @@ describe 'gluster::install', type: :class do
       context 'installing on an unsupported architecture' do
         let :facts do
           super().merge(
-            { architecture: 'zLinux' }
+            architecture: 'zLinux'
           )
         end
         it 'should not install' do
