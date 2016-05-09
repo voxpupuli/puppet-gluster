@@ -64,6 +64,8 @@ define gluster::volume (
     } else {
       $_stripe = "stripe ${stripe}"
     }
+  } else {
+    $_stripe = ''
   }
 
   if $replica {
