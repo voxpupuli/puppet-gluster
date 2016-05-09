@@ -12,7 +12,7 @@ describe 'gluster::repo::yum', type: :class do
           should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
           should create_yumrepo('glusterfs-x86_64').with(
             enabled: 1,
-            baseurl: 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-6/x86_64/',
+            baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
             gpgcheck: 1,
             gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
           )
@@ -49,7 +49,7 @@ describe 'gluster::repo::yum', type: :class do
           should create_package('yum-plugin-priorities')
           should create_yumrepo('glusterfs-x86_64').with(
             enabled: 1,
-            baseurl: 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-6/x86_64/',
+            baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
             gpgcheck: 1,
             gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
             priority: '50',
