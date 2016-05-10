@@ -63,13 +63,15 @@ describe 'gluster', type: :class do
           )
         end
         let :params do
-          { volumes:             {
-            'data1' => {
-              'replica' => 2,
-              'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-              'options' => ['server.allow-insecure: on'],
+          {
+            volumes:
+            {
+              'data1' => {
+                'replica' => 2,
+                'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
+                'options' => ['server.allow-insecure: on'],
+              }
             }
-          }
           }
         end
         it 'should create gluster::volume' do
@@ -84,9 +86,8 @@ describe 'gluster', type: :class do
 
       context 'when volumes incorrectly defined' do
         let :params do
-          { volumes:             {
-            'data1' => %w(this is an array)
-          }
+          {
+            volumes: { 'data1' => %w(this is an array) }
           }
         end
         it 'should fail' do
