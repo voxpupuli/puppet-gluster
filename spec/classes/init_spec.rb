@@ -8,6 +8,7 @@ describe 'gluster', type: :class do
       end
       context 'with all defaults' do
         it { should contain_class('gluster') }
+        it { should contain_class('gluster::params') }
         it { should compile.with_all_deps }
 
         it 'should include classes' do
