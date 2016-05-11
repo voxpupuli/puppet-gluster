@@ -1,3 +1,8 @@
+## 2016-05-11 Release 2.0.1
+
+* fix: set correct requirement for stdlib module
+
+
 ## 2016-05-11 Release 2.0.0
 
 * modulesync with voxpupuli defaults
