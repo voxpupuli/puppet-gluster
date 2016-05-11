@@ -18,7 +18,7 @@ describe 'gluster', type: :class do
         it 'should create gluster::install' do
           should create_class('gluster::install').with(
             server: true,
-            server_package: 'glusterfs-server',
+            server_package: 'glusterfs',
             client: true,
             client_package: 'glusterfs-fuse',
             version: 'LATEST',

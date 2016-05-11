@@ -35,22 +35,27 @@ class gluster::params {
   # a priority in order to ensure that it is activated
   $repo_priority = undef
 
-  # these packages are the upstream names
-  $server_package = 'glusterfs-server'
-  $client_package = 'glusterfs-fuse'
 
   # and these packages are vendor-defined names
-  if $::osfamily == 'RedHat' {
-    $vendor_server_package = $::operatingsystemmajrelease ? {
-      # RHEL 6 and 7 provide Gluster packages natively
-      /(6|7)/ => 'glusterfs',
-      default => false
+  case $::osfamily {
+    'RedHat': {
+      $server_package = $::operatingsystemmajrelease ? {
+        # RHEL 6 and 7 provide Gluster packages natively
+        /(6|7)/ => 'glusterfs',
+        default => false
+      }
+      $client_package = $::operatingsystemmajrelease ? {
+        /(6|7)/ => 'glusterfs-fuse',
+        default => false,
+      }
     }
-    $vendor_client_package = $::operatingsystemmajrelease ? {
-      /(6|7)/ => 'glusterfs-fuse',
-      default => false,
+    default: {
+      # these packages are the upstream names
+      $server_package = 'glusterfs-server'
+      $client_package = 'glusterfs-fuse'
     }
   }
+
 
   # parameters dealing with a Gluster server instance
   $service_enable = true
