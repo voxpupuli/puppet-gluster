@@ -7,8 +7,8 @@ describe 'gluster::client', type: :class do
         facts
       end
       context 'with all defaults' do
+        it { should contain_class('gluster::client') }
         it { should compile.with_all_deps }
-
         it 'should include gluster::install' do
           should create_class('gluster::install').with(
             repo: true,
