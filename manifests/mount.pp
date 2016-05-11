@@ -13,7 +13,7 @@
 # readdirp: whether or not to use readdirp
 # atboot: whether to add this volume to /etc/fstab
 # options: a comma-separated list of GlusterFS mount options
-# dump: enable or disable dump in /etc/fstab 
+# dump: enable or disable dump in /etc/fstab
 # pass: the sequence value for fsck for this volume in /etc/fstab
 # ensure: one of: defined, present, unmounted, absent, mounted
 #
@@ -56,37 +56,27 @@ define gluster::mount (
 
   if $log_level {
     validate_string($log_level)
-    $ll = $log_level
-  } else {
-    $ll = ''
+    $ll = "log-level=${log_level}"
   }
 
   if $log_file {
     validate_string($log_file)
-    $lf = $log_file
-  } else {
-    $lf = ''
+    $lf = "log-file=${log_file}"
   }
 
   if $transport {
     validate_string($transport)
-    $t = $transport
-  } else {
-    $t = ''
+    $t = "transport=${transport}"
   }
 
   if $direct_io_mode {
     validate_string($direct_io_mode)
-    $dim = $direct_io_mode
-  } else {
-    $dim = ''
+    $dim = "direct-io-mode=${direct_io_mode}"
   }
 
   if $readdirp {
     validate_bool(str2bool($readdirp))
-    $r = $readdirp
-  } else {
-    $r = ''
+    $r = "usereaddrip=${readdirp}"
   }
 
   if ! member(['defined', 'present', 'unmounted', 'absent', 'mounted'], $ensure) {
@@ -94,7 +84,7 @@ define gluster::mount (
   }
 
   $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
-  $_options = join(delete($mount_options, ''), ',')
+  $_options = join(delete_undef_values($mount_options), ',')
 
   mount { $title:
     ensure   => $ensure,
