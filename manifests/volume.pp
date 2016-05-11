@@ -61,9 +61,10 @@ define gluster::volume (
   if $stripe {
     if ! is_integer( $stripe ) {
       fail("Stripe value ${stripe} is not an integer")
-    } else {
-      $_stripe = "stripe ${stripe}"
     }
+    $_stripe = "stripe ${stripe}"
+  } else {
+    $_stripe = ''
   }
 
   if $replica {
