@@ -54,6 +54,10 @@ describe 'gluster', type: :class do
             ensure: true,
           )
         end
+        it 'should install custom-gluster-client and custom-gluster-server' do
+          should create_package('custom-gluster-client')
+          should create_package('custom-gluster-server')
+        end
       end
 
       context 'when volumes defined' do
