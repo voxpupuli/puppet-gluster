@@ -1,3 +1,11 @@
+## 2016-05-11 Release 2.0.0
+
+* modulesync with voxpupuli defaults
+* add support for STRICT_VARIABLES=yes
+* enhance spec test coverage
+* correctly handle default package names (breaking change)
+
+
 ## 2015-12-05 Release 999.999.999
 
 * transition to Puppet Community organization from Scott Merrill <smerrill@covermymeds.com>
