@@ -6,6 +6,9 @@ describe 'gluster::install', type: :class do
       let(:facts) do
         facts
       end
+      let :pre_condition do
+        'require ::gluster::service'
+      end
       context 'with defaults' do
         it { should compile.with_all_deps }
         it 'should create gluster::repo' do
