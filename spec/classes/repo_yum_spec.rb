@@ -7,6 +7,7 @@ describe 'gluster::repo::yum', type: :class do
         facts
       end
       context 'with all defaults' do
+        it { should contain_class('gluster::repo::yum') }
         it { should compile.with_all_deps }
         it 'should install' do
           should_not create_package('yum-plugin-priorities')
