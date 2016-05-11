@@ -96,7 +96,7 @@ describe 'gluster', type: :class do
             volumes: { 'data1' => %w(this is an array) }
           }
         end
-        it 'should fail' do
+        it 'fails' do
           expect {
             should contain_gluster__volume('data1')
           }.to raise_error(Puppet::Error, //)
