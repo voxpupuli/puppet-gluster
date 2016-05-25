@@ -29,43 +29,20 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  $server         = $::gluster::params::install_server,
-  $client         = $::gluster::params::install_client,
-  $repo           = $::gluster::params::repo,
-  $version        = $::gluster::params::version,
-  $server_package = undef,
-  $client_package = undef,
+  $server         = $gluster::params::install_server,
+  $client         = $gluster::params::install_client,
+  $repo           = $gluster::params::repo,
+  $version        = $gluster::params::version,
+  $server_package = $gluster::params::server_package,
+  $client_package = $gluster::params::client_package,
 ) inherits ::gluster::params {
 
   if $repo {
-    # use the upstream package names if none were supplied
-    if $client_package {
-      $_client_package = $client_package
-    } else {
-      $_client_package = $::gluster::params::client_package
-    }
-    if $server_package {
-      $_server_package = $server_package
-    } else {
-      $_server_package = $::gluster::params::server_package
-    }
     # install the correct repo
     if ! defined ( Class[::gluster::repo] ) {
       class { '::gluster::repo':
         version => $version,
       }
-    }
-  } else {
-    # use the vendor-supplied package names if none were supplied
-    if $client_package {
-      $_client_package = $client_package
-    } else {
-      $_client_package = $::gluster::params::vendor_client_package
-    }
-    if $server_package {
-      $_server_package = $server_package
-    } else {
-      $_server_package = $::gluster::params::vendor_server_package
     }
   }
 
@@ -75,20 +52,19 @@ class gluster::install (
     'LATEST' => 'installed',
     default  => $version,
   }
-
-  if $client and $_client_package {
-    package { $_client_package:
-      ensure => $_version,
+  if $client {
+    # we use ensure_packages here because on some distributions the client and server package have different names
+    ensure_packages($client_package, {
+      ensure => $version,
       tag    => 'gluster-packages',
-    }
+    })
   }
-
-  if $server and $_server_package {
-    package { $_server_package:
+  if $server {
+    # we use ensure_packages here because on some distributions the client and server package have different names
+    ensure_packages($server_package, {
       ensure => $_version,
       notify => Class[::gluster::service],
       tag    => 'gluster-packages',
-    }
+    })
   }
-
 }
