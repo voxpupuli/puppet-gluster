@@ -37,7 +37,7 @@ class gluster::repo::yum (
   $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
   $priority        = $::gluster::params::repo_priority,
-) {
+) inherits ::gluster::params {
 
   # basic sanity check
   if ! $version {
