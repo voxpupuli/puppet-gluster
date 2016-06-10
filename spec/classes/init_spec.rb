@@ -22,12 +22,12 @@ describe 'gluster', type: :class do
             client: true,
             client_package: 'glusterfs-fuse',
             version: 'LATEST',
-            repo: true,
+            repo: true
           )
         end
         it 'manages the Gluster service' do
           should create_class('gluster::service').with(
-            ensure: true,
+            ensure: true
           )
         end
       end
@@ -46,12 +46,12 @@ describe 'gluster', type: :class do
             client: true,
             client_package: 'custom-gluster-client',
             version: '3.1.4',
-            repo: false,
+            repo: false
           )
         end
         it 'manages the Gluster service' do
           should create_class('gluster::service').with(
-            ensure: true,
+            ensure: true
           )
         end
         it 'installs custom-gluster-client and custom-gluster-server' do
@@ -85,7 +85,7 @@ describe 'gluster', type: :class do
             name: 'data1',
             replica: 2,
             bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-            options: ['server.allow-insecure: on'],
+            options: ['server.allow-insecure: on']
           )
         end
       end

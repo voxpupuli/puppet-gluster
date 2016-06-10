@@ -13,7 +13,7 @@ describe 'gluster::install', type: :class do
         it { should compile.with_all_deps }
         it 'creates gluster::repo' do
           should create_class('gluster::repo').with(
-            version: 'LATEST',
+            version: 'LATEST'
           )
         end
         it 'installs glusterfs package for a server' do

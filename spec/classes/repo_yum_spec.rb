@@ -16,7 +16,7 @@ describe 'gluster::repo::yum', type: :class do
             enabled: 1,
             baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
             gpgcheck: 1,
-            gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
+            gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub'
           )
         end
       end
@@ -54,7 +54,7 @@ describe 'gluster::repo::yum', type: :class do
             baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
             gpgcheck: 1,
             gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
-            priority: '50',
+            priority: '50'
           )
         end
       end

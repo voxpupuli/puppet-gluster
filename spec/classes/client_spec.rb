@@ -13,7 +13,7 @@ describe 'gluster::client', type: :class do
           should create_class('gluster::install').with(
             repo: true,
             client_package: 'glusterfs-fuse',
-            version: 'LATEST',
+            version: 'LATEST'
           )
         end
       end
@@ -23,7 +23,7 @@ describe 'gluster::client', type: :class do
           should create_class('gluster::install').with(
             repo: true,
             client_package: 'glusterfs-fuse',
-            version: '3.6.1',
+            version: '3.6.1'
           )
         end
       end
@@ -33,7 +33,7 @@ describe 'gluster::client', type: :class do
           should create_class('gluster::install').with(
             repo: false,
             client_package: 'glusterfs-fuse',
-            version: 'LATEST',
+            version: 'LATEST'
           )
         end
       end
