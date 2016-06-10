@@ -32,12 +32,13 @@ describe 'gluster', type: :class do
         end
       end
       context 'specific version and package names defined' do
-        let :params do {
-          server_package: 'custom-gluster-server',
-          client_package: 'custom-gluster-client',
-          version: '3.1.4',
-          repo: false
-        }
+        let :params do
+          {
+            server_package: 'custom-gluster-server',
+            client_package: 'custom-gluster-client',
+            version: '3.1.4',
+            repo: false
+          }
         end
         it 'creates gluster::install' do
           should create_class('gluster::install').with(
@@ -97,9 +98,9 @@ describe 'gluster', type: :class do
           }
         end
         it 'fails' do
-          expect {
+          expect do
             should contain_gluster__volume('data1')
-          }.to raise_error(Puppet::Error, %r{})
+          end.to raise_error(Puppet::Error, %r{})
         end
       end
     end

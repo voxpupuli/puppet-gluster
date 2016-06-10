@@ -21,11 +21,15 @@ describe 'gluster::repo::yum', type: :class do
         end
       end
       context 'bogus version' do
-        let :params do { version: 'foobar' } end
+        let :params do
+          {
+            version: 'foobar'
+          }
+        end
         it 'does not install' do
-          expect {
+          expect do
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-          }.to raise_error(Puppet::Error, %r{doesn't make sense!})
+          end.to raise_error(Puppet::Error, %r{doesn't make sense!})
         end
       end
       context 'unsupported architecture' do
@@ -35,9 +39,9 @@ describe 'gluster::repo::yum', type: :class do
           )
         end
         it 'does not install' do
-          expect {
+          expect do
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
-          }.to raise_error(Puppet::Error, %r{not yet supported})
+          end.to raise_error(Puppet::Error, %r{not yet supported})
         end
       end
       context 'latest Gluster with priority' do

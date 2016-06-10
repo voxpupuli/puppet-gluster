@@ -54,9 +54,9 @@ describe 'gluster::install', type: :class do
           )
         end
         it 'does not install' do
-          expect {
+          expect do
             should create_class('gluster::repo')
-          }.to raise_error(Puppet::Error, %r{not yet supported})
+          end.to raise_error(Puppet::Error, %r{not yet supported})
         end
       end
     end

@@ -11,10 +11,10 @@ if !binary or !File.executable? binary
   # http://stackoverflow.com/questions/2108727/which-in-ruby-checking-if-program-exists-in-path-from-ruby/5471032#5471032
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
   ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-    exts.each { |ext|
+    exts.each do |ext|
       exe = File.join(path, "gluster#{ext}")
       binary = exe if File.executable? exe
-    }
+    end
   end
 end
 
