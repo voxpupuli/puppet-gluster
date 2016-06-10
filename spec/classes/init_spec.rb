@@ -99,7 +99,7 @@ describe 'gluster', type: :class do
         it 'fails' do
           expect {
             should contain_gluster__volume('data1')
-          }.to raise_error(Puppet::Error, //)
+          }.to raise_error(Puppet::Error, %r{})
         end
       end
     end

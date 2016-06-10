@@ -6,7 +6,7 @@ describe 'gluster::mount', type: :define do
     it 'should fail' do
       expect {
         should contain_mount('rspec')
-      }.to raise_error(Puppet::Error, /Volume parameter is mandatory/)
+      }.to raise_error(Puppet::Error, %r{Volume parameter is mandatory})
     end
   end
   describe 'bogus ensure value' do
@@ -14,7 +14,7 @@ describe 'gluster::mount', type: :define do
     it 'should fail' do
       expect {
         should contain_mount('rspec')
-      }.to raise_error(Puppet::Error, /Unknown option/)
+      }.to raise_error(Puppet::Error, %r{Unknown option})
     end
   end
 end
