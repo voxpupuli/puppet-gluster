@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'gluster::install', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
+      let :facts do
         facts
       end
       let :pre_condition do
@@ -11,11 +11,6 @@ describe 'gluster::install', type: :class do
       end
       context 'with defaults' do
         it { should compile.with_all_deps }
-        it 'creates gluster::repo' do
-          should create_class('gluster::repo').with(
-            version: 'LATEST'
-          )
-        end
         case facts[:osfamily]
         when 'Redhat'
           it 'installs glusterfs package for a server' do
@@ -24,12 +19,22 @@ describe 'gluster::install', type: :class do
           it 'installs glusterfs-fuse for a client' do
             should create_package('glusterfs-fuse')
           end
+          it 'creates gluster::repo' do
+            should create_class('gluster::repo').with(
+              version: 'LATEST'
+            )
+          end
         when 'Debian'
           it 'installs glusterfs package for a server' do
             should create_package('glusterfs-server')
           end
           it 'installs glusterfs-fuse for a client' do
             should create_package('glusterfs-client')
+          end
+          it 'creates gluster::repo' do
+            should create_class('gluster::repo').with(
+              version: 'LATEST'
+            )
           end
         end
       end
@@ -78,9 +83,16 @@ describe 'gluster::install', type: :class do
           )
         end
         it 'does not install' do
-          expect do
-            should create_class('gluster::repo')
-          end.to raise_error(Puppet::Error, %r{not yet supported})
+          case facts[:osfamily]
+          when 'Archlinux'
+            expect do
+              should.not create_class('gluster::repo')
+            end
+          else
+            expect do
+              should create_class('gluster::repo')
+            end.to raise_error(Puppet::Error, %r{not yet supported})
+          end
         end
       end
     end

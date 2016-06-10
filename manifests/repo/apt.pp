@@ -65,6 +65,9 @@ class gluster::repo::apt (
         }
       }
     }
+    default: {
+      fail('gluster::repo::apt currently only works on Debian')
+    }
   }
   if ! $arch {
     fail("Architecture ${::architecture} not yet supported for ${::operatingsystem}.")

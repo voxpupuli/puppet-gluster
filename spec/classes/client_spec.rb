@@ -87,6 +87,12 @@ describe 'gluster::client', type: :class do
             )
           end
         end
+      when 'Archlinux'
+        context 'with all defaults' do
+          it { should contain_class('gluster::client') }
+          it { should compile.with_all_deps }
+          it { should contain_package('glusterfs') }
+        end
       end
     end
   end

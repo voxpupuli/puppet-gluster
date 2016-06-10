@@ -26,6 +26,9 @@
         "8",
         "9"
       ]
+    },
+    {
+      "operatingsystem": "Archlinux"
     }
   ],
   "dependencies": [
