@@ -9,7 +9,7 @@ describe 'gluster::repo::yum', type: :class do
       context 'with all defaults' do
         it { should contain_class('gluster::repo::yum') }
         it { should compile.with_all_deps }
-        it 'should install' do
+        it 'installs' do
           should_not create_package('yum-plugin-priorities')
           should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
           should create_yumrepo('glusterfs-x86_64').with(
@@ -22,7 +22,7 @@ describe 'gluster::repo::yum', type: :class do
       end
       context 'bogus version' do
         let :params do { version: 'foobar', } end
-        it 'should not install' do
+        it 'does not install' do
           expect {
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
           }.to raise_error(Puppet::Error, %r{doesn't make sense!})
@@ -34,7 +34,7 @@ describe 'gluster::repo::yum', type: :class do
             architecture: 'zLinux'
           )
         end
-        it 'should not install' do
+        it 'does not install' do
           expect {
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
           }.to raise_error(Puppet::Error, %r{not yet supported})
@@ -46,7 +46,7 @@ describe 'gluster::repo::yum', type: :class do
             priority: '50',
           }
         end
-        it 'should install' do
+        it 'installs' do
           should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
           should create_package('yum-plugin-priorities')
           should create_yumrepo('glusterfs-x86_64').with(

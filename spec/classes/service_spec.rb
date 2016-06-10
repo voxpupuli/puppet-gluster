@@ -8,7 +8,7 @@ describe 'gluster::service', type: :class do
       end
       context 'with all defaults' do
         it { should compile.with_all_deps }
-        it 'should start the service' do
+        it 'starts the service' do
           should create_service('glusterd')
         end
       end

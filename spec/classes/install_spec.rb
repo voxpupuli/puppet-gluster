@@ -11,15 +11,15 @@ describe 'gluster::install', type: :class do
       end
       context 'with defaults' do
         it { should compile.with_all_deps }
-        it 'should create gluster::repo' do
+        it 'creates gluster::repo' do
           should create_class('gluster::repo').with(
             version: 'LATEST',
           )
         end
-        it 'should install glusterfs package for a server' do
+        it 'installs glusterfs package for a server' do
           should create_package('glusterfs')
         end
-        it 'should install glusterfs-fuse for a client' do
+        it 'installs glusterfs-fuse for a client' do
           should create_package('glusterfs-fuse')
         end
       end
@@ -27,7 +27,7 @@ describe 'gluster::install', type: :class do
         let :params do
           { repo: false }
         end
-        it 'should not create gluster::repo' do
+        it 'does not create gluster::repo' do
           should_not create_class('gluster::repo')
         end
       end
@@ -35,7 +35,7 @@ describe 'gluster::install', type: :class do
         let :params do
           { client: false }
         end
-        it 'should not install glusterfs-fuse package' do
+        it 'does not install glusterfs-fuse package' do
           should_not create_package('glusterfs-fuse')
         end
       end
@@ -43,7 +43,7 @@ describe 'gluster::install', type: :class do
         let :params do
           { server: false }
         end
-        it 'should not install glusterfs' do
+        it 'does not install glusterfs' do
           should_not create_package('glusterfs')
         end
       end
@@ -53,7 +53,7 @@ describe 'gluster::install', type: :class do
             architecture: 'zLinux'
           )
         end
-        it 'should not install' do
+        it 'does not install' do
           expect {
             should create_class('gluster::repo')
           }.to raise_error(Puppet::Error, %r{not yet supported})
