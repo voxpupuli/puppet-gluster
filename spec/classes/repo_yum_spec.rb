@@ -21,7 +21,7 @@ describe 'gluster::repo::yum', type: :class do
         end
       end
       context 'bogus version' do
-        let :params do { version: 'foobar', } end
+        let :params do { version: 'foobar' } end
         it 'does not install' do
           expect {
             should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
@@ -43,7 +43,7 @@ describe 'gluster::repo::yum', type: :class do
       context 'latest Gluster with priority' do
         let :params do
           {
-            priority: '50',
+            priority: '50'
           }
         end
         it 'installs' do

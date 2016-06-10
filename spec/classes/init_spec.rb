@@ -36,7 +36,7 @@ describe 'gluster', type: :class do
           server_package: 'custom-gluster-server',
           client_package: 'custom-gluster-client',
           version: '3.1.4',
-          repo: false,
+          repo: false
         }
         end
         it 'creates gluster::install' do
@@ -75,7 +75,7 @@ describe 'gluster', type: :class do
               'data1' => {
                 'replica' => 2,
                 'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-                'options' => ['server.allow-insecure: on'],
+                'options' => ['server.allow-insecure: on']
               }
             }
           }
