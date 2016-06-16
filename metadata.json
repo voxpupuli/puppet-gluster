@@ -19,6 +19,19 @@
         "6",
         "7"
       ]
+    },
+    { "operatingsystem": "Debian",
+    	"operatingsystemrelease": [
+    	  "7",
+    	  "8",
+    	  "9"
+    	]
+    },
+    { "operatingsystem": "Ubuntu",
+    	"operatingsystemrelease": [
+    	  "12.04",
+    	  "14.04"
+    	]
     }
   ],
   "dependencies": [

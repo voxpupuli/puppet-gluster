@@ -29,12 +29,13 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  $server         = $gluster::params::install_server,
-  $client         = $gluster::params::install_client,
-  $repo           = $gluster::params::repo,
-  $version        = $gluster::params::version,
-  $server_package = $gluster::params::server_package,
-  $client_package = $gluster::params::client_package,
+  $server          = $gluster::params::install_server,
+  $client          = $gluster::params::install_client,
+  $repo            = $gluster::params::repo,
+  $version         = $gluster::params::version,
+  $package_version = $gluster::params::package_version,
+  $server_package  = $gluster::params::server_package,
+  $client_package  = $gluster::params::client_package,
 ) inherits ::gluster::params {
 
   if $repo {
@@ -55,14 +56,14 @@ class gluster::install (
   if $client {
     # we use ensure_packages here because on some distributions the client and server package have different names
     ensure_packages($client_package, {
-      ensure => $version,
+      ensure => $package_version,
       tag    => 'gluster-packages',
     })
   }
   if $server {
     # we use ensure_packages here because on some distributions the client and server package have different names
     ensure_packages($server_package, {
-      ensure => $_version,
+      ensure => $package_version,
       notify => Class[::gluster::service],
       tag    => 'gluster-packages',
     })
