@@ -46,13 +46,17 @@ You should not need to include or reference this class directly.
 ### repo.pp ###
 This class optionally enables the upstream [Gluster.org](http://download.gluster.org/pub/) repositories.
 
-Currently, only the yum repo type is implemented.
+Currently, only the yum and apt repo types are implemented.
 
     class { ::gluster::repo:
       version => '3.5.2',
     }
 
-Yum priorities are supported, but not activated by default. If you pass a `priority` parameter to this class, the `yum-plugin-priorities` package will be installed, and a priority will be set on the Gluster repository.
+Package priorities are supported, but not activated by default.
+
+Yum: If a `priority` parameter is passed to this class, the `yum-plugin-priorities` package will be installed, and a priority will be set on the Gluster repository.
+
+Apt: If a `priority` parameter is sent to this class in the form of a hash, the Gluster package will be pinned. See Puppetlabs [apt](https://forge.puppetlabs.com/puppetlabs/apt) module for details.
 
 This is [useful](http://blog.gluster.org/2014/11/installing-glusterfs-3-4-x-3-5-x-or-3-6-0-on-rhel-or-centos-6-6-2/) in the event that you want to install a version from the upstream repos that is older than that provided by your distribution's repositories.
 
@@ -61,7 +65,7 @@ This class handles the installation of the Gluster packages (both server and cli
 
 If the upstream Gluster repo is enabled, this class will install packages from there. Otherwise it will attempt to use native OS packages.
 
-Currently only RHEL 6 and RHEL 7 provide native Gluster packages.
+Currently, RHEL 6, RHEL 7, Debian, Raspbian and Ubuntu provide native Gluster packages.
 
     class { gluster::install:
       server  => true,
@@ -71,6 +75,7 @@ Currently only RHEL 6 and RHEL 7 provide native Gluster packages.
     }
 
 Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.  The `gluster::repo::yum` class will parse the version number to build the correct URL for the repo, but Puppet's invocation of `yum` will not work as desired unless you specify the full RPM version number.
+On Debian-based systems, only the first two version places are significant ("x.y"). The latest minor version from that release will be installed unless the "priority" parameter is used.
 
 ### client.pp ###
 This class installs **only** the Gluster client package(s). If you need to install both the server and client, please use the `install.pp` (or `init.pp`) classes.
