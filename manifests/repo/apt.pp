@@ -36,7 +36,7 @@ class gluster::repo::apt (
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
   $priority        = $::gluster::params::repo_priority,
 ) {
-  include 'apt'
+  include '::apt'
 
   if $priority != undef {
     validate_hash( $priority )
@@ -51,7 +51,7 @@ class gluster::repo::apt (
     } elsif $version =~ /^(\d)\.(\d)\.(\d).*$/ {
       $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
     } else {
-      fail("${version} doesn't make sense for $::operatingsystem!")
+      fail("${version} doesn't make sense for ${::operatingsystem}!")
     }
   }
 
@@ -77,15 +77,15 @@ class gluster::repo::apt (
   $repo = {
     "glusterfs-${version}" => {
       ensure       => present,
-      location     => "${repo_url}",
-      release      => "${::lsbdistcodename}",
+      location     => $repo_url,
+      release      => $::lsbdistcodename,
       repos        => 'main',
       key          => {
-        id         => "${repo_key_name}",
-        key_source => "${repo_gpg_key_source}",
+        id         => $repo_key_name,
+        key_source => $repo_key_source,
       },
       pin          => $priority,
-      architecture => "${arch}",
+      architecture => $arch,
     },
   }
 

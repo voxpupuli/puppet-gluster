@@ -6,43 +6,86 @@ describe 'gluster::client', type: :class do
       let(:facts) do
         facts
       end
-      context 'with all defaults' do
-        it { should contain_class('gluster::client') }
-        it { should compile.with_all_deps }
-        it 'includes gluster::install' do
-          should create_class('gluster::install').with(
-            repo: true,
-            client_package: 'glusterfs-fuse',
-            version: 'LATEST'
-          )
+      case facts[:osfamily]
+      when 'Redhat'
+        context 'with all defaults' do
+          it { should contain_class('gluster::client') }
+          it { should compile.with_all_deps }
+          it 'includes gluster::install' do
+            should create_class('gluster::install').with(
+              repo: true,
+              client_package: 'glusterfs-fuse',
+              version: 'LATEST'
+            )
+          end
         end
-      end
-      context 'when a version number is specified' do
-        let :params do
-          {
-            version: '3.6.1'
-          }
+        context 'when a version number is specified' do
+          let :params do
+            {
+              version: '3.6.1'
+            }
+          end
+          it 'includes gluster::install with version 3.6.1' do
+            should create_class('gluster::install').with(
+              repo: true,
+              client_package: 'glusterfs-fuse',
+              version: '3.6.1'
+            )
+          end
         end
-        it 'includes gluster::install with version 3.6.1' do
-          should create_class('gluster::install').with(
-            repo: true,
-            client_package: 'glusterfs-fuse',
-            version: '3.6.1'
-          )
+        context 'when repo is false' do
+          let :params do
+            {
+              repo: false
+            }
+          end
+          it 'includes gluster::install with repo=>false' do
+            should create_class('gluster::install').with(
+              repo: false,
+              client_package: 'glusterfs-fuse',
+              version: 'LATEST'
+            )
+          end
         end
-      end
-      context 'when repo is false' do
-        let :params do
-          {
-            repo: false
-          }
+      when 'Debian'
+        context 'with all defaults' do
+          it { should contain_class('gluster::client') }
+          it { should compile.with_all_deps }
+          it 'includes gluster::install' do
+            should create_class('gluster::install').with(
+              repo: true,
+              client_package: 'glusterfs-client',
+              version: 'LATEST'
+            )
+          end
         end
-        it 'includes gluster::install with repo=>false' do
-          should create_class('gluster::install').with(
-            repo: false,
-            client_package: 'glusterfs-fuse',
-            version: 'LATEST'
-          )
+        context 'when a version number is specified' do
+          let :params do
+            {
+              version: '3.6.1'
+            }
+          end
+          it 'includes gluster::install with version 3.6.1' do
+            should create_class('gluster::install').with(
+              repo: true,
+              client_package: 'glusterfs-client',
+              version: '3.6.1'
+            )
+          end
+        end
+        context 'when repo is false' do
+          let :params do
+            {
+              repo: false
+            }
+          end
+          it 'includes gluster::install with repo=>false' do
+            should create_class('gluster::install').with(
+              repo: false,
+              client_package: 'glusterfs-client',
+              version: 'LATEST'
+            )
+          end
         end
       end
     end

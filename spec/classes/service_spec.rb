@@ -9,7 +9,12 @@ describe 'gluster::service', type: :class do
       context 'with all defaults' do
         it { should compile.with_all_deps }
         it 'starts the service' do
-          should create_service('glusterd')
+          case facts[:osfamily]
+          when 'Redhat'
+            should create_service('glusterd')
+          when 'Debian'
+            should create_service('glusterfs-server')
+          end
         end
       end
     end
