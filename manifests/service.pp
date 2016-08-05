@@ -22,13 +22,12 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::service (
-  $ensure   = $::gluster::params::service_ensure,
-  $enable   = $::gluster::params::service_enable,
-  $svc_name = $::gluster::params::service_name,
+  $ensure = $::gluster::params::service_ensure,
+  $enable = $::gluster::params::service_enable,
+  $name   = $::gluster::params::service_name,
 ) inherits ::gluster::params {
 
-  service { 'glusterd':
-    name       => $svc_name,
+  service { $name :
     ensure     => $ensure,
     enable     => $enable,
     hasrestart => true,

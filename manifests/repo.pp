@@ -9,7 +9,6 @@
 # === Parameters
 #
 # version: the version of the upstream repo to enable
-# repo_url: the URL of the upstream apt repo (not used by yum repos)
 #
 # === Examples
 #
@@ -26,8 +25,7 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo (
-  $version  = $::gluster::params::version,
-  $repo_url = undef,
+  $version = $::gluster::params::version,
 ) inherits ::gluster::params {
   case $::osfamily {
     'RedHat': {
@@ -41,7 +39,6 @@ class gluster::repo (
       }
       class { '::gluster::repo::apt':
         version  => $version,
-        repo_url => $repo_url,
       }
     }
     default: { fail("${::osfamily} not yet supported!") }

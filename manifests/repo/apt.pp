@@ -32,96 +32,65 @@
 #
 class gluster::repo::apt (
   $version         = $::gluster::params::version,
-  $repo_url        = undef,
   $repo_key_name   = $::gluster::params::repo_gpg_key_name,
-  $repo_key_path   = $::gluster::params::repo_gpg_key_path,
   $repo_key_source = $::gluster::params::repo_gpg_key_source,
   $priority        = $::gluster::params::repo_priority,
 ) {
   include 'apt'
-  
- if $priority != undef {
-   validate_hash( $priority )
- }
-  
-  $repo_base = "${::gluster::params::repo_base}"
-  
+
+  if $priority != undef {
+    validate_hash( $priority )
+  }
+
   # basic sanity check
   if $version == 'LATEST' {
-    $repo_ver = $::operatingsystem ? {
-      'Ubuntu' => '3.7',
-      default  => $version,
-    }
+    $repo_ver = $version
   } else {
     if $version =~ /^\d\.\d$/ {
-      $repo_ver = $::operatingsystem ? {
-        'Ubuntu' => "${version}",
-        default  => "${version}/LATEST",
-      }
+      $repo_ver = "${version}/LATEST"
     } elsif $version =~ /^(\d)\.(\d)\.(\d).*$/ {
-      $repo_ver = $::operatingsystem ? {
-        'Ubuntu' => "${1}.${2}",
-        default  => "${1}.${2}/${1}.${2}.${3}",
-      }
+      $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
     } else {
       fail("${version} doesn't make sense for $::operatingsystem!")
     }
   }
-    
+
   # the Gluster repo only supports x86_64 and i386. armhf is only supported for Raspbian. The Ubuntu PPA also supports armhf and arm64.
   case $::operatingsystem {
-    # default: {
-    'Ubuntu': {
-      $arch = $::architecture ? {
-        'amd64'      => 'amd64',
-        /i\d86/      => 'i386',
-        /armv[67].*/ => 'armhf',
-        /armv8.*/    => 'arm64',
-        default      => false,
+    'Debian': {
+      case $::lsbdistcodename {
+        'jessie', 'stretch':  {
+          $arch = $::architecture ? {
+            'amd64'      => 'amd64',
+            /i\d86/      => 'i386',
+            default      => false,
+          }
+          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/Debian/${::lsbdistcodename}/apt/"
+        }
       }
-      $default_repo_url  = "http://ppa.launchpad.net/gluster/glusterfs-${repo_ver}/ubuntu/"
-      $keyserver = 'keyserver.ubuntu.com'   
-    }
-    default: {
-      $arch = $::architecture ? {
-        /armv[67].*/ => 'armhf',       # Raspbian
-        'amd64'      => 'amd64',
-        /i\d86/      => 'i386',
-        default      => false,
-      }
-      $default_repo_url  = "${repo_base}/${repo_ver}/Debian/${::lsbdistcodename}/apt/"
-      $keyserver = 'keyring.debian.org'   
     }
   }
   if ! $arch {
     fail("Architecture ${::architecture} not yet supported for ${::operatingsystem}.")
   }
-  
-  if $repo_url == undef {
-    $_repo_url = $default_repo_url
-  } else {
-    validate_string( $repo_url )
-    validate_re( $repo_url, [ '^http://.*', '^https://.*', '^ftp://.*', ] )
-    $_repo_url = $repo_url
-  }
-  
+
   $repo = {
     "glusterfs-${version}" => {
       ensure       => present,
-      location     => "${_repo_url}",
+      location     => "${repo_url}",
       release      => "${::lsbdistcodename}",
       repos        => 'main',
       key          => {
-        id     => "${repo_key_name}",
-        server => "${keyserver}",
+        id         => "${repo_key_name}",
+        key_source => "${repo_gpg_key_source}",
       },
       pin          => $priority,
       architecture => "${arch}",
     },
   }
-  
+
   create_resources(apt::source, $repo)
-  
+
   Apt::Source["glusterfs-${version}"] -> Package<| tag == 'gluster-packages' |>
 
 }
