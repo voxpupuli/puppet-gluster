@@ -2,4 +2,5 @@ fixtures:
   symlinks:
     gluster: "#{source_dir}"
   repositories:
+    apt:    "https://github.com/puppetlabs/puppetlabs-apt.git"
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
