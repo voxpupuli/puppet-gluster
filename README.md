@@ -56,7 +56,7 @@ Package priorities are supported, but not activated by default.
 
 Yum: If a `priority` parameter is passed to this class, the `yum-plugin-priorities` package will be installed, and a priority will be set on the Gluster repository.
 
-Apt: If a `priority` parameter is sent to this class in the form of a hash, the Gluster package will be pinned. See Puppetlabs [apt](https://forge.puppetlabs.com/puppetlabs/apt) module for details.
+Apt: If a `priority` parameter is passed to this class, it will be passed as is to the Apt::Source resource. See Puppetlabs [apt](https://forge.puppetlabs.com/puppetlabs/apt) module for details.
 
 This is [useful](http://blog.gluster.org/2014/11/installing-glusterfs-3-4-x-3-5-x-or-3-6-0-on-rhel-or-centos-6-6-2/) in the event that you want to install a version from the upstream repos that is older than that provided by your distribution's repositories.
 

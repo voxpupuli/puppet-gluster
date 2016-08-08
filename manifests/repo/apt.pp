@@ -38,10 +38,6 @@ class gluster::repo::apt (
 ) {
   include '::apt'
 
-  if $priority != undef {
-    validate_hash( $priority )
-  }
-
   # basic sanity check
   if $version == 'LATEST' {
     $repo_ver = $version
