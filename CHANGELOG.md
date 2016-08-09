@@ -1,3 +1,8 @@
+## 2016-08-09 Release 2.1.0
+
+* Added Debian support
+
+
 ## 2016-05-11 Release 2.0.1
 
 * fix: set correct requirement for stdlib module
