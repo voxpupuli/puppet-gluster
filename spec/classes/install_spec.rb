@@ -16,11 +16,21 @@ describe 'gluster::install', type: :class do
             version: 'LATEST'
           )
         end
-        it 'installs glusterfs package for a server' do
-          should create_package('glusterfs')
-        end
-        it 'installs glusterfs-fuse for a client' do
-          should create_package('glusterfs-fuse')
+        case facts[:osfamily]
+        when 'Redhat'
+          it 'installs glusterfs package for a server' do
+            should create_package('glusterfs')
+          end
+          it 'installs glusterfs-fuse for a client' do
+            should create_package('glusterfs-fuse')
+          end
+        when 'Debian'
+          it 'installs glusterfs package for a server' do
+            should create_package('glusterfs-server')
+          end
+          it 'installs glusterfs-fuse for a client' do
+            should create_package('glusterfs-client')
+          end
         end
       end
       context 'when repo is false' do
@@ -35,16 +45,30 @@ describe 'gluster::install', type: :class do
         let :params do
           { client: false }
         end
-        it 'does not install glusterfs-fuse package' do
-          should_not create_package('glusterfs-fuse')
+        case facts[:osfamily]
+        when 'Redhat'
+          it 'does not install glusterfs-fuse package' do
+            should_not create_package('glusterfs-fuse')
+          end
+        when 'Debian'
+          it 'does not install glusterfs-fuse package' do
+            should_not create_package('glusterfs-client')
+          end
         end
       end
       context 'when server is false' do
         let :params do
           { server: false }
         end
-        it 'does not install glusterfs' do
-          should_not create_package('glusterfs')
+        case facts[:osfamily]
+        when 'Redhat'
+          it 'does not install glusterfs' do
+            should_not create_package('glusterfs')
+          end
+        when 'Debian'
+          it 'does not install glusterfs' do
+            should_not create_package('glusterfs-server')
+          end
         end
       end
       context 'installing on an unsupported architecture' do

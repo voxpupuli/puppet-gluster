@@ -6,58 +6,116 @@ describe 'gluster', type: :class do
       let(:facts) do
         facts
       end
-      context 'with all defaults' do
-        it { should contain_class('gluster') }
-        it { should contain_class('gluster::params') }
-        it { should compile.with_all_deps }
+      case facts[:osfamily]
+      when 'Redhat'
+        context 'with all defaults' do
+          it { should contain_class('gluster') }
+          it { should contain_class('gluster::params') }
+          it { should compile.with_all_deps }
 
-        it 'includes classes' do
-          should contain_class('gluster::install')
-          should contain_class('gluster::service')
+          it 'includes classes' do
+            should contain_class('gluster::install')
+            should contain_class('gluster::service')
+          end
+          it 'creates gluster::install' do
+            should create_class('gluster::install').with(
+              server: true,
+              server_package: 'glusterfs',
+              client: true,
+              client_package: 'glusterfs-fuse',
+              version: 'LATEST',
+              repo: true
+            )
+          end
+          it 'manages the Gluster service' do
+            should create_class('gluster::service').with(
+              ensure: true
+            )
+          end
         end
-        it 'creates gluster::install' do
-          should create_class('gluster::install').with(
-            server: true,
-            server_package: 'glusterfs',
-            client: true,
-            client_package: 'glusterfs-fuse',
-            version: 'LATEST',
-            repo: true
-          )
+        context 'specific version and package names defined' do
+          let :params do
+            {
+              server_package: 'custom-gluster-server',
+              client_package: 'custom-gluster-client',
+              version: '3.1.4',
+              repo: false
+            }
+          end
+          it 'creates gluster::install' do
+            should create_class('gluster::install').with(
+              server: true,
+              server_package: 'custom-gluster-server',
+              client: true,
+              client_package: 'custom-gluster-client',
+              version: '3.1.4',
+              repo: false
+            )
+          end
+          it 'manages the Gluster service' do
+            should create_class('gluster::service').with(
+              ensure: true
+            )
+          end
+          it 'installs custom-gluster-client and custom-gluster-server' do
+            should create_package('custom-gluster-client')
+            should create_package('custom-gluster-server')
+          end
         end
-        it 'manages the Gluster service' do
-          should create_class('gluster::service').with(
-            ensure: true
-          )
+      when 'Debian'
+        context 'with all defaults' do
+          it { should contain_class('gluster') }
+          it { should contain_class('gluster::params') }
+          it { should compile.with_all_deps }
+
+          it 'includes classes' do
+            should contain_class('gluster::install')
+            should contain_class('gluster::service')
+          end
+          it 'creates gluster::install' do
+            should create_class('gluster::install').with(
+              server: true,
+              server_package: 'glusterfs-server',
+              client: true,
+              client_package: 'glusterfs-client',
+              version: 'LATEST',
+              repo: true
+            )
+          end
+          it 'manages the Gluster service' do
+            should create_class('gluster::service').with(
+              ensure: true
+            )
+          end
         end
-      end
-      context 'specific version and package names defined' do
-        let :params do
-          {
-            server_package: 'custom-gluster-server',
-            client_package: 'custom-gluster-client',
-            version: '3.1.4',
-            repo: false
-          }
-        end
-        it 'creates gluster::install' do
-          should create_class('gluster::install').with(
-            server: true,
-            server_package: 'custom-gluster-server',
-            client: true,
-            client_package: 'custom-gluster-client',
-            version: '3.1.4',
-            repo: false
-          )
-        end
-        it 'manages the Gluster service' do
-          should create_class('gluster::service').with(
-            ensure: true
-          )
-        end
-        it 'installs custom-gluster-client and custom-gluster-server' do
-          should create_package('custom-gluster-client')
-          should create_package('custom-gluster-server')
+        context 'specific version and package names defined' do
+          let :params do
+            {
+              server_package: 'custom-gluster-server',
+              client_package: 'custom-gluster-client',
+              version: '3.1.4',
+              repo: false
+            }
+          end
+          it 'creates gluster::install' do
+            should create_class('gluster::install').with(
+              server: true,
+              server_package: 'custom-gluster-server',
+              client: true,
+              client_package: 'custom-gluster-client',
+              version: '3.1.4',
+              repo: false
+            )
+          end
+          it 'manages the Gluster service' do
+            should create_class('gluster::service').with(
+              ensure: true
+            )
+          end
+          it 'installs custom-gluster-client and custom-gluster-server' do
+            should create_package('custom-gluster-client')
+            should create_package('custom-gluster-server')
+          end
         end
       end
 

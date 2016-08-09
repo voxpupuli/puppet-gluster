@@ -55,7 +55,7 @@ class gluster::install (
   if $client {
     # we use ensure_packages here because on some distributions the client and server package have different names
     ensure_packages($client_package, {
-      ensure => $version,
+      ensure => $_version,
       tag    => 'gluster-packages',
     })
   }

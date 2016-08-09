@@ -28,17 +28,20 @@ class gluster::params {
 
   # by default, we'll use the upstream repository
   $repo    = true
-  $repo_gpg_key_name = 'RPM-GPG-KEY-gluster.pub'
-  $repo_gpg_key_path = '/etc/pki/rpm-gpg/'
-  $repo_gpg_key_source = "puppet:///modules/${module_name}/${repo_gpg_key_name}"
+
   # we explicitly do NOT set a priority here. The user must define
   # a priority in order to ensure that it is activated
   $repo_priority = undef
 
-
-  # and these packages are vendor-defined names
+  # Set distro/release specific names, repo versions, repo gpg keys, package versions, etc
+  # if the user didn't specify a version, just use "installed" for package version.
+  # if they did specify a version, assume they provided a valid one
   case $::osfamily {
     'RedHat': {
+      $repo_gpg_key_name = 'RPM-GPG-KEY-gluster.pub'
+      $repo_gpg_key_path = '/etc/pki/rpm-gpg/'
+      $repo_gpg_key_source = "puppet:///modules/${module_name}/${repo_gpg_key_name}"
+
       $server_package = $::operatingsystemmajrelease ? {
         # RHEL 6 and 7 provide Gluster packages natively
         /(6|7)/ => 'glusterfs',
@@ -48,11 +51,24 @@ class gluster::params {
         /(6|7)/ => 'glusterfs-fuse',
         default => false,
       }
+
+      $service_name = 'glusterd'
+    }
+    'Debian': {
+      $repo_gpg_key_name   = 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC'
+      $repo_gpg_key_source = 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/rsa.pub'
+
+      $server_package = 'glusterfs-server'
+      $client_package = 'glusterfs-client'
+
+      $service_name = 'glusterfs-server'
     }
     default: {
       # these packages are the upstream names
       $server_package = 'glusterfs-server'
       $client_package = 'glusterfs-fuse'
+
+      $service_name = 'glusterfs-server'
     }
   }
 
