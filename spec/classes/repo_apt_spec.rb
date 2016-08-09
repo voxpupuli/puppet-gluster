@@ -16,9 +16,9 @@ describe 'gluster::repo::apt', type: :class do
           it { should compile.with_all_deps }
           it 'installs' do
             should contain_apt__source('glusterfs-LATEST').with(
-              :repos    => 'main',
-              :release  => "#{facts[:lsbdistcodename]}",
-              :location => "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
+              repos: 'main',
+              release: "#{facts[:lsbdistcodename]}",
+              location: "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
             )
           end
         end
@@ -42,10 +42,10 @@ describe 'gluster::repo::apt', type: :class do
           end
           it 'installs' do
             should contain_apt__source('glusterfs-LATEST').with(
-              :repos    => 'main',
-              :release  => "#{facts[:lsbdistcodename]}",
-              :location => "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",
-              :pin      => '700'
+              repos: 'main',
+              release: "#{facts[:lsbdistcodename]}",
+              location: "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",
+              pin: '700'
             )
           end
         end
