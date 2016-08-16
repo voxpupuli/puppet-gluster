@@ -31,9 +31,10 @@ if binary
     peer_list = output.scan(%r{^Hostname: (.+)$}).flatten.join(',')
     # note the stderr redirection here
     # `gluster volume list` spits to stderr :(
-    output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
-    if output != 'No volumes present in cluster'
-      output.split.each do |vol|
+    output = Facter::Util::Resolution.exec("#{binary} volume info all 2>&1")
+    if output != 'No volumes present' and output != 'No volumes present in cluster'
+      volumes = output.scan(%r{^Volume Name: (.+)$}).flatten.uniq.sort
+      volumes.each do |vol|
         info = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
         # rubocop:disable Metrics/BlockNesting
         vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
