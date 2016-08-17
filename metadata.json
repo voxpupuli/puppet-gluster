@@ -1,6 +1,6 @@
 {
   "name": "puppet-gluster",
-  "version": "2.2.0",
+  "version": "2.2.1-rc0",
   "author": "puppet",
   "license": "MIT",
   "summary": "Create and manage Gluster pools, volumes, and mounts",
