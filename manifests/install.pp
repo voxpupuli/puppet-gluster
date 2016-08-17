@@ -37,6 +37,10 @@ class gluster::install (
   $client_package = $gluster::params::client_package,
 ) inherits ::gluster::params {
 
+  validate_bool($server)
+  validate_bool($client)
+  validate_bool($version)
+
   if $repo {
     # install the correct repo
     if ! defined ( Class[::gluster::repo] ) {
@@ -52,6 +56,7 @@ class gluster::install (
     'LATEST' => 'installed',
     default  => $version,
   }
+
   if $client {
     # we use ensure_packages here because on some distributions the client and server package have different names
     ensure_packages($client_package, {
