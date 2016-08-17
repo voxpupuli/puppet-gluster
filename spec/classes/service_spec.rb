@@ -14,6 +14,8 @@ describe 'gluster::service', type: :class do
             should create_service('glusterd')
           when 'Debian'
             should create_service('glusterfs-server')
+          when 'Archlinux'
+            should create_service('glusterd')
           end
         end
       end
