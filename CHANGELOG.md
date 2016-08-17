@@ -1,6 +1,11 @@
+## 2016-08-17 Release 2.2.0
+
+* Add Archlinux support
+
+
 ## 2016-08-09 Release 2.1.0
 
-* Added Debian support
+* Add Debian support
 
 
 ## 2016-05-11 Release 2.0.1
