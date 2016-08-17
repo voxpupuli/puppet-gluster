@@ -39,7 +39,7 @@ class gluster::install (
 
   validate_bool($server)
   validate_bool($client)
-  validate_bool($version)
+  validate_bool($repo)
 
   if $repo {
     # install the correct repo
@@ -57,19 +57,36 @@ class gluster::install (
     default  => $version,
   }
 
-  if $client {
-    # we use ensure_packages here because on some distributions the client and server package have different names
-    ensure_packages($client_package, {
-      ensure => $_version,
-      tag    => 'gluster-packages',
-    })
-  }
-  if $server {
-    # we use ensure_packages here because on some distributions the client and server package have different names
-    ensure_packages($server_package, {
-      ensure => $_version,
-      notify => Class[::gluster::service],
-      tag    => 'gluster-packages',
-    })
+  if $client_package == $server_package {
+    if $server {
+      # we use ensure_packages here because on some distributions the client and server package have different names
+      ensure_packages($server_package, {
+        ensure => $_version,
+        tag    => 'gluster-packages',
+        notify => Class[::gluster::service],
+      })
+    } elsif $client {
+      ensure_packages($client_package, {
+        ensure => $_version,
+        tag    => 'gluster-packages',
+      })
+    }
+  } else {
+    if $client {
+      # we use ensure_packages here because on some distributions the client and server package have different names
+      ensure_packages($client_package, {
+        ensure => $_version,
+        tag    => 'gluster-packages',
+      })
+    }
+
+    if $server {
+      # we use ensure_packages here because on some distributions the client and server package have different names
+      ensure_packages($server_package, {
+        ensure => $_version,
+        notify => Class[::gluster::service],
+        tag    => 'gluster-packages',
+      })
+    }
   }
 }
