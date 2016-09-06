@@ -37,7 +37,7 @@ class gluster::repo::yum (
     if ! defined( Package['yum-plugin-priorities'] ) {
       package { 'yum-plugin-priorities':
         ensure => installed,
-        before => Yumrepo["glusterfs-${arch}"],
+        before => Yumrepo["glusterfs-${::architecture}"],
       }
     }
   }
@@ -51,6 +51,6 @@ class gluster::repo::yum (
     priority => $priority,
   }
 
-  Yumrepo["glusterfs-${arch}"] -> Package<| tag == 'gluster-packages' |>
+  Yumrepo["glusterfs-${::architecture}"] -> Package<| tag == 'gluster-packages' |>
 
 }
