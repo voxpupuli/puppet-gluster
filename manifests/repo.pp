@@ -25,12 +25,13 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo (
+  $release = $::gluster::params::release,
   $version = $::gluster::params::version,
 ) inherits ::gluster::params {
   case $::osfamily {
     'RedHat': {
       class { '::gluster::repo::yum':
-        version => $version,
+        release => $release,
       }
     }
     'Debian': {

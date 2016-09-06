@@ -24,7 +24,8 @@ class gluster::params {
   # parameters dealing with installation
   $install_server = true
   $install_client = true
-  $version = 'LATEST'
+  $release        = '3.8'
+  $version        = 'LATEST'
 
   # we explicitly do NOT set a priority here. The user must define
   # a priority in order to ensure that it is activated
@@ -36,9 +37,7 @@ class gluster::params {
   case $::osfamily {
     'RedHat': {
       $repo                 = true
-      $repo_gpg_key_name    = 'RPM-GPG-KEY-gluster.pub'
-      $repo_gpg_key_path    = '/etc/pki/rpm-gpg/'
-      $repo_gpg_key_source  = "puppet:///modules/${module_name}/${repo_gpg_key_name}"
+      $repo_gpg_key_source  = "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-${::operatingsystemmajrelease}"
 
       $server_package = $::operatingsystemmajrelease ? {
         # RHEL 6 and 7 provide Gluster packages natively
