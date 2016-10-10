@@ -82,17 +82,11 @@ describe 'gluster::install', type: :class do
             architecture: 'zLinux'
           )
         end
-        it 'does not install' do
-          case facts[:osfamily]
-          when 'Archlinux'
-            expect do
-              should.not create_class('gluster::repo')
-            end
-          else
-            expect do
-              should create_class('gluster::repo')
-            end.to raise_error(Puppet::Error, %r{not yet supported})
-          end
+        case facts[:osfamily]
+        when 'Archlinux'
+          it { should_not create_class('gluster::repo') }
+        else
+          it { should raise_error(Puppet::Error, %r{not yet supported}) }
         end
       end
     end
