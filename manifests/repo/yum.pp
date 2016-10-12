@@ -30,7 +30,7 @@ class gluster::repo::yum (
 
   # CentOS Gluster repo only supports x86_64
   if $::architecture != 'x86_64' {
-    fail("Architecture ${::architecture} not supported.")
+    fail("Architecture ${::architecture} not yet supported for ${::operatingsystem}.")
   }
 
   if $priority {
