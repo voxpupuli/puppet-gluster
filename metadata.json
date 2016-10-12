@@ -1,7 +1,7 @@
 {
   "name": "puppet-gluster",
-  "version": "2.2.1-rc0",
-  "author": "puppet",
+  "version": "2.2.1",
+  "author": "Vox Pupuli",
   "license": "MIT",
   "summary": "Create and manage Gluster pools, volumes, and mounts",
   "source": "git://github.com/voxpupuli/puppet-gluster",
