@@ -44,13 +44,29 @@ This class establishes a number of default values used by the other classes.
 You should not need to include or reference this class directly.
 
 ### repo.pp ###
-This class optionally enables the upstream [Gluster.org](http://download.gluster.org/pub/) repositories.
+This class enables the GlusterFS repository. Either [Gluster.org](http://download.gluster.org/pub/) for APT or [CentOS](https://wiki.centos.org/SpecialInterestGroup/Storage) managed YUM for EL.
 
-Currently, only the yum and apt repo types are implemented.
+Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. There for for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
+```puppet
+gluster::repo => false
+```
 
-    class { ::gluster::repo:
-      version => '3.5.2',
-    }
+For systems using APT, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
+```puppet
+class { ::gluster::repo:
+  version => '3.5.2',
+}
+```
+
+For systems using YUM, the latest package from the 3.8 release branch will be installed. You can specify a specific version and release:
+```puppet
+class { ::gluster::repo:
+  release => '3.7',
+}
+class { ::gluster:
+  version => '3.7.12',
+}
+```
 
 Package priorities are supported, but not activated by default.
 
@@ -63,9 +79,9 @@ This is [useful](http://blog.gluster.org/2014/11/installing-glusterfs-3-4-x-3-5-
 ### install.pp ###
 This class handles the installation of the Gluster packages (both server and client).
 
-If the upstream Gluster repo is enabled, this class will install packages from there. Otherwise it will attempt to use native OS packages.
+If the upstream Gluster repo is enabled (default), this class will install packages from there. Otherwise it will attempt to use native OS packages.
 
-Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster packages.
+Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster packages (at least client).
 
     class { gluster::install:
       server  => true,
@@ -74,7 +90,8 @@ Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster 
       version => 3.5.1-1.el6,
     }
 
-Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.  The `gluster::repo::yum` class will parse the version number to build the correct URL for the repo, but Puppet's invocation of `yum` will not work as desired unless you specify the full RPM version number.
+Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.
+Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. There for if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
 On Debian-based systems, only the first two version places are significant ("x.y"). The latest minor version from that release will be installed unless the "priority" parameter is used.
 
 ### client.pp ###
