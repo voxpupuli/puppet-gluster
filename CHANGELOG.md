@@ -1,3 +1,9 @@
+## 2016-10-12 Release 2.2.1
+
+* Fix repository setup (upstream URLs changed)
+* Modulesync with latest Vox Pupuli defaults
+
+
 ## 2016-08-17 Release 2.2.0
 
 * Add Archlinux support
