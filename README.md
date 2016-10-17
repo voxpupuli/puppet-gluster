@@ -91,7 +91,7 @@ Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster 
     }
 
 Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.
-Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. There for if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
+Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. Therefore if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
 On Debian-based systems, only the first two version places are significant ("x.y"). The latest minor version from that release will be installed unless the "priority" parameter is used.
 
 ### client.pp ###
