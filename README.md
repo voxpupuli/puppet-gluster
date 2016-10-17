@@ -46,7 +46,7 @@ You should not need to include or reference this class directly.
 ### repo.pp ###
 This class enables the GlusterFS repository. Either [Gluster.org](http://download.gluster.org/pub/) for APT or [CentOS](https://wiki.centos.org/SpecialInterestGroup/Storage) managed YUM for EL.
 
-Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. There for for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
+Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. Therefore for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
 ```puppet
 gluster::repo => false
 ```
