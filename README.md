@@ -46,7 +46,7 @@ You should not need to include or reference this class directly.
 ### repo.pp ###
 This class enables the GlusterFS repository. Either [Gluster.org](http://download.gluster.org/pub/) for APT or [CentOS](https://wiki.centos.org/SpecialInterestGroup/Storage) managed YUM for EL.
 
-Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. There for for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
+Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. Therefore for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
 ```puppet
 gluster::repo => false
 ```
@@ -91,7 +91,7 @@ Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster 
     }
 
 Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.
-Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. There for if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
+Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. Therefore if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
 On Debian-based systems, only the first two version places are significant ("x.y"). The latest minor version from that release will be installed unless the "priority" parameter is used.
 
 ### client.pp ###
