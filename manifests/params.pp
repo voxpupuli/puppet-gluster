@@ -37,7 +37,7 @@ class gluster::params {
   case $::osfamily {
     'RedHat': {
       $repo                 = true
-      $repo_gpg_key_source  = "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-${::operatingsystemmajrelease}"
+      $repo_gpg_key_source  = "https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage"
 
       $server_package = $::operatingsystemmajrelease ? {
         # RHEL 6 and 7 provide Gluster packages natively
