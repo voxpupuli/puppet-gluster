@@ -1,3 +1,10 @@
+## 2016-10-21 Release 2.2.2
+
+* Modulesync with latest Vox Pupuli defaults
+* Update to new upstream GPG keys
+* Set correct package name
+* Fix typo in README
+
 ## 2016-10-12 Release 2.2.1
 
 * Fix repository setup (upstream URLs changed)
