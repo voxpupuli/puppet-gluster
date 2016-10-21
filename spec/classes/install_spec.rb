@@ -13,7 +13,7 @@ describe 'gluster::install', type: :class do
         it { should compile.with_all_deps }
         case facts[:osfamily]
         when 'Redhat'
-          it { should create_package('glusterfs') }
+          it { should create_package('glusterfs-server') }
           it { should create_package('glusterfs-fuse') }
           it { should create_class('gluster::repo').with(version: 'LATEST') }
         when 'Debian'
@@ -45,7 +45,7 @@ describe 'gluster::install', type: :class do
         end
         case facts[:osfamily]
         when 'Redhat'
-          it { should_not create_package('glusterfs') }
+          it { should_not create_package('glusterfs-server') }
         when 'Debian'
           it { should_not create_package('glusterfs-server') }
         end
