@@ -57,7 +57,7 @@ describe 'gluster::repo::yum', type: :class do
               enabled: 1,
               baseurl: "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/storage/#{facts[:architecture]}/gluster-3.8/",
               gpgcheck: 1,
-              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}"
+              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}",
               priority: '50'
             )
           end
