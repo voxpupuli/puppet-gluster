@@ -13,12 +13,11 @@ describe 'gluster::repo::yum', type: :class do
           it { should compile.with_all_deps }
           it 'installs' do
             should_not create_package('yum-plugin-priorities')
-            should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
             should create_yumrepo('glusterfs-x86_64').with(
               enabled: 1,
-              baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
+              baseurl: "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/storage/#{facts[:architecture]}/gluster-3.8/",
               gpgcheck: 1,
-              gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub'
+              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}"
             )
           end
         end
@@ -30,7 +29,7 @@ describe 'gluster::repo::yum', type: :class do
           end
           it 'does not install' do
             expect do
-              should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+              should create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
             end.to raise_error(Puppet::Error, %r{doesn't make sense!})
           end
         end
@@ -42,7 +41,7 @@ describe 'gluster::repo::yum', type: :class do
           end
           it 'does not install' do
             expect do
-              should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+              should create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
             end.to raise_error(Puppet::Error, %r{not yet supported})
           end
         end
@@ -53,13 +52,12 @@ describe 'gluster::repo::yum', type: :class do
             }
           end
           it 'installs' do
-            should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
             should create_package('yum-plugin-priorities')
             should create_yumrepo('glusterfs-x86_64').with(
               enabled: 1,
-              baseurl: "https://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/epel-#{facts[:operatingsystemmajrelease]}/x86_64/",
+              baseurl: "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/storage/#{facts[:architecture]}/gluster-3.8/",
               gpgcheck: 1,
-              gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub',
+              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}",
               priority: '50'
             )
           end
