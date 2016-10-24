@@ -1,11 +1,17 @@
-# MOVED TO VOX PUPULI
-**This module has been moved to the [Vox Pupuli](https://github.com/voxpupuli/) organization.  Please update all bookmarks and Puppetfile references.**
 
-Puppet Gluster
-==============
+# Gluster module for Puppet
 
-Table of Contents
------------------
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-gluster.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-gluster)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-gluster/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-gluster)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
+
+## Moved to Vox Pupuli
+This module has been moved to the [Vox Pupuli](https://github.com/voxpupuli/) organization.  Please update all bookmarks and Puppetfile references.
+
+## Table of Contents
 
 1. [Overview](#overview)
 2. [Custom Facts](#custom-facts)
@@ -15,15 +21,13 @@ Table of Contents
 6. [Contributing](#contributing)
 7. [Copyright](#copyright)
 
-Overview
---------
+## Overview
 
 This module installs and configures servers to participate in a [Gluster](http://www.gluster.org/) Trusted Storage Pool, create or modify one or more Gluster volumes, and mount Gluster volumes.
 
 Also provided with this module are a number of custom Gluster-related facts.
 
-Custom Facts
-------------
+## Custom Facts
 
 * `gluster_binary`: the full pathname of the Gluster CLI command
 * `gluster_peer_count`: the number of peers to which this server is connected in the pool.
@@ -35,23 +39,24 @@ Custom Facts
 
 The `gluster_binary` fact will look for an [external fact](http://docs.puppetlabs.com/guides/custom_facts.html#external-facts) named `gluster_custom_binary`. If this fact is defined, `gluster_binary` will use that value. Otherwise the path will be searched until the gluster command is found.
 
-Classes
--------
+## Classes
 
-### params.pp ###
+### params.pp
 This class establishes a number of default values used by the other classes.
 
 You should not need to include or reference this class directly.
 
-### repo.pp ###
+### repo.pp
 This class enables the GlusterFS repository. Either [Gluster.org](http://download.gluster.org/pub/) for APT or [CentOS](https://wiki.centos.org/SpecialInterestGroup/Storage) managed YUM for EL.
 
 Fedora users can get GlusterFS packages directly from Fedora's repository. Red Hat users with a Gluster Storage subscription should set the appropriate subscription/repo for their OS. Therefore for both Fedora and Red Hat Gluster Storage users, the default upstream community repo should be off:
+
 ```puppet
 gluster::repo => false
 ```
 
 For systems using APT, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
+
 ```puppet
 class { ::gluster::repo:
   version => '3.5.2',
@@ -59,6 +64,7 @@ class { ::gluster::repo:
 ```
 
 For systems using YUM, the latest package from the 3.8 release branch will be installed. You can specify a specific version and release:
+
 ```puppet
 class { ::gluster::repo:
   release => '3.7',
@@ -76,7 +82,7 @@ Apt: If a `priority` parameter is passed to this class, it will be passed as is 
 
 This is [useful](http://blog.gluster.org/2014/11/installing-glusterfs-3-4-x-3-5-x-or-3-6-0-on-rhel-or-centos-6-6-2/) in the event that you want to install a version from the upstream repos that is older than that provided by your distribution's repositories.
 
-### install.pp ###
+### install.pp
 This class handles the installation of the Gluster packages (both server and client).
 
 If the upstream Gluster repo is enabled (default), this class will install packages from there. Otherwise it will attempt to use native OS packages.
@@ -91,10 +97,10 @@ Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster 
     }
 
 Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.
-Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. Therefore if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client. 
+Beware that Red Hat provides its own build of the GlusterFS FUSE client on RHEL but its minor version doesn't match the upstream. Therefore if you run a community GlusterFS server, you should try to match the version on your RHEL clients by running the community FUSE client.
 On Debian-based systems, only the first two version places are significant ("x.y"). The latest minor version from that release will be installed unless the "priority" parameter is used.
 
-### client.pp ###
+### client.pp
 This class installs **only** the Gluster client package(s). If you need to install both the server and client, please use the `install.pp` (or `init.pp`) classes.
 
     class { ::gluster::client:
@@ -104,14 +110,14 @@ This class installs **only** the Gluster client package(s). If you need to insta
 
 Use of `gluster::client` is not supported with either `gluster::install` or `gluster::init`.
 
-### service.pp ###
+### service.pp
 This class manages the `glusterd` service.
 
     class { ::gluster::service:
       ensure => running,
     }
 
-### init.pp ###
+### init.pp
 This class implements a basic Gluster server.
 
 In the default configuration, this class exports a `gluster::peer` defined type for itself, and then collects any other exported `gluster::peer` resources for the same pool for instantiation.
@@ -140,10 +146,9 @@ If a `volumes` parameter is passed, the defined Gluster volume(s) can be created
                  }
     }
 
-Resources
--------------
+## Resources
 
-### gluster::peer ###
+### gluster::peer
 This defined type creates a Gluster peering relationship.  The name of the resource should be the fully-qualified domain name of a peer to which to connect. An optional `pool` parameter permits you to configure different storage pools built from different hosts.
 
 With the exported resource implementation in `init.pp`, the first server to be defined in the pool will find no peers, and therefore not do anything.  The second server to execute this module will collect the first server's exported resource and initiate the `gluster peer probe`, thus creating the storage pool.
@@ -156,7 +161,7 @@ See [this mailing list post](http://supercolony.gluster.org/pipermail/gluster-us
       pool => 'production',
     }
 
-### gluster::volume ###
+### gluster::volume
 This defined type creates a Gluster volume. You can specify a stripe count, a replica count, the transport type, a list of bricks to use, and an optional set of volume options to enforce.
 
 Note that creating brick filesystems is up to you. May I recommend the [Puppet Labs LVM module](https://forge.puppetlabs.com/puppetlabs/lvm) ?
@@ -183,7 +188,7 @@ Note that adding or removing options does not (currently) restart the volume.
                  ],
     }
 
-### gluster::volume::option ###
+### gluster::volume::option
 This defined type applies [Gluster options](https://github.com/gluster/glusterfs/blob/master/doc/admin-guide/en-US/markdown/admin_managing_volumes.md#tuning-options) to a volume.
 
 In order to ensure uniqueness across multiple volumes, the title of each `gluster::volume::option` must include the name of the volume to which it applies.  The format for these titles is `volume:option_name`:
@@ -198,7 +203,7 @@ To remove an option, set the `ensure` parameter to `absent`:
       ensure => absent,
     }
 
-### gluster::mount ###
+### gluster::mount
 This defined type mounts a Gluster volume.  Most of the parameters to this defined type match either the gluster FUSE options or the [Puppet mount](http://docs.puppetlabs.com/references/3.4.stable/type.html#mount) options.
 
     gluster::mount { '/gluster/data1':
@@ -210,16 +215,14 @@ This defined type mounts a Gluster volume.  Most of the parameters to this defin
       pass      => 0,
     }
 
-Examples
---------
+## Examples
+
 Please see the examples directory.
 
-Contributing
-------------
+## Contributing
 
 Pull requests are warmly welcomed!
 
-Copyright
----------
+## Copyright
 
 Copyright 2014 [CoverMyMeds](https://www.covermymeds.com/) and released under the terms of the [MIT License](http://opensource.org/licenses/MIT).
