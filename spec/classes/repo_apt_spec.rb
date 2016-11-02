@@ -12,10 +12,10 @@ describe 'gluster::repo::apt', type: :class do
       case facts[:osfamily]
       when 'Debian'
         context 'with all defaults' do
-          it { should contain_class('gluster::repo::apt') }
-          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('gluster::repo::apt') }
+          it { is_expected.to compile.with_all_deps }
           it 'installs' do
-            should contain_apt__source('glusterfs-LATEST').with(
+            is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
               location: "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
@@ -30,7 +30,7 @@ describe 'gluster::repo::apt', type: :class do
           end
           it 'does not install' do
             expect do
-              should create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
+              is_expected.to create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
             end.to raise_error(Puppet::Error, %r{not yet supported})
           end
         end
@@ -41,7 +41,7 @@ describe 'gluster::repo::apt', type: :class do
             }
           end
           it 'installs' do
-            should contain_apt__source('glusterfs-LATEST').with(
+            is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
               location: "http://download.gluster.org/pub/gluster/glusterfs/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",

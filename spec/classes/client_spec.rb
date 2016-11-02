@@ -9,10 +9,10 @@ describe 'gluster::client', type: :class do
       case facts[:osfamily]
       when 'Redhat'
         context 'with all defaults' do
-          it { should contain_class('gluster::client') }
-          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('gluster::client') }
+          it { is_expected.to compile.with_all_deps }
           it 'includes gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-fuse',
               version: 'LATEST'
@@ -26,7 +26,7 @@ describe 'gluster::client', type: :class do
             }
           end
           it 'includes gluster::install with version 3.6.1' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-fuse',
               version: '3.6.1'
@@ -40,7 +40,7 @@ describe 'gluster::client', type: :class do
             }
           end
           it 'includes gluster::install with repo=>false' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: false,
               client_package: 'glusterfs-fuse',
               version: 'LATEST'
@@ -49,10 +49,10 @@ describe 'gluster::client', type: :class do
         end
       when 'Debian'
         context 'with all defaults' do
-          it { should contain_class('gluster::client') }
-          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('gluster::client') }
+          it { is_expected.to compile.with_all_deps }
           it 'includes gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-client',
               version: 'LATEST'
@@ -66,7 +66,7 @@ describe 'gluster::client', type: :class do
             }
           end
           it 'includes gluster::install with version 3.6.1' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-client',
               version: '3.6.1'
@@ -80,7 +80,7 @@ describe 'gluster::client', type: :class do
             }
           end
           it 'includes gluster::install with repo=>false' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               repo: false,
               client_package: 'glusterfs-client',
               version: 'LATEST'
@@ -89,9 +89,9 @@ describe 'gluster::client', type: :class do
         end
       when 'Archlinux'
         context 'with all defaults' do
-          it { should contain_class('gluster::client') }
-          it { should compile.with_all_deps }
-          it { should contain_package('glusterfs') }
+          it { is_expected.to contain_class('gluster::client') }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('glusterfs') }
         end
       end
     end

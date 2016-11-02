@@ -5,7 +5,7 @@ describe 'gluster::mount', type: :define do
   describe 'no volume specified' do
     it 'fails' do
       expect do
-        should contain_mount('rspec')
+        is_expected.to contain_mount('rspec')
       end.to raise_error(Puppet::Error, %r{Volume parameter is mandatory})
     end
   end
@@ -18,7 +18,7 @@ describe 'gluster::mount', type: :define do
     end
     it 'fails' do
       expect do
-        should contain_mount('rspec')
+        is_expected.to contain_mount('rspec')
       end.to raise_error(Puppet::Error, %r{Unknown option})
     end
   end
