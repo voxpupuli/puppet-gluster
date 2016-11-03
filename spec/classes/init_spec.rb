@@ -9,16 +9,16 @@ describe 'gluster', type: :class do
       case facts[:osfamily]
       when 'Redhat'
         context 'with all defaults' do
-          it { should contain_class('gluster') }
-          it { should contain_class('gluster::params') }
-          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('gluster') }
+          it { is_expected.to contain_class('gluster::params') }
+          it { is_expected.to compile.with_all_deps }
 
           it 'includes classes' do
-            should contain_class('gluster::install')
-            should contain_class('gluster::service')
+            is_expected.to contain_class('gluster::install')
+            is_expected.to contain_class('gluster::service')
           end
           it 'creates gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               server: true,
               server_package: 'glusterfs',
               client: true,
@@ -28,7 +28,7 @@ describe 'gluster', type: :class do
             )
           end
           it 'manages the Gluster service' do
-            should create_class('gluster::service').with(
+            is_expected.to create_class('gluster::service').with(
               ensure: true
             )
           end
@@ -43,7 +43,7 @@ describe 'gluster', type: :class do
             }
           end
           it 'creates gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               server: true,
               server_package: 'custom-gluster-server',
               client: true,
@@ -53,27 +53,27 @@ describe 'gluster', type: :class do
             )
           end
           it 'manages the Gluster service' do
-            should create_class('gluster::service').with(
+            is_expected.to create_class('gluster::service').with(
               ensure: true
             )
           end
           it 'installs custom-gluster-client and custom-gluster-server' do
-            should create_package('custom-gluster-client')
-            should create_package('custom-gluster-server')
+            is_expected.to create_package('custom-gluster-client')
+            is_expected.to create_package('custom-gluster-server')
           end
         end
       when 'Debian'
         context 'with all defaults' do
-          it { should contain_class('gluster') }
-          it { should contain_class('gluster::params') }
-          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('gluster') }
+          it { is_expected.to contain_class('gluster::params') }
+          it { is_expected.to compile.with_all_deps }
 
           it 'includes classes' do
-            should contain_class('gluster::install')
-            should contain_class('gluster::service')
+            is_expected.to contain_class('gluster::install')
+            is_expected.to contain_class('gluster::service')
           end
           it 'creates gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               server: true,
               server_package: 'glusterfs-server',
               client: true,
@@ -83,7 +83,7 @@ describe 'gluster', type: :class do
             )
           end
           it 'manages the Gluster service' do
-            should create_class('gluster::service').with(
+            is_expected.to create_class('gluster::service').with(
               ensure: true
             )
           end
@@ -98,7 +98,7 @@ describe 'gluster', type: :class do
             }
           end
           it 'creates gluster::install' do
-            should create_class('gluster::install').with(
+            is_expected.to create_class('gluster::install').with(
               server: true,
               server_package: 'custom-gluster-server',
               client: true,
@@ -108,13 +108,13 @@ describe 'gluster', type: :class do
             )
           end
           it 'manages the Gluster service' do
-            should create_class('gluster::service').with(
+            is_expected.to create_class('gluster::service').with(
               ensure: true
             )
           end
           it 'installs custom-gluster-client and custom-gluster-server' do
-            should create_package('custom-gluster-client')
-            should create_package('custom-gluster-server')
+            is_expected.to create_package('custom-gluster-client')
+            is_expected.to create_package('custom-gluster-server')
           end
         end
       end
@@ -140,7 +140,7 @@ describe 'gluster', type: :class do
           }
         end
         it 'creates gluster::volume' do
-          should contain_gluster__volume('data1').with(
+          is_expected.to contain_gluster__volume('data1').with(
             name: 'data1',
             replica: 2,
             bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
@@ -157,7 +157,7 @@ describe 'gluster', type: :class do
         end
         it 'fails' do
           expect do
-            should contain_gluster__volume('data1')
+            is_expected.to contain_gluster__volume('data1')
           end.to raise_error(Puppet::Error, %r{})
         end
       end
