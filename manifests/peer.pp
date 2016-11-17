@@ -56,7 +56,7 @@ define gluster::peer (
 
       # and we don't want to attach a server that is already a member
       # of the current pool
-      if $::gluster_peer_list != undef {
+      if defined('$::gluster_peer_list') {
         $peers = split($::gluster_peer_list, ',' )
         if ! member($peers, $title) {
           $already_in_pool = false
