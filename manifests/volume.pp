@@ -103,13 +103,13 @@ define gluster::volume (
   if $binary{
     # we need the Gluster binary to do anything!
 
-    if defined('$::gluster_peer_list') {
+    if getvar('::gluster_peer_list') {
       $minimal_requirements = true
     } else {
       $minimal_requirements = false
     }
 
-    if defined('$::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
+    if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
       $already_exists = true
     } else {
       $already_exists = false
