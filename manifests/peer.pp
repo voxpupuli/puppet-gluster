@@ -45,18 +45,17 @@ define gluster::peer (
   $pool = 'default'
 ) {
 
-  $binary = $::gluster_binary
   # we can't do much without the Gluster binary
   # but we don't necessarily want the Puppet run to fail if the
-  # binary is absent!
-  if $binary {
+  # gluster_binary fact is absent!
+  if getvar('::gluster_binary') {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
     if $title != $::fqdn {
 
       # and we don't want to attach a server that is already a member
       # of the current pool
-      if $::gluster_peer_list != undef {
+      if getvar('::gluster_peer_list') {
         $peers = split($::gluster_peer_list, ',' )
         if ! member($peers, $title) {
           $already_in_pool = false
@@ -68,7 +67,7 @@ define gluster::peer (
       }
       if !$already_in_pool {
         exec { "gluster peer probe ${title}":
-            command => "${binary} peer probe ${title}",
+            command => "${::gluster_binary} peer probe ${title}",
           }
       }
     }
