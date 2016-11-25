@@ -1,3 +1,9 @@
+## 2016-11-25 Release 2.2.3
+
+* [GH-82](https://github.com/voxpupuli/puppet-gluster/issues/82)
+ [`strict_variables`](https://docs.puppet.com/puppet/latest/reference/configuration.html#strictvariables)
+ fixes. Use [`getvar()`](https://github.com/puppetlabs/puppetlabs-stdlib#getvar) to check for facts.
+
 ## 2016-10-21 Release 2.2.2
 
 * Modulesync with latest Vox Pupuli defaults
