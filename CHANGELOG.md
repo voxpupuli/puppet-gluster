@@ -1,3 +1,11 @@
+# Changelog
+
+## 2017-01-13 - Release 2.3.0
+
+This is the latest release with Puppet 3 support!
+* Modulesync with latest Vox Pupuli defaults
+* Set min version_requirement for Puppet + deps
+
 ## 2016-11-25 Release 2.2.3
 
 * [GH-82](https://github.com/voxpupuli/puppet-gluster/issues/82)
