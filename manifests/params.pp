@@ -52,14 +52,25 @@ class gluster::params {
       $service_name = 'glusterd'
     }
     'Debian': {
-      $repo                 = true
-      $repo_gpg_key_name    = 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC'
-      $repo_gpg_key_source  = 'https://download.gluster.org/pub/gluster/glusterfs/LATEST/rsa.pub'
-
+      $repo           = true
       $server_package = 'glusterfs-server'
       $client_package = 'glusterfs-client'
+      $service_name   = 'glusterfs-server'
 
-      $service_name = 'glusterfs-server'
+      case $release {
+        '3.6': {
+          $repo_gpg_key_name   = 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC'
+          $repo_gpg_key_source = 'https://download.gluster.org/pub/gluster/glusterfs/3.6/LATEST/Debian/rsa.pub'
+        }
+        '3.9': {
+          $repo_gpg_key_name   = '849512C2CA648EF425048F55C883F50CB2289A17'
+          $repo_gpg_key_source = 'https://download.gluster.org/pub/gluster/glusterfs/3.9/rsa.pub'
+        }
+        default: {
+          $repo_gpg_key_name   = 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC'
+          $repo_gpg_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub"
+        }
+      }
     }
     'Archlinux': {
       $repo = false

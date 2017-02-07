@@ -61,7 +61,7 @@ class gluster::repo::apt (
             /i\d86/      => 'i386',
             default      => false,
           }
-          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/Debian/${::lsbdistcodename}/apt/"
+          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/LATEST/Debian/${::lsbdistcodename}/apt/"
         }
       }
     }
