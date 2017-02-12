@@ -32,11 +32,23 @@
 #
 class gluster::repo::apt (
   $version         = $::gluster::params::version,
-  $repo_key_name   = $::gluster::params::repo_gpg_key_name,
-  $repo_key_source = $::gluster::params::repo_gpg_key_source,
+  $release         = $::gluster::params::release,
   $priority        = $::gluster::params::repo_priority,
 ) {
   include '::apt'
+
+  # Key has changed since 3.9
+  $repo_key_name = $release ? {
+    /(3.0|3.1|3.2|3.3|3.4|3.5|3.6|3.7|3.8)/ => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
+    default                                 => '849512C2CA648EF425048F55C883F50CB2289A17',
+  }
+
+  # Key location is different for some releases
+  $repo_key_source = $release ? {
+    /(3.0|3.1|3.2|3.3|3.4|3.5|3.7|3.8)/  => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
+    '3.6'                                => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/rsa.pub",
+    default                              => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
+  }
 
   # basic sanity check
   if $version == 'LATEST' {
@@ -61,7 +73,7 @@ class gluster::repo::apt (
             /i\d86/      => 'i386',
             default      => false,
           }
-          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/Debian/${::lsbdistcodename}/apt/"
+          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/LATEST/Debian/${::lsbdistcodename}/apt/"
         }
       }
     }
