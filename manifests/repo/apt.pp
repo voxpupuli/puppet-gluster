@@ -37,6 +37,8 @@ class gluster::repo::apt (
 ) {
   include '::apt'
 
+  ensure_packages(['apt-transport-https'], {'ensure' => 'present'})
+
   # Key has changed since 3.9
   $repo_key_name = $release ? {
     /(3.0|3.1|3.2|3.3|3.4|3.5|3.6|3.7|3.8)/ => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
@@ -73,7 +75,7 @@ class gluster::repo::apt (
             /i\d86/      => 'i386',
             default      => false,
           }
-          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/LATEST/Debian/${::lsbdistcodename}/apt/"
+          $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
         }
       }
     }
