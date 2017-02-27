@@ -73,6 +73,8 @@ define gluster::volume (
     } else {
       $_replica = "replica ${replica}"
     }
+  } else {
+    $_replica = ''
   }
 
   if ! member( ['tcp', 'rdma', 'tcp,rdma'], $transport ) {
