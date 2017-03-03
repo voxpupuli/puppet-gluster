@@ -37,17 +37,17 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::mount (
-  $volume         = undef,
-  $log_level      = undef,
-  $log_file       = undef,
-  $transport      = undef,
-  $direct_io_mode = undef,
-  $readdirp       = undef,
-  $atboot         = yes,
-  $options        = 'defaults',
-  $dump           = 0,
-  $pass           = 0,
-  $ensure         = mounted, # defined, present, unmounted, absent, mounted.
+  String $volume                                                        = undef,
+  Optional[String] $log_level                                           = undef,
+  Optional[String] $log_file                                            = undef,
+  Optional[String] $transport                                           = undef,
+  Optional[String] $direct_io_mode                                      = undef,
+  Optional[Boolean] $readdirp                                           = undef,
+  $atboot                                                               = yes,
+  String $options                                                       = 'defaults',
+  Integer $dump                                                         = 0,
+  Integer $pass                                                         = 0,
+  Enum['defined', 'present', 'unmounted', 'absent', 'mounted'] $ensure  = 'mounted',
 ) {
 
   if ! $volume or empty($volume) {
@@ -55,32 +55,23 @@ define gluster::mount (
   }
 
   if $log_level {
-    validate_string($log_level)
     $ll = "log-level=${log_level}"
   }
 
   if $log_file {
-    validate_string($log_file)
     $lf = "log-file=${log_file}"
   }
 
   if $transport {
-    validate_string($transport)
     $t = "transport=${transport}"
   }
 
   if $direct_io_mode {
-    validate_string($direct_io_mode)
     $dim = "direct-io-mode=${direct_io_mode}"
   }
 
   if $readdirp {
-    validate_bool(str2bool($readdirp))
     $r = "usereaddrip=${readdirp}"
-  }
-
-  if ! member(['defined', 'present', 'unmounted', 'absent', 'mounted'], $ensure) {
-    fail("Unknown option ${ensure} for ensure")
   }
 
   $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]

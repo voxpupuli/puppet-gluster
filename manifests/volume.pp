@@ -40,53 +40,39 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume (
-  $force          = false,
-  $stripe         = false,
-  $replica        = false,
-  $transport      = 'tcp',
-  $rebalance      = true,
-  $heal           = true,
-  $bricks         = undef,
-  $options        = undef,
-  $remove_options = false,
+  Boolean $force                              = false,
+  Optional[Integer] $stripe                   = undef,
+  Optional[Integer] $replica                  = false,
+  Enum['tcp', 'rdma', 'tcp,rdma'] $transport  = 'tcp',
+  Boolean $rebalance                          = true,
+  Boolean $heal                               = true,
+  Array $bricks                               = undef,
+  Optional[Array] $options                    = undef,
+  Boolean $remove_options                     = false,
 ) {
 
-  # basic sanity checking
-  if str2bool($force) {
+  if $force {
     $_force = 'force'
   } else {
     $_force = ''
   }
 
   if $stripe {
-    if ! is_integer( $stripe ) {
-      fail("Stripe value ${stripe} is not an integer")
-    }
     $_stripe = "stripe ${stripe}"
   } else {
     $_stripe = ''
   }
 
   if $replica {
-    if ! is_integer( $replica ) {
-      fail("Replica value ${replica} is not an integer")
-    } else {
-      $_replica = "replica ${replica}"
-    }
+    $_replica = "replica ${replica}"
   }
 
-  if ! member( ['tcp', 'rdma', 'tcp,rdma'], $transport ) {
-    fail("Invalid transport ${transport}")
-  } else {
-    $_transport = "transport ${transport}"
-  }
+  $_transport = "transport ${transport}"
 
   if $options {
-    validate_array( $options )
     $_options = sort( $options )
   }
 
-  validate_array( $bricks )
   $_bricks = join( $bricks, ' ' )
 
   $cmd_args = [
