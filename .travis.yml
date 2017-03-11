@@ -25,6 +25,10 @@ matrix:
   - rvm: 2.4.0
     env: PUPPET_VERSION="~> 4.0" CHECK=test
   - rvm: 2.4.0
+    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
+  - rvm: 2.4.0
+    env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
+  - rvm: 2.4.0
     env: PUPPET_VERSION="~> 4.0" CHECK=acceptance BEAKER_set="docker/debian-8" bundle exec rake acceptance
     services: docker
     sudo: required
@@ -34,10 +38,6 @@ matrix:
     services: docker
     sudo: required
     bundler_args: --without development
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
 branches:
   only:
   - master
