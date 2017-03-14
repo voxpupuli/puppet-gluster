@@ -80,6 +80,9 @@ class gluster::params {
   $pool = 'default'
   $export_resources = true
 
+  # this is how we identify ourselfes in case of multihome
+  $identity = $::fqdn
+
   # parameters dealing with bricks
 
   # parameters dealing with volumes
