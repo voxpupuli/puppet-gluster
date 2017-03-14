@@ -49,6 +49,7 @@ define gluster::volume (
   $bricks         = undef,
   $options        = undef,
   $remove_options = false,
+  $identity       = $gluster::params::identity,
 ) {
 
   # basic sanity checking
@@ -123,7 +124,7 @@ define gluster::volume (
       # first, get a list of unique server names hosting bricks
       $brick_hosts = unique( regsubst( $bricks, '^([^:]+):(.+)$', '\1') )
       # now get a list of all peers, including ourself
-      $pool_members = concat( split( $::gluster_peer_list, ','), [ $::fqdn ] )
+      $pool_members = concat( split( $::gluster_peer_list, ','), [ $identity ] )
       # now see what the difference is
       $missing_bricks = difference( $brick_hosts, $pool_members)
 

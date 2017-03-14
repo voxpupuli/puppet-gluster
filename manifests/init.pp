@@ -51,6 +51,7 @@ class gluster  (
   $server_package         = $::gluster::params::server_package,
   $use_exported_resources = $::gluster::params::export_resources,
   $version                = $::gluster::params::version,
+  $identity               = $::gluster::params::identity,
   $volumes                = undef,
 ) inherits ::gluster::params {
 
@@ -71,7 +72,7 @@ class gluster  (
 
     if $use_exported_resources {
       # first we export this server's instance
-      @@gluster::peer { $::fqdn:
+      @@gluster::peer { $identity:
         pool => $pool,
       }
 
