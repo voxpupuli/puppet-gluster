@@ -51,7 +51,7 @@ define gluster::peer (
   if getvar('::gluster_binary') {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
-    include gluster::params
+    include ::gluster::params
     if $title != $gluster::params::identity {
 
       # and we don't want to attach a server that is already a member
