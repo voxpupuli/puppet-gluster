@@ -38,7 +38,7 @@
 #
 define gluster::mount (
   String $volume,
-  $atboot                                                               = yes,
+  Variant[Enum['yes', 'no'], Boolean] $atboot                           = 'yes',
   String $options                                                       = 'defaults',
   Integer $dump                                                         = 0,
   Integer $pass                                                         = 0,
