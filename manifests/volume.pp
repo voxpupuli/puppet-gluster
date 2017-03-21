@@ -41,14 +41,14 @@
 #
 define gluster::volume (
   Boolean $force                              = false,
-  Optional[Integer] $stripe                   = undef,
-  Optional[Integer] $replica                  = false,
   Enum['tcp', 'rdma', 'tcp,rdma'] $transport  = 'tcp',
   Boolean $rebalance                          = true,
   Boolean $heal                               = true,
   Array $bricks                               = undef,
-  Optional[Array] $options                    = undef,
   Boolean $remove_options                     = false,
+  Optional[Array] $options                    = undef,
+  Optional[Integer] $stripe                   = undef,
+  Optional[Integer] $replica                  = false,
 ) {
 
   if $force {

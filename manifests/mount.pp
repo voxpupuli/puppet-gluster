@@ -38,16 +38,16 @@
 #
 define gluster::mount (
   String $volume,
-  Optional[String] $log_level                                           = undef,
-  Optional[String] $log_file                                            = undef,
-  Optional[String] $transport                                           = undef,
-  Optional[String] $direct_io_mode                                      = undef,
-  Optional[Boolean] $readdirp                                           = undef,
   $atboot                                                               = yes,
   String $options                                                       = 'defaults',
   Integer $dump                                                         = 0,
   Integer $pass                                                         = 0,
   Enum['defined', 'present', 'unmounted', 'absent', 'mounted'] $ensure  = 'mounted',
+  Optional[String] $log_level                                           = undef,
+  Optional[String] $log_file                                            = undef,
+  Optional[String] $transport                                           = undef,
+  Optional[String] $direct_io_mode                                      = undef,
+  Optional[Boolean] $readdirp                                           = undef,
 ) {
 
   if $log_level {
