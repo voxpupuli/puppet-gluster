@@ -37,7 +37,7 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::mount (
-  String $volume                                                        = undef,
+  String $volume,
   Optional[String] $log_level                                           = undef,
   Optional[String] $log_file                                            = undef,
   Optional[String] $transport                                           = undef,
@@ -49,10 +49,6 @@ define gluster::mount (
   Integer $pass                                                         = 0,
   Enum['defined', 'present', 'unmounted', 'absent', 'mounted'] $ensure  = 'mounted',
 ) {
-
-  if ! $volume or empty($volume) {
-    fail('Volume parameter is mandatory for gluster::mount')
-  }
 
   if $log_level {
     $ll = "log-level=${log_level}"
