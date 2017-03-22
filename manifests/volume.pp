@@ -6,6 +6,8 @@
 #
 # stripe: the stripe count to use for a striped volume
 # replica: the replica count to use for a replica volume
+# disperse: the disperse count to use for a dispersed volume
+# redundancy: the redundancy bricks for a disperesed volume
 # transport: the transport to use. Defaults to tcp
 # rebalance: whether to rebalance a volume when new bricks are added
 # heal: whether to heal a replica volume when adding bricks
@@ -43,6 +45,8 @@ define gluster::volume (
   $force          = false,
   $stripe         = false,
   $replica        = false,
+  $disperse       = false,
+  $redundancy     = false,
   $transport      = 'tcp',
   $rebalance      = true,
   $heal           = true,
@@ -69,10 +73,29 @@ define gluster::volume (
 
   if $replica {
     if ! is_integer( $replica ) {
-      fail("Replica value ${replica} is not an integer")
-    } else {
-      $_replica = "replica ${replica}"
+      fail("Stripe value ${replica} is not an integer")
     }
+    $_replica = "replica ${replica}"
+  } else {
+    $_replica = ''
+  }
+
+  if $disperse {
+    if ! is_integer( $disperse ) {
+      fail("Dispirse value ${disperse} is not an integer")
+    }
+    $_disperse = "disperse ${disperse}"
+  } else {
+    $_disperse = ''
+  }
+
+  if $redundancy {
+    if ! is_integer( $redundancy ) {
+      fail("Dispirse value ${redundancy} is not an integer")
+    }
+    $_redundancy = "redundancy ${redundancy}"
+  } else {
+    $_redundancy = ''
   }
 
   if ! member( ['tcp', 'rdma', 'tcp,rdma'], $transport ) {
@@ -92,6 +115,8 @@ define gluster::volume (
   $cmd_args = [
     $_stripe,
     $_replica,
+    $_disperse,
+    $_redundancy,
     $_transport,
     $_bricks,
     $_force,
