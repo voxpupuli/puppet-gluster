@@ -42,74 +42,55 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume (
-  $force          = false,
-  $stripe         = false,
-  $replica        = false,
-  $disperse       = false,
-  $redundancy     = false,
-  $transport      = 'tcp',
-  $rebalance      = true,
-  $heal           = true,
-  $bricks         = undef,
-  $options        = undef,
-  $remove_options = false,
+  Boolean $force                              = false,
+  Enum['tcp', 'rdma', 'tcp,rdma'] $transport  = 'tcp',
+  Boolean $rebalance                          = true,
+  Boolean $heal                               = true,
+  Array $bricks                               = undef,
+  Boolean $remove_options                     = false,
+  Optional[Array] $options                    = undef,
+  Optional[Integer] $stripe                   = undef,
+  Optional[Integer] $replica                  = false,
+  Optional[Integer] $disperse                 = false,
+  Optional[Integer] $redundancy               = false,
 ) {
 
-  # basic sanity checking
-  if str2bool($force) {
+  if $force {
     $_force = 'force'
   } else {
     $_force = ''
   }
 
   if $stripe {
-    if ! is_integer( $stripe ) {
-      fail("Stripe value ${stripe} is not an integer")
-    }
     $_stripe = "stripe ${stripe}"
   } else {
     $_stripe = ''
   }
 
   if $replica {
-    if ! is_integer( $replica ) {
-      fail("Stripe value ${replica} is not an integer")
-    }
     $_replica = "replica ${replica}"
   } else {
     $_replica = ''
   }
 
   if $disperse {
-    if ! is_integer( $disperse ) {
-      fail("Dispirse value ${disperse} is not an integer")
-    }
     $_disperse = "disperse ${disperse}"
   } else {
     $_disperse = ''
   }
 
   if $redundancy {
-    if ! is_integer( $redundancy ) {
-      fail("Dispirse value ${redundancy} is not an integer")
-    }
     $_redundancy = "redundancy ${redundancy}"
   } else {
-    $_redundancy = ''
+    $_disperse = ''
   }
 
-  if ! member( ['tcp', 'rdma', 'tcp,rdma'], $transport ) {
-    fail("Invalid transport ${transport}")
-  } else {
-    $_transport = "transport ${transport}"
-  }
+  $_transport = "transport ${transport}"
 
   if $options {
-    validate_array( $options )
     $_options = sort( $options )
   }
 
-  validate_array( $bricks )
   $_bricks = join( $bricks, ' ' )
 
   $cmd_args = [

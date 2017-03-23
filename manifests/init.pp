@@ -51,7 +51,7 @@ class gluster  (
   $server_package         = $::gluster::params::server_package,
   $use_exported_resources = $::gluster::params::export_resources,
   $version                = $::gluster::params::version,
-  $volumes                = undef,
+  Optional[Hash] $volumes = undef,
 ) inherits ::gluster::params {
 
   class { '::gluster::install':
@@ -80,7 +80,6 @@ class gluster  (
     }
 
     if $volumes {
-      validate_hash( $volumes )
       create_resources( ::gluster::volume, $volumes )
     }
   }
