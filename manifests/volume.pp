@@ -7,6 +7,7 @@
 # stripe: the stripe count to use for a striped volume
 # replica: the replica count to use for a replica volume
 # disperse: the disperse count to use for a dispersed volume
+# disperse_data: the disperse-data count to use for a dispersed-data volume
 # redundancy: the redundancy bricks for a disperesed volume
 # transport: the transport to use. Defaults to tcp
 # rebalance: whether to rebalance a volume when new bricks are added
@@ -52,6 +53,7 @@ define gluster::volume (
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = false,
   Optional[Integer] $disperse                 = false,
+  Optional[Integer] $disperse_data            = false,
   Optional[Integer] $redundancy               = false,
 ) {
 
@@ -79,6 +81,12 @@ define gluster::volume (
     $_disperse = ''
   }
 
+  if $disperse_data {
+    $_disperse_data = "disperse-data ${disperse_data}"
+  } else {
+    $_disperse = ''
+  }
+
   if $redundancy {
     $_redundancy = "redundancy ${redundancy}"
   } else {
@@ -97,6 +105,7 @@ define gluster::volume (
     $_stripe,
     $_replica,
     $_disperse,
+    $_disperse_data,
     $_redundancy,
     $_transport,
     $_bricks,
