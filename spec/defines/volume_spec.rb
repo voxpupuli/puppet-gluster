@@ -52,22 +52,41 @@ describe 'gluster::volume', type: :define do
       end
       it { is_expected.to compile.with_all_deps }
     end
+  end
+  describe 'with nonexistent volume' do
+    let(:facts) do
+      {
+        gluster_binary: '/usr/sbin/gluster',
+        gluster_peer_list: 'srv1.local,srv2.local',
+        gluster_volume_list: 'srv1.local:/glusterfs/backup,srv2.local:/glusterfs/backup'
+      }
+    end
 
-    describe 'with nonexistent volume' do
-      let(:facts) do
-        {
-          gluster_binary: '/usr/sbin/gluster',
-          gluster_peer_list: 'srv1.local,srv2.local',
-          gluster_volume_list: 'srv1.local:/glusterfs/backup,srv2.local:/glusterfs/backup'
-        }
-      end
+    describe 'with minimal params' do
       let(:args) do
         'replica 2 transport tcp srv1.local:/export/brick1/brick srv2.local:/export/brick1/brick srv1.local:/export/brick2/brick srv2.local:/export/brick2/brick'
       end
       it { is_expected.to compile.with_all_deps }
-      it { is_expected.to contain_exec("gluster create volume #{title}").with(
-        command: "/usr/sbin/gluster volume create #{title} #{args}"
-      ) }
+      it do
+        is_expected.to contain_exec("gluster create volume #{title}").with(
+          command: "/usr/sbin/gluster volume create #{title} #{args}"
+        )
+      end
+    end
+
+    describe 'with force' do
+      let(:params) do
+        super().merge(force: true)
+      end
+      let(:args) do
+        'replica 2 transport tcp srv1.local:/export/brick1/brick srv2.local:/export/brick1/brick srv1.local:/export/brick2/brick srv2.local:/export/brick2/brick force'
+      end
+      it { is_expected.to compile.with_all_deps }
+      it do
+        is_expected.to contain_exec("gluster create volume #{title}").with(
+          command: "/usr/sbin/gluster volume create #{title} #{args}"
+        )
+      end
     end
   end
 end
