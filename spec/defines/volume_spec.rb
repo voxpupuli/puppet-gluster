@@ -20,7 +20,7 @@ describe 'gluster::volume', type: :define do
 
   describe 'strict variables tests' do
     describe 'missing gluster_binary fact' do
-      it { is_expected.to compile }
+      it { is_expected.to compile.with_all_deps }
     end
 
     describe 'missing gluster_peer_list fact' do
@@ -29,7 +29,7 @@ describe 'gluster::volume', type: :define do
           gluster_binary: '/usr/sbin/gluster'
         }
       end
-      it { is_expected.to compile }
+      it { is_expected.to compile.with_all_deps }
     end
 
     describe 'missing gluster_volume_list fact' do
@@ -39,7 +39,7 @@ describe 'gluster::volume', type: :define do
           gluster_peer_list: 'peer1.example.com,peer2.example.com'
         }
       end
-      it { is_expected.to compile }
+      it { is_expected.to compile.with_all_deps }
     end
 
     describe 'with all facts' do
@@ -50,7 +50,7 @@ describe 'gluster::volume', type: :define do
           gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
         }
       end
-      it { is_expected.to compile }
+      it { is_expected.to compile.with_all_deps }
     end
   end
 end
