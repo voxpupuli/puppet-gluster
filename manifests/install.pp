@@ -29,17 +29,13 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  $server         = $gluster::params::install_server,
-  $client         = $gluster::params::install_client,
-  $repo           = $gluster::params::repo,
-  $version        = $gluster::params::version,
-  $server_package = $gluster::params::server_package,
-  $client_package = $gluster::params::client_package,
+  Boolean $server        = $gluster::params::install_server,
+  Boolean $client        = $gluster::params::install_client,
+  Boolean $repo          = $gluster::params::repo,
+  String $version        = $gluster::params::version,
+  String $server_package = $gluster::params::server_package,
+  String $client_package = $gluster::params::client_package,
 ) inherits ::gluster::params {
-
-  validate_bool($server)
-  validate_bool($client)
-  validate_bool($repo)
 
   if $repo {
     # install the correct repo
