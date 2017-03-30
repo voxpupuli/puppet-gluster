@@ -141,7 +141,7 @@ define gluster::volume (
           $hoh = parseyaml($yaml)
 
           # safety check
-          validate_hash($hoh)
+          assert_type(Hash, $hoh)
           # we need to ensure that these are applied AFTER the volume is created
           # but BEFORE the volume is started
           $new_volume_defaults = {
