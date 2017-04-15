@@ -6,6 +6,7 @@ describe 'gluster', type: :class do
       let(:facts) do
         facts
       end
+
       case facts[:osfamily]
       when 'Redhat'
         context 'with all defaults' do
@@ -42,6 +43,7 @@ describe 'gluster', type: :class do
               repo: false
             }
           end
+
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -97,6 +99,7 @@ describe 'gluster', type: :class do
               repo: false
             }
           end
+
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -139,6 +142,7 @@ describe 'gluster', type: :class do
             }
           }
         end
+
         it 'creates gluster::volume' do
           is_expected.to contain_gluster__volume('data1').with(
             name: 'data1',
@@ -152,9 +156,10 @@ describe 'gluster', type: :class do
       context 'when volumes incorrectly defined' do
         let :params do
           {
-            volumes: { 'data1' => %w(this is an array) }
+            volumes: { 'data1' => %w[this is an array] }
           }
         end
+
         it 'fails' do
           expect do
             is_expected.to contain_gluster__volume('data1')

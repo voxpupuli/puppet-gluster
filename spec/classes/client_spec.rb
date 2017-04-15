@@ -6,6 +6,7 @@ describe 'gluster::client', type: :class do
       let(:facts) do
         facts
       end
+
       case facts[:osfamily]
       when 'Redhat'
         context 'with all defaults' do
@@ -25,6 +26,7 @@ describe 'gluster::client', type: :class do
               version: '3.6.1'
             }
           end
+
           it 'includes gluster::install with version 3.6.1' do
             is_expected.to create_class('gluster::install').with(
               repo: true,
@@ -39,6 +41,7 @@ describe 'gluster::client', type: :class do
               repo: false
             }
           end
+
           it 'includes gluster::install with repo=>false' do
             is_expected.to create_class('gluster::install').with(
               repo: false,
@@ -65,6 +68,7 @@ describe 'gluster::client', type: :class do
               version: '3.6.1'
             }
           end
+
           it 'includes gluster::install with version 3.6.1' do
             is_expected.to create_class('gluster::install').with(
               repo: true,
@@ -79,6 +83,7 @@ describe 'gluster::client', type: :class do
               repo: false
             }
           end
+
           it 'includes gluster::install with repo=>false' do
             is_expected.to create_class('gluster::install').with(
               repo: false,

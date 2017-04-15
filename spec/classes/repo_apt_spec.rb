@@ -9,6 +9,7 @@ describe 'gluster::repo::apt', type: :class do
       let :pre_condition do
         'require ::gluster::params'
       end
+
       case facts[:osfamily]
       when 'Debian'
         context 'with all defaults' do
@@ -28,6 +29,7 @@ describe 'gluster::repo::apt', type: :class do
               architecture: 'zLinux'
             )
           end
+
           it 'does not install' do
             expect do
               is_expected.to create_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-gluster.pub')
@@ -40,6 +42,7 @@ describe 'gluster::repo::apt', type: :class do
               priority: '700'
             }
           end
+
           it 'installs' do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
@@ -56,6 +59,7 @@ describe 'gluster::repo::apt', type: :class do
               release: '3.9'
             }
           end
+
           it 'installs' do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
@@ -75,6 +79,7 @@ describe 'gluster::repo::apt', type: :class do
               release: '3.6'
             }
           end
+
           it 'installs' do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
@@ -94,6 +99,7 @@ describe 'gluster::repo::apt', type: :class do
               release: '3.8'
             }
           end
+
           it 'installs' do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
