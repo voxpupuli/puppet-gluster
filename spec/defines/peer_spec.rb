@@ -14,6 +14,7 @@ describe 'gluster::peer', type: :define do
         gluster_binary: '/usr/sbin/gluster'
       }
     end
+
     it { is_expected.to compile }
   end
 
@@ -26,6 +27,7 @@ describe 'gluster::peer', type: :define do
           gluster_peer_list: 'peer1.example.com'
         }
       end
+
       it { is_expected.to compile }
       it { is_expected.not_to contain_exec('gluster peer probe peer1.example.com') }
     end
@@ -37,6 +39,7 @@ describe 'gluster::peer', type: :define do
           gluster_peer_list: 'peer1.example.com,peer2.example.com'
         }
       end
+
       it { is_expected.to compile }
       it { is_expected.not_to contain_exec('gluster peer probe peer1.example.com') }
     end
@@ -51,6 +54,7 @@ describe 'gluster::peer', type: :define do
           gluster_peer_list: ''
         }
       end
+
       it { is_expected.to compile }
       it { is_expected.to contain_exec('gluster peer probe peer1.example.com') }
     end
@@ -62,6 +66,7 @@ describe 'gluster::peer', type: :define do
           gluster_peer_list: 'peer2.example.com'
         }
       end
+
       it { is_expected.to compile }
       it { is_expected.to contain_exec('gluster peer probe peer1.example.com') }
     end
@@ -73,6 +78,7 @@ describe 'gluster::peer', type: :define do
           gluster_peer_list: 'peer2.example.com,peer3.example.com'
         }
       end
+
       it { is_expected.to compile }
       it { is_expected.to contain_exec('gluster peer probe peer1.example.com') }
     end
@@ -87,6 +93,7 @@ describe 'gluster::peer', type: :define do
         fqdn: 'peer1.example.com'
       }
     end
+
     it { is_expected.to compile }
     it 'we don\'t try to join with ourselves' do
       is_expected.not_to contain_exec('gluster peer probe peer1.example.com')

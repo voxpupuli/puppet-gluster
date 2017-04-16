@@ -9,6 +9,7 @@ describe 'gluster::install', type: :class do
       let :pre_condition do
         'require ::gluster::service'
       end
+
       context 'with defaults' do
         it { is_expected.to compile.with_all_deps }
         case facts[:osfamily]
@@ -28,12 +29,14 @@ describe 'gluster::install', type: :class do
         let :params do
           { repo: false }
         end
+
         it { is_expected.not_to create_class('gluster::repo') }
       end
       context 'when client is false' do
         let :params do
           { client: false }
         end
+
         case facts[:osfamily]
         when 'Redhat'
           it { is_expected.not_to create_package('glusterfs-fuse') }
@@ -45,6 +48,7 @@ describe 'gluster::install', type: :class do
         let :params do
           { server: false }
         end
+
         case facts[:osfamily]
         when 'Redhat', 'Debian'
           it { is_expected.not_to create_package('glusterfs-server') }
@@ -56,6 +60,7 @@ describe 'gluster::install', type: :class do
             architecture: 'zLinux'
           )
         end
+
         case facts[:osfamily]
         when 'Archlinux'
           it { is_expected.not_to create_class('gluster::repo') }

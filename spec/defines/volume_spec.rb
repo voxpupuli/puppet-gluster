@@ -29,6 +29,7 @@ describe 'gluster::volume', type: :define do
           gluster_binary: '/usr/sbin/gluster'
         }
       end
+
       it { is_expected.to compile.with_all_deps }
     end
 
@@ -39,6 +40,7 @@ describe 'gluster::volume', type: :define do
           gluster_peer_list: 'peer1.example.com,peer2.example.com'
         }
       end
+
       it { is_expected.to compile.with_all_deps }
     end
 
@@ -50,6 +52,7 @@ describe 'gluster::volume', type: :define do
           gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
         }
       end
+
       it { is_expected.to compile.with_all_deps }
     end
   end
@@ -66,6 +69,7 @@ describe 'gluster::volume', type: :define do
       let(:args) do
         'replica 2 transport tcp srv1.local:/export/brick1/brick srv2.local:/export/brick1/brick srv1.local:/export/brick2/brick srv2.local:/export/brick2/brick'
       end
+
       it { is_expected.to compile.with_all_deps }
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(
@@ -81,6 +85,7 @@ describe 'gluster::volume', type: :define do
       let(:args) do
         'replica 2 transport tcp srv1.local:/export/brick1/brick srv2.local:/export/brick1/brick srv1.local:/export/brick2/brick srv2.local:/export/brick2/brick force'
       end
+
       it { is_expected.to compile.with_all_deps }
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(

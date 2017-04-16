@@ -6,6 +6,7 @@ describe 'gluster::repo::yum', type: :class do
       let(:facts) do
         facts
       end
+
       case facts[:osfamily]
       when 'Redhat'
         context 'with all defaults' do
@@ -27,6 +28,7 @@ describe 'gluster::repo::yum', type: :class do
               version: 'foobar'
             }
           end
+
           it 'does not install' do
             expect do
               is_expected.to create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
@@ -39,6 +41,7 @@ describe 'gluster::repo::yum', type: :class do
               architecture: 'zLinux'
             )
           end
+
           it 'does not install' do
             expect do
               is_expected.to create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
@@ -51,6 +54,7 @@ describe 'gluster::repo::yum', type: :class do
               priority: '50'
             }
           end
+
           it 'installs' do
             is_expected.to create_package('yum-plugin-priorities')
             is_expected.to create_yumrepo('glusterfs-x86_64').with(
