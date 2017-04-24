@@ -1,4 +1,3 @@
-peer_count = 0
 peer_list = ''
 volume_bricks = {}
 volume_options = {}
@@ -25,28 +24,24 @@ if binary
       binary
     end
   end
-  output = Facter::Util::Resolution.exec("#{binary} peer status")
-  peer_count = Regexp.last_match[1].to_i if output =~ %r{^Number of Peers: (\d+)$}
+  require 'rexml/document'
+
+  peer_status = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} peer status --xml"))
+  peers = REXML::XPath.match(peer_status, '/cliOutput/peerStatus/peer/hostname/text()')
+  peer_count = peers.size
   if peer_count > 0
-    peer_list = output.scan(%r{^Hostname: (.+)$}).flatten.join(',')
-    # note the stderr redirection here
-    # `gluster volume list` spits to stderr :(
-    output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
-    if output != 'No volumes present in cluster'
-      output.split.each do |vol|
-        info = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
-        # rubocop:disable Metrics/BlockNesting
-        vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
-        bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
-        volume_bricks[vol] = bricks
-        options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
-        volume_options[vol] = options if options
-        next unless vol_status == 'Started'
-        status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
-        if status =~ %r{^Brick}
-          volume_ports[vol] = status.scan(%r{^Brick [^\t]+\t+(\d+)}).flatten.uniq.sort
-        end
-      end
+    peer_list = peers.join(',')
+    volumes = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume info --xml"))
+    REXML::XPath.match(volumes, '/cliOutput/volInfo/volumes/volume').each do |vol|
+      vol_name = vol.elements['name'].text
+      vol_status = vol.elements['statusStr'].text
+      bricks = REXML::XPath.match(vol, 'bricks/brick/name/text()')
+      volume_bricks[vol_name] = bricks
+      options = REXML::XPath.match(vol, 'options/option').map { |option| "#{option.elements['name'].text}: #{option.elements['value'].text}" }
+      volume_options[vol_name] = options if options
+      next unless vol_status == 'Started'
+      status = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume status #{vol_name} --xml"))
+      volume_ports[vol_name] = REXML::XPath.match(status, "/cliOutput/volStatus/volumes/volume/node[starts-with(hostname/text(), '#{Facter.value('hostname')}')]/port/text()")
     end
   end
 
@@ -78,6 +73,7 @@ if binary
           end
         end
       end
+      # rubocop:disable Metrics/BlockNesting
       if volume_options
         volume_options.each do |vol, opts|
           Facter.add("gluster_volume_#{vol}_options".to_sym) do
