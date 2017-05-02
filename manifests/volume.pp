@@ -48,7 +48,7 @@ define gluster::volume (
   Boolean $remove_options                     = false,
   Optional[Array] $options                    = undef,
   Optional[Integer] $stripe                   = undef,
-  Optional[Integer] $replica                  = false,
+  Optional[Integer] $replica                  = undef,
 ) {
 
   if $force {
