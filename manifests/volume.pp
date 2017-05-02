@@ -40,11 +40,12 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume (
+  Array $bricks,
+
   Boolean $force                              = false,
   Enum['tcp', 'rdma', 'tcp,rdma'] $transport  = 'tcp',
   Boolean $rebalance                          = true,
   Boolean $heal                               = true,
-  Array $bricks                               = undef,
   Boolean $remove_options                     = false,
   Optional[Array] $options                    = undef,
   Optional[Integer] $stripe                   = undef,
