@@ -94,7 +94,7 @@ define gluster::volume (
       $minimal_requirements = false
     }
 
-    if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
+    if getvar('::gluster_volume_list') and member( $::gluster_volume_list, $title ) {
       $already_exists = true
     } else {
       $already_exists = false
@@ -109,7 +109,7 @@ define gluster::volume (
       # first, get a list of unique server names hosting bricks
       $brick_hosts = unique( regsubst( $bricks, '^([^:]+):(.+)$', '\1') )
       # now get a list of all peers, including ourself
-      $pool_members = concat( split( $::gluster_peer_list, ','), [ $::fqdn ] )
+      $pool_members = concat($::gluster_peer_list, [ $::fqdn ] )
       # now see what the difference is
       $missing_bricks = difference( $brick_hosts, $pool_members)
 
@@ -163,7 +163,7 @@ define gluster::volume (
       # this volume exists
 
       # our fact lists bricks comma-separated, but we need an array
-      $vol_bricks = split( getvar( "::gluster_volume_${title}_bricks" ), ',')
+      $vol_bricks = getvar( "::gluster_volume_${title}_bricks" )
       if $bricks != $vol_bricks {
         # this resource's list of bricks does not match the existing
         # volume's list of bricks
@@ -226,7 +226,7 @@ define gluster::volume (
       # did the options change?
       $current_options = getvar("gluster_volume_${title}_options")
       if $current_options {
-        $_current = sort( split($current_options, ',') )
+        $_current = sort( $current_options )
       } else {
         $_current = []
       }

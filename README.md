@@ -31,11 +31,11 @@ Also provided with this module are a number of custom Gluster-related facts.
 
 * `gluster_binary`: the full pathname of the Gluster CLI command
 * `gluster_peer_count`: the number of peers to which this server is connected in the pool.
-* `gluster_peer_list`: a comma-separated list of peer hostnames
-* `gluster_volume_list`: a comma-separated list of volumes being served by this server
-* `gluster_volume_#{vol}_bricks`: a comma-separated list of bricks in each volume being served by this server
-* `gluster_volume_#{vol}_options`: a comma-separared list of options enabled on each volume
-* `gluster_volume_#{vol}_ports`: a comma-separated list of ports used by the bricks in the specified volume.
+* `gluster_peer_list`: an array of peer hostnames
+* `gluster_volume_list`: an array of volumes being served by this server
+* `gluster_volume_#{vol}_bricks`: an array of bricks in each volume being served by this server
+* `gluster_volume_#{vol}_options`: an array of options enabled on each volume
+* `gluster_volume_#{vol}_ports`: an array of ports used by the bricks in the specified volume.
 
 The `gluster_binary` fact will look for an [external fact](http://docs.puppetlabs.com/guides/custom_facts.html#external-facts) named `gluster_custom_binary`. If this fact is defined, `gluster_binary` will use that value. Otherwise the path will be searched until the gluster command is found.
 

@@ -37,7 +37,7 @@ describe 'gluster::volume', type: :define do
       let(:facts) do
         {
           gluster_binary: '/usr/sbin/gluster',
-          gluster_peer_list: 'peer1.example.com,peer2.example.com'
+          gluster_peer_list: %w[peer1.example.com peer2.example.com]
         }
       end
 
@@ -48,8 +48,8 @@ describe 'gluster::volume', type: :define do
       let(:facts) do
         {
           gluster_binary: '/usr/sbin/gluster',
-          gluster_peer_list: 'peer1.example.com,peer2.example.com',
-          gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+          gluster_peer_list: %w[peer1.example.com peer2.example.com],
+          gluster_volume_list: %w[gl1.example.com:/glusterfs/backup gl2.example.com:/glusterfs/backup]
         }
       end
 
@@ -60,8 +60,8 @@ describe 'gluster::volume', type: :define do
     let(:facts) do
       {
         gluster_binary: '/usr/sbin/gluster',
-        gluster_peer_list: 'srv1.local,srv2.local',
-        gluster_volume_list: 'srv1.local:/glusterfs/backup,srv2.local:/glusterfs/backup'
+        gluster_peer_list: %w[srv1.local srv2.local],
+        gluster_volume_list: %w[srv1.local:/glusterfs/backup srv2.local:/glusterfs/backup]
       }
     end
 
