@@ -61,20 +61,20 @@ if binary
   if peer_count > 0
     Facter.add(:gluster_peer_list) do
       setcode do
-        peer_list
+        peer_list.sort
       end
     end
 
     unless volume_bricks.empty?
       Facter.add(:gluster_volume_list) do
         setcode do
-          volume_bricks.keys
+          volume_bricks.keys.sort
         end
       end
       volume_bricks.each do |vol, bricks|
         Facter.add("gluster_volume_#{vol}_bricks".to_sym) do
           setcode do
-            bricks
+            bricks.sort
           end
         end
       end
@@ -82,7 +82,7 @@ if binary
         volume_options.each do |vol, opts|
           Facter.add("gluster_volume_#{vol}_options".to_sym) do
             setcode do
-              opts
+              opts.sort
             end
           end
         end
@@ -91,7 +91,7 @@ if binary
         volume_ports.each do |vol, ports|
           Facter.add("gluster_volume_#{vol}_ports".to_sym) do
             setcode do
-              ports
+              ports.sort
             end
           end
         end
