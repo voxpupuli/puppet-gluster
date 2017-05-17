@@ -164,7 +164,7 @@ define gluster::volume (
 
       # our fact lists bricks comma-separated, but we need an array
       $vol_bricks = getvar( "::gluster_volume_${title}_bricks" )
-      if $bricks != $vol_bricks {
+      if $bricks.sort != $vol_bricks {
         # this resource's list of bricks does not match the existing
         # volume's list of bricks
         $new_bricks = difference($bricks, $vol_bricks)
