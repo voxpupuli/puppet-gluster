@@ -66,12 +66,16 @@ define gluster::volume (
 
   if $replica {
     $_replica = "replica ${replica}"
+  } else {
+    $_replica = undef
   }
 
   $_transport = "transport ${transport}"
 
   if $options {
     $_options = sort( $options )
+  } else {
+    $_options = undef
   }
 
   $_bricks = join( $bricks, ' ' )
