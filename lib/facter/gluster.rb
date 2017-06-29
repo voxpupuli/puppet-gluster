@@ -29,6 +29,10 @@ if binary
   peer_count = Regexp.last_match[1].to_i if output =~ %r{^Number of Peers: (\d+)$}
   if peer_count > 0
     peer_list = output.scan(%r{^Hostname: (.+)$}).flatten.join(',')
+    other_names = output.scan(%r{^Other names:\n((.+\n)+)}).flatten.join.scan(%r{(.+)\n?}).sort.uniq.flatten.join(',')
+    if other_names
+      peer_list += ',' +  other_names
+    end
     # note the stderr redirection here
     # `gluster volume list` spits to stderr :(
     output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
