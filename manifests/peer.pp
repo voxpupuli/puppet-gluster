@@ -42,7 +42,8 @@
 #       peering attempt only resolves a cosmetic issue, not a functional one.
 #
 define gluster::peer (
-  $pool = 'default'
+  $pool = 'default',
+  $fqdn = $::fqdn,
 ) {
 
   # we can't do much without the Gluster binary
@@ -51,7 +52,7 @@ define gluster::peer (
   if getvar('::gluster_binary') {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
-    if $title != $::fqdn {
+    if $fqdn != $::fqdn {
 
       # and we don't want to attach a server that is already a member
       # of the current pool
