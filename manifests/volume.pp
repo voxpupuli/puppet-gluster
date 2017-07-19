@@ -102,19 +102,13 @@ define gluster::volume (
   if getvar('::gluster_binary'){
     # we need the Gluster binary to do anything!
 
-    if getvar('::gluster_peer_list') {
-      $minimal_requirements = true
-    } else {
-      $minimal_requirements = false
-    }
-
     if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
       $already_exists = true
     } else {
       $already_exists = false
     }
 
-    if $minimal_requirements and $already_exists == false {
+    if $already_exists == false {
       # this volume has not yet been created
 
       exec { "gluster create volume ${title}":

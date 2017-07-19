@@ -33,24 +33,24 @@ if binary
     if other_names
       peer_list += ',' +  other_names
     end
-    # note the stderr redirection here
-    # `gluster volume list` spits to stderr :(
-    output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
-    if output != 'No volumes present in cluster'
-      output.split.each do |vol|
-        # If a brick has trailing informaion such as (arbiter) remove it
-        info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
-        # rubocop:disable Metrics/BlockNesting
-        vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
-        bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
-        volume_bricks[vol] = bricks
-        options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
-        volume_options[vol] = options if options
-        next unless vol_status == 'Started'
-        status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
-        if status =~ %r{^Brick}
-          volume_ports[vol] = status.scan(%r{^Brick [^\t]+\t+(\d+)}).flatten.uniq.sort
-        end
+  end
+  # note the stderr redirection here
+  # `gluster volume list` spits to stderr :(
+  output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
+  if output != 'No volumes present in cluster'
+    output.split.each do |vol|
+      # If a brick has trailing informaion such as (arbiter) remove it
+      info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
+      # rubocop:disable Metrics/BlockNesting
+      vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
+      bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
+      volume_bricks[vol] = bricks
+      options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
+      volume_options[vol] = options if options
+      next unless vol_status == 'Started'
+      status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
+      if status =~ %r{^Brick}
+        volume_ports[vol] = status.scan(%r{^Brick [^\t]+\t+(\d+)}).flatten.uniq.sort
       end
     end
   end
@@ -62,42 +62,39 @@ if binary
     end
   end
 
-  # these facts doesn't make sense without peers
-  if peer_count > 0
-    Facter.add(:gluster_peer_list) do
+  Facter.add(:gluster_peer_list) do
+    setcode do
+      peer_list
+    end
+  end
+
+  unless volume_bricks.empty?
+    Facter.add(:gluster_volume_list) do
       setcode do
-        peer_list
+        volume_bricks.keys.join(',')
       end
     end
-
-    unless volume_bricks.empty?
-      Facter.add(:gluster_volume_list) do
+    volume_bricks.each do |vol, bricks|
+      Facter.add("gluster_volume_#{vol}_bricks".to_sym) do
         setcode do
-          volume_bricks.keys.join(',')
+          bricks.join(',')
         end
       end
-      volume_bricks.each do |vol, bricks|
-        Facter.add("gluster_volume_#{vol}_bricks".to_sym) do
+    end
+    if volume_options
+      volume_options.each do |vol, opts|
+        Facter.add("gluster_volume_#{vol}_options".to_sym) do
           setcode do
-            bricks.join(',')
+            opts.join(',')
           end
         end
       end
-      if volume_options
-        volume_options.each do |vol, opts|
-          Facter.add("gluster_volume_#{vol}_options".to_sym) do
-            setcode do
-              opts.join(',')
-            end
-          end
-        end
-      end
-      if volume_ports
-        volume_ports.each do |vol, ports|
-          Facter.add("gluster_volume_#{vol}_ports".to_sym) do
-            setcode do
-              ports.join(',')
-            end
+    end
+    if volume_ports
+      volume_ports.each do |vol, ports|
+        Facter.add("gluster_volume_#{vol}_ports".to_sym) do
+          setcode do
+            ports.join(',')
           end
         end
       end
