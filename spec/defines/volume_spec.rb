@@ -94,4 +94,17 @@ describe 'gluster::volume', type: :define do
       end
     end
   end
+
+  describe 'single node' do
+    let(:facts) do
+      {
+        gluster_binary: '/usr/sbin/gluster',
+        gluster_peer_count: 0,
+        gluster_peer_list: ''
+      }
+    end
+
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_exec("gluster create volume #{title}") }
+  end
 end

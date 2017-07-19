@@ -30,9 +30,7 @@ if binary
   if peer_count > 0
     peer_list = output.scan(%r{^Hostname: (.+)$}).flatten.join(',')
     other_names = output.scan(%r{^Other names:\n((.+\n)+)}).flatten.join.scan(%r{(.+)\n?}).sort.uniq.flatten.join(',')
-    if other_names
-      peer_list += ',' +  other_names
-    end
+    peer_list += ',' + other_names if other_names
   end
   # note the stderr redirection here
   # `gluster volume list` spits to stderr :(
@@ -41,7 +39,6 @@ if binary
     output.split.each do |vol|
       # If a brick has trailing informaion such as (arbiter) remove it
       info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
-      # rubocop:disable Metrics/BlockNesting
       vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
       bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
       volume_bricks[vol] = bricks

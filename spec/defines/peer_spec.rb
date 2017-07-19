@@ -3,6 +3,12 @@ require 'spec_helper'
 describe 'gluster::peer', type: :define do
   let(:title) { 'peer1.example.com' }
 
+  let(:params) do
+    {
+      fqdn: 'peer1.example.com'
+    }
+  end
+
   describe 'missing gluster_binary fact' do
     it { is_expected.to compile }
     it { is_expected.not_to contain_exec('gluster peer probe peer1.example.com') }
@@ -51,7 +57,8 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 0,
-          gluster_peer_list: ''
+          gluster_peer_list: '',
+          fqdn: 'peer99.example.com'
         }
       end
 
@@ -63,7 +70,8 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 1,
-          gluster_peer_list: 'peer2.example.com'
+          gluster_peer_list: 'peer2.example',
+          fqdn: 'peer99.example.com'
         }
       end
 
@@ -75,7 +83,8 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 2,
-          gluster_peer_list: 'peer2.example.com,peer3.example.com'
+          gluster_peer_list: 'peer2.example,peer3.example',
+          fqdn: 'peer99.example.com'
         }
       end
 
@@ -84,7 +93,7 @@ describe 'gluster::peer', type: :define do
     end
   end
 
-  describe 'self joining (fqdn matches resource title)' do
+  describe 'self joining' do
     let(:facts) do
       {
         gluster_binary: '/usr/sbin/gluster',
@@ -98,5 +107,20 @@ describe 'gluster::peer', type: :define do
     it 'we don\'t try to join with ourselves' do
       is_expected.not_to contain_exec('gluster peer probe peer1.example.com')
     end
+  end
+
+  describe 'use custom host name (not fqdn)' do
+    let(:title) { 'peer1.example' }
+    let(:facts) do
+      {
+        gluster_binary: '/usr/sbin/gluster',
+        gluster_peer_count: 0,
+        gluster_peer_list: '',
+        fqdn: 'peer99.example.com'
+      }
+    end
+
+    it { is_expected.to compile }
+    it { is_expected.to contain_exec('gluster peer probe peer1.example') }
   end
 end
