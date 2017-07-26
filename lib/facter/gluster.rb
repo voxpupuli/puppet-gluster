@@ -39,8 +39,15 @@ if binary
         vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
         bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
         volume_bricks[vol] = bricks
-        options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
-        volume_options[vol] = options if options
+
+        options = []
+        info.scan(%r{(^\w+\.[^:]+): (.+)$}).each do |key, value|
+          value = 'off' if value.strip.casecmp('false') == 0
+          value = 'on' if value.strip.casecmp('true') == 0
+          options.push(format('%{key}: %{value}', key: key, value: value))
+        end
+        volume_options[vol] = options.flatten unless options.empty?
+
         next unless vol_status == 'Started'
         status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
         if status =~ %r{^Brick}
