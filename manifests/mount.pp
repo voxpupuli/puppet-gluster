@@ -52,22 +52,32 @@ define gluster::mount (
 
   if $log_level {
     $ll = "log-level=${log_level}"
+  } else {
+    $ll = undef
   }
 
   if $log_file {
     $lf = "log-file=${log_file}"
+  } else {
+    $lf = undef
   }
 
   if $transport {
     $t = "transport=${transport}"
+  } else {
+    $t = undef
   }
 
   if $direct_io_mode {
     $dim = "direct-io-mode=${direct_io_mode}"
+  } else {
+    $dim = undef
   }
 
   if $readdirp {
     $r = "usereaddrip=${readdirp}"
+  } else {
+    $r = undef
   }
 
   $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
