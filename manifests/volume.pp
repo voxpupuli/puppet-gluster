@@ -6,6 +6,7 @@
 #
 # stripe: the stripe count to use for a striped volume
 # replica: the replica count to use for a replica volume
+# arbiter: the arbiter count to use for a replica volume
 # transport: the transport to use. Defaults to tcp
 # rebalance: whether to rebalance a volume when new bricks are added
 # heal: whether to heal a replica volume when adding bricks
@@ -50,6 +51,7 @@ define gluster::volume (
   Optional[Array] $options                    = undef,
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
+  Optional[Integer] $arbiter                  = undef,
 ) {
 
   if $force {
@@ -186,10 +188,14 @@ define gluster::volume (
           }
 
           if $replica {
-            if ( count($bricks) % $replica ) != 0 {
-              fail("Number of bricks to add is not a multiple of replica count ${replica}")
+            if $arbiter and $arbiter != 0 {
+              $r = "replica ${replica} arbiter ${arbiter}"
+            } else {
+              if ( count($bricks) % $replica ) != 0 {
+                fail("Number of bricks to add is not a multiple of replica count ${replica}")
+              }
+              $r = "replica ${replica}"
             }
-            $r = "replica ${replica}"
           } else {
             $r = ''
           }

@@ -166,6 +166,8 @@ This defined type creates a Gluster volume. You can specify a stripe count, a re
 
 Note that creating brick filesystems is up to you. May I recommend the [Puppet Labs LVM module](https://forge.puppetlabs.com/puppetlabs/lvm) ?
 
+If using [arbiter](https://gluster.readthedocs.io/en/latest/Administrator%20Guide/arbiter-volumes-and-quorum/) volumes, you must conform to the replica count that will work with them, at the time of writing this, Gluster 3.12 only supports a configuration of `replica => 2, arbiter => 1`.
+
 When creating a new volume, this defined type will ensure that all of the servers hosting bricks in the volume are members of the storage pool. In this way, you can define the volume at the time you create servers, and once the last peer joins the pool the volume will be created.
 
 Any volume options defined will be applied after the volume is created but before the volume is started.
