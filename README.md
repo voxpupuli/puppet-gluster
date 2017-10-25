@@ -87,7 +87,7 @@ This class handles the installation of the Gluster packages (both server and cli
 
 If the upstream Gluster repo is enabled (default), this class will install packages from there. Otherwise it will attempt to use native OS packages.
 
-Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster packages (at least client).
+Currently, RHEL 6, RHEL 7, Debian 9, Raspbian and Ubuntu provide native Gluster packages (at least client).
 
     class { gluster::install:
       server  => true,
