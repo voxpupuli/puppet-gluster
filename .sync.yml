@@ -2,11 +2,6 @@
 .travis.yml:
   extras:
   - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=acceptance BEAKER_set="docker/debian-8" bundle exec rake acceptance
-    services: docker
-    sudo: required
-    bundler_args: --without development
-  - rvm: 2.4.0
     env: PUPPET_VERSION="~> 4.0" CHECK=acceptance BEAKER_set="docker/centos-7" bundle exec rake acceptance
     services: docker
     sudo: required
