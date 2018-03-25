@@ -59,6 +59,7 @@ class gluster  (
     server_package => $server_package,
     client         => $client,
     client_package => $client_package,
+    release        => $release,
     version        => $version,
     repo           => $repo,
   }
