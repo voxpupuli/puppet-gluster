@@ -34,7 +34,8 @@ if binary
     output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
     if output != 'No volumes present in cluster'
       output.split.each do |vol|
-        info = Facter::Util::Resolution.exec("#{binary} volume info #{vol}")
+        # If a brick has trailing informaion such as (arbiter) remove it
+        info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
         # rubocop:disable Metrics/BlockNesting
         vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
         bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten

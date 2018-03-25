@@ -80,11 +80,18 @@ define gluster::volume (
     $_options = undef
   }
 
+  if $arbiter {
+    $_arbiter = "arbiter ${arbiter}"
+  } else {
+    $_arbiter = ''
+  }
+
   $_bricks = join( $bricks, ' ' )
 
   $cmd_args = [
     $_stripe,
     $_replica,
+    $_arbiter,
     $_transport,
     $_bricks,
     $_force,
