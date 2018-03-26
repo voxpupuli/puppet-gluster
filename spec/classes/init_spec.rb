@@ -7,17 +7,28 @@ describe 'gluster', type: :class do
         facts
       end
 
+      context 'with all defaults' do
+        it { is_expected.to contain_class('gluster') }
+        it { is_expected.to contain_class('gluster::params') }
+        unless facts[:os]['family'] == 'Archlinux'
+          it { is_expected.to contain_class('gluster::repo') }
+        end
+        it { is_expected.to compile.with_all_deps }
+        it 'includes classes' do
+          is_expected.to contain_class('gluster::install')
+          is_expected.to contain_class('gluster::service')
+        end
+        it 'manages the Gluster service' do
+          is_expected.to create_class('gluster::service').with(ensure: true)
+        end
+      end
+
       case facts[:osfamily]
       when 'Redhat'
-        context 'with all defaults' do
-          it { is_expected.to contain_class('gluster') }
-          it { is_expected.to contain_class('gluster::params') }
-          it { is_expected.to compile.with_all_deps }
-
-          it 'includes classes' do
-            is_expected.to contain_class('gluster::install')
-            is_expected.to contain_class('gluster::service')
-          end
+        context 'RedHat specific stuff' do
+          it { is_expected.to contain_service('glusterd') }
+          it { is_expected.to contain_class('gluster::repo::yum') }
+          it { is_expected.to contain_yumrepo('glusterfs-x86_64') }
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -28,11 +39,6 @@ describe 'gluster', type: :class do
               repo: true
             )
           end
-          it 'manages the Gluster service' do
-            is_expected.to create_class('gluster::service').with(
-              ensure: true
-            )
-          end
         end
         context 'specific version and package names defined' do
           let :params do
@@ -54,26 +60,16 @@ describe 'gluster', type: :class do
               repo: false
             )
           end
-          it 'manages the Gluster service' do
-            is_expected.to create_class('gluster::service').with(
-              ensure: true
-            )
-          end
           it 'installs custom-gluster-client and custom-gluster-server' do
             is_expected.to create_package('custom-gluster-client')
             is_expected.to create_package('custom-gluster-server')
           end
         end
       when 'Debian'
-        context 'with all defaults' do
-          it { is_expected.to contain_class('gluster') }
-          it { is_expected.to contain_class('gluster::params') }
-          it { is_expected.to compile.with_all_deps }
-
-          it 'includes classes' do
-            is_expected.to contain_class('gluster::install')
-            is_expected.to contain_class('gluster::service')
-          end
+        context 'Debian specific stuff' do
+          it { is_expected.to contain_class('gluster::repo::apt') }
+          it { is_expected.to contain_apt__source('glusterfs-LATEST') }
+          it { is_expected.to contain_package('apt-transport-https') }
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -84,11 +80,6 @@ describe 'gluster', type: :class do
               repo: true
             )
           end
-          it 'manages the Gluster service' do
-            is_expected.to create_class('gluster::service').with(
-              ensure: true
-            )
-          end
         end
         context 'specific version and package names defined' do
           let :params do
@@ -108,11 +99,6 @@ describe 'gluster', type: :class do
               client_package: 'custom-gluster-client',
               version: '3.1.4',
               repo: false
-            )
-          end
-          it 'manages the Gluster service' do
-            is_expected.to create_class('gluster::service').with(
-              ensure: true
             )
           end
           it 'installs custom-gluster-client and custom-gluster-server' do
