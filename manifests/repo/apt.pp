@@ -41,16 +41,18 @@ class gluster::repo::apt (
 
   # Key has changed since 3.9
   $repo_key_name = $release ? {
-    /(3.0|3.1|3.2|3.3|3.4|3.5|3.6|3.7|3.8)/ => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
-    default                                 => '849512C2CA648EF425048F55C883F50CB2289A17',
+    '3.8'                                     => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
+    '3.10'                                    => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
+    '3.11'                                    => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
+    '3.12'                                    => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
+    default                                   => '849512C2CA648EF425048F55C883F50CB2289A17',
   }
 
   # Key location is different for some releases
   $repo_key_source = $release ? {
-    /(3.0|3.1|3.2|3.3|3.4|3.5|3.7|3.8)/  => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
-    '3.6'                                => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/rsa.pub",
-    default                              => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
-  }
+  '3.8'   => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
+  default => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
+}
 
   # basic sanity check
   if $version == 'LATEST' {

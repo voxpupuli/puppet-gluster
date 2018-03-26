@@ -19,7 +19,7 @@ describe 'gluster::repo::apt', type: :class do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
-              location: "http://download.gluster.org/pub/gluster/glusterfs/3.8/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
+              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
             )
           end
         end
@@ -47,7 +47,7 @@ describe 'gluster::repo::apt', type: :class do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
-              location: "http://download.gluster.org/pub/gluster/glusterfs/3.8/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",
+              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",
               pin: '700'
             )
           end
@@ -69,26 +69,6 @@ describe 'gluster::repo::apt', type: :class do
                 'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.9/rsa.pub'
               },
               location: "http://download.gluster.org/pub/gluster/glusterfs/3.9/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
-            )
-          end
-        end
-
-        context 'Specific Gluster release 3.6' do
-          let :params do
-            {
-              release: '3.6'
-            }
-          end
-
-          it 'installs' do
-            is_expected.to contain_apt__source('glusterfs-LATEST').with(
-              repos: 'main',
-              release: facts[:lsbdistcodename].to_s,
-              key: {
-                'id' => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
-                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.6/LATEST/Debian/rsa.pub'
-              },
-              location: "http://download.gluster.org/pub/gluster/glusterfs/3.6/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
             )
           end
         end

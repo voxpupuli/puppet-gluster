@@ -6,10 +6,8 @@ describe 'gluster server' do
       pp = <<-EOS
 
        class { 'gluster':
-         repo    => true,
          client  => false,
          server  => true,
-         release => '3.9',
        }
 
       EOS
