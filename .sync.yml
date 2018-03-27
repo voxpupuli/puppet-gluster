@@ -1,9 +1,5 @@
 ---
 .travis.yml:
-  extras:
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=acceptance BEAKER_set="docker/centos-7" bundle exec rake acceptance
-    services: docker
-    sudo: required
-    bundler_args: --without development
+  docker_sets:
+    - set: docker/centos-7
   secure: "l2HEhssQyDQGrdBkGS8f/gQ4FA5vVLM0JegyAVaaIXpRrJYgRiDAvC+u81HS//+J0v9cr4jo74ncl1HGU0QJZURJX/L8DJqUVXzSZpe9HmfrQpV1RDUSNMqzaIq5Z268Ou9n1Jkeg58WJyIaks9PQhXoWRRSnaCyDHrbGM8XcAU="
