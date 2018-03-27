@@ -25,9 +25,10 @@ matrix:
   - rvm: 2.4.3
     bundler_args: --without system_tests development release
     env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
-  - rvm: 2.4.0
-    bundler_args: --without development
-    env: PUPPET_VERSION="~> 4.0" CHECK=acceptance BEAKER_set="docker/centos-7" bundle exec rake acceptance
+  - rvm: 2.4.3
+    bundler_args: --without development release
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7 CHECK=beaker
     services: docker
     sudo: required
 branches:
