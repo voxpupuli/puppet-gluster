@@ -19,7 +19,7 @@ describe 'gluster::repo::apt', type: :class do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
-              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
+              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/"
             )
           end
         end
@@ -47,7 +47,7 @@ describe 'gluster::repo::apt', type: :class do
             is_expected.to contain_apt__source('glusterfs-LATEST').with(
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
-              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/",
+              location: "http://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
               pin: '700'
             )
           end
