@@ -14,7 +14,7 @@ describe 'gluster::service', type: :class do
           when 'Redhat'
             is_expected.to create_service('glusterd')
           when 'Debian'
-            is_expected.to create_service('glusterfs-server')
+            is_expected.to create_service('glusterd')
           when 'Archlinux'
             is_expected.to create_service('glusterd')
           end
