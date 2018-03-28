@@ -55,7 +55,7 @@ class gluster::params {
       $repo           = true
       $server_package = 'glusterfs-server'
       $client_package = 'glusterfs-client'
-      $service_name   = 'glusterfs-server'
+      $service_name   = 'glusterd'
     }
     'Archlinux': {
       $repo = false

@@ -50,9 +50,9 @@ class gluster::repo::apt (
 
   # Key location is different for some releases
   $repo_key_source = $release ? {
-  '3.8'   => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
-  default => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
-}
+    '3.8'   => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
+    default => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
+  }
 
   # basic sanity check
   if $version == 'LATEST' {
