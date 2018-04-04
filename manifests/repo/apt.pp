@@ -58,9 +58,9 @@ class gluster::repo::apt (
   if $version == 'LATEST' {
     $repo_ver = $version
   } else {
-    if $version =~ /^\d\.\d$/ {
+    if $version =~ /^\d\.\d+$/ {
       $repo_ver = "${version}/LATEST"
-    } elsif $version =~ /^(\d)\.(\d)\.(\d).*$/ {
+    } elsif $version =~ /^(\d)\.(\d+)\.(\d+).*$/ {
       $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
     } else {
       fail("${version} doesn't make sense for ${::operatingsystem}!")
