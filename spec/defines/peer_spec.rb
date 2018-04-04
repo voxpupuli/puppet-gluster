@@ -24,7 +24,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 1,
-          gluster_peer_list: 'peer1.example.com'
+          gluster_peer_list: ['peer1.example.com']
         }
       end
 
@@ -36,7 +36,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 2,
-          gluster_peer_list: 'peer1.example.com,peer2.example.com'
+          gluster_peer_list: %w[peer1.example.com peer2.example.com]
         }
       end
 
@@ -51,7 +51,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 0,
-          gluster_peer_list: ''
+          gluster_peer_list: []
         }
       end
 
@@ -63,7 +63,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 1,
-          gluster_peer_list: 'peer2.example.com'
+          gluster_peer_list: ['peer2.example.com']
         }
       end
 
@@ -75,7 +75,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 2,
-          gluster_peer_list: 'peer2.example.com,peer3.example.com'
+          gluster_peer_list: %w[peer2.example.com peer3.example.com]
         }
       end
 
