@@ -157,11 +157,17 @@ describe 'gluster', type: :class do
             }
           }
         end
+
         it 'creates gluster::volume' do
           is_expected.to contain_gluster__volume('data1').with(
             name: 'data1',
-            replica: false,
+            replica: nil,
             bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
+          )
+        end
+        it 'executes command without replica' do
+          is_expected.not_to contain_exec('gluster create volume data1').with(
+            command: %r{.* replica .*}
           )
         end
       end
