@@ -74,7 +74,7 @@ define gluster::volume (
 
   $_transport = "transport ${transport}"
 
-  if $options {
+  if $options and ! empty( $options ) {
     $_options = sort( $options )
   } else {
     $_options = undef
