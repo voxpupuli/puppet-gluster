@@ -106,5 +106,7 @@ describe 'gluster::volume', type: :define do
 
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_exec("gluster create volume #{title}") }
+    it { is_expected.to contain_gluster__volume__option("#{title}:server.allow-insecure").with_value('on') }
+    it { is_expected.to contain_gluster__volume__option("#{title}:nfs.ports-insecure").with_value('on') }
   end
 end
