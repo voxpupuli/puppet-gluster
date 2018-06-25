@@ -69,7 +69,7 @@ define gluster::volume (
   if $replica {
     $_replica = "replica ${replica}"
   } else {
-    $_replica = undef
+    $_replica = ''
   }
 
   $_transport = "transport ${transport}"
