@@ -107,4 +107,16 @@ describe 'gluster::volume', type: :define do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_exec("gluster create volume #{title}") }
   end
+  describe 'with empty options' do
+    let(:facts) do
+      {
+        gluster_binary: '/usr/sbin/gluster'
+      }
+    end
+    let(:params) do
+      super().merge(options: [])
+    end
+
+    it { is_expected.to compile.with_all_deps }
+  end
 end

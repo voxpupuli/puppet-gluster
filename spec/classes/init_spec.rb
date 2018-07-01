@@ -139,6 +139,39 @@ describe 'gluster', type: :class do
         end
       end
 
+      context 'when volumes defined without replica' do
+        let :facts do
+          super().merge(
+            gluster_binary: '/sbin/gluster',
+            gluster_peer_list: 'example1,example2',
+            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+          )
+        end
+        let :params do
+          {
+            volumes:
+            {
+              'data1' => {
+                'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
+              }
+            }
+          }
+        end
+
+        it 'creates gluster::volume' do
+          is_expected.to contain_gluster__volume('data1').with(
+            name: 'data1',
+            replica: nil,
+            bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
+          )
+        end
+        it 'executes command without replica' do
+          is_expected.not_to contain_exec('gluster create volume data1').with(
+            command: %r{.* replica .*}
+          )
+        end
+      end
+
       context 'when volumes incorrectly defined' do
         let :params do
           {
