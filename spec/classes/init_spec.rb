@@ -69,7 +69,6 @@ describe 'gluster', type: :class do
         context 'Debian specific stuff' do
           it { is_expected.to contain_class('gluster::repo::apt') }
           it { is_expected.to contain_apt__source('glusterfs-LATEST') }
-          it { is_expected.to contain_package('apt-transport-https') }
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
