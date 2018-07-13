@@ -73,10 +73,10 @@ describe 'gluster::repo::apt', type: :class do
           end
         end
 
-        context 'Specific Gluster release 3.9' do
+        context 'Specific Gluster release 3.12' do
           let :params do
             {
-              release: '3.9'
+              release: '3.12'
             }
           end
 
@@ -85,34 +85,13 @@ describe 'gluster::repo::apt', type: :class do
               repos: 'main',
               release: facts[:lsbdistcodename].to_s,
               key: {
-                'id' => '849512C2CA648EF425048F55C883F50CB2289A17',
-                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.9/rsa.pub'
+                'id' => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
+                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.12/rsa.pub'
               },
-              location: "https://download.gluster.org/pub/gluster/glusterfs/3.9/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
+              location: "https://download.gluster.org/pub/gluster/glusterfs/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
             )
           end
         end
-
-        context 'Specific Gluster release 3.8' do
-          let :params do
-            {
-              release: '3.8'
-            }
-          end
-
-          it 'installs' do
-            is_expected.to contain_apt__source('glusterfs-LATEST').with(
-              repos: 'main',
-              release: facts[:lsbdistcodename].to_s,
-              key: {
-                'id' => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
-                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.8/LATEST/rsa.pub'
-              },
-              location: "https://download.gluster.org/pub/gluster/glusterfs/3.8/LATEST/Debian/#{facts[:lsbdistcodename]}/apt/"
-            )
-          end
-        end
-
       end
     end
   end
