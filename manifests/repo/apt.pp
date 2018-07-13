@@ -31,9 +31,9 @@
 # Copyright 2015 RL Solutions, unless otherwise noted
 #
 class gluster::repo::apt (
-  $version         = $::gluster::params::version,
-  $release         = $::gluster::params::release,
-  $priority        = $::gluster::params::repo_priority,
+  $version  = $::gluster::params::version,
+  $release  = $::gluster::params::release,
+  $priority = $::gluster::params::repo_priority,
 ) {
   include '::apt'
 
@@ -53,14 +53,12 @@ class gluster::repo::apt (
   # basic sanity check
   if $version == 'LATEST' {
     $repo_ver = $version
+  } elsif $version =~ /^\d\.\d+$/ {
+    $repo_ver = "${version}/LATEST"
+  } elsif $version =~ /^(\d)\.(\d+)\.(\d+).*$/ {
+    $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
   } else {
-    if $version =~ /^\d\.\d+$/ {
-      $repo_ver = "${version}/LATEST"
-    } elsif $version =~ /^(\d)\.(\d+)\.(\d+).*$/ {
-      $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
-    } else {
-      fail("${version} doesn't make sense for ${::operatingsystem}!")
-    }
+    fail("${version} doesn't make sense for ${::operatingsystem}!")
   }
 
   # the Gluster repo only supports x86_64 and i386. armhf is only supported for Raspbian. The Ubuntu PPA also supports armhf and arm64.
