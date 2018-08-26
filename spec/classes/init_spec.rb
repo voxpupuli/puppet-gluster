@@ -10,7 +10,7 @@ describe 'gluster', type: :class do
       context 'with all defaults' do
         it { is_expected.to contain_class('gluster') }
         it { is_expected.to contain_class('gluster::params') }
-        unless facts[:os]['family'] == 'Archlinux'
+        unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse'
           it { is_expected.to contain_class('gluster::repo') }
         end
         it { is_expected.to compile.with_all_deps }
