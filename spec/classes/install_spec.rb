@@ -62,9 +62,7 @@ describe 'gluster::install', type: :class do
         end
 
         case facts[:osfamily]
-        when 'Archlinux'
-          it { is_expected.not_to create_class('gluster::repo') }
-        when 'Suse'
+        when 'Archlinux', 'Suse'
           it { is_expected.not_to create_class('gluster::repo') }
         else
           it { is_expected.to raise_error(Puppet::Error, %r{not yet supported}) }
