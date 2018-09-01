@@ -39,7 +39,7 @@ class gluster::install (
 
   if $repo {
     # install the correct repo
-    if ! defined ( Class[::gluster::repo] ) {
+    if ! defined ( Class['::gluster::repo'] ) {
       class { '::gluster::repo':
         version => $version,
       }
@@ -59,7 +59,7 @@ class gluster::install (
       ensure_packages($server_package, {
         ensure => $_version,
         tag    => 'gluster-packages',
-        notify => Class[::gluster::service],
+        notify => Class['::gluster::service'],
       })
     } elsif $client {
       ensure_packages($client_package, {
@@ -80,7 +80,7 @@ class gluster::install (
       # we use ensure_packages here because on some distributions the client and server package have different names
       ensure_packages($server_package, {
         ensure => $_version,
-        notify => Class[::gluster::service],
+        notify => Class['::gluster::service'],
         tag    => 'gluster-packages',
       })
     }
