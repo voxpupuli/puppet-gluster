@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.1.0](https://github.com/voxpupuli/puppet-gluster/tree/v4.1.0) (2018-09-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v4.0.0...v4.1.0)
+
+**Implemented enhancements:**
+
+- Allow volumes without replicas [\#168](https://github.com/voxpupuli/puppet-gluster/pull/168) ([glorpen](https://github.com/glorpen))
+
+**Fixed bugs:**
+
+- Allow double digit minor and build versions [\#164](https://github.com/voxpupuli/puppet-gluster/pull/164) ([gnif](https://github.com/gnif))
+- Fixed logic for single node gluster servers [\#127](https://github.com/voxpupuli/puppet-gluster/pull/127) ([glorpen](https://github.com/glorpen))
+
+**Closed issues:**
+
+- Regex doesn't match double digit version numbers [\#162](https://github.com/voxpupuli/puppet-gluster/issues/162)
+- Creating volume without replication [\#88](https://github.com/voxpupuli/puppet-gluster/issues/88)
+- Tries to create duplicate volumes if there's only one gluster node [\#6](https://github.com/voxpupuli/puppet-gluster/issues/6)
+
+**Merged pull requests:**
+
+- allow puppetlabs/stdlib 5.x and puppetlabs/apt 6.x [\#178](https://github.com/voxpupuli/puppet-gluster/pull/178) ([bastelfreak](https://github.com/bastelfreak))
+- use simple quotes for Class names to comply with lint [\#177](https://github.com/voxpupuli/puppet-gluster/pull/177) ([tbrouhier](https://github.com/tbrouhier))
+- allow puppetlabs/apt 5.x [\#174](https://github.com/voxpupuli/puppet-gluster/pull/174) ([bastelfreak](https://github.com/bastelfreak))
+- drop EOL OSs; fix puppet version range [\#167](https://github.com/voxpupuli/puppet-gluster/pull/167) ([bastelfreak](https://github.com/bastelfreak))
+- Rely on beaker-hostgenerator for docker nodesets [\#166](https://github.com/voxpupuli/puppet-gluster/pull/166) ([ekohl](https://github.com/ekohl))
+- Fix arbiter doc [\#163](https://github.com/voxpupuli/puppet-gluster/pull/163) ([NITEMAN](https://github.com/NITEMAN))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v4.0.0) (2018-03-28)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v3.0.0...v4.0.0)
@@ -35,6 +63,7 @@ These should not affect the functionality of the module.
 - globbing in apt.pp fails with gluster release 3.10 and newer [\#140](https://github.com/voxpupuli/puppet-gluster/issues/140)
 - Add support for arbiter volumes [\#134](https://github.com/voxpupuli/puppet-gluster/issues/134)
 - Update puppetlabs/apt dependencie [\#129](https://github.com/voxpupuli/puppet-gluster/issues/129)
+- "gluster peer probe" getting called on each puppet run [\#124](https://github.com/voxpupuli/puppet-gluster/issues/124)
 - Apt public key for gluster.org changed address [\#102](https://github.com/voxpupuli/puppet-gluster/issues/102)
 
 **Merged pull requests:**
@@ -47,7 +76,6 @@ These should not affect the functionality of the module.
 - make the code compatible with strict\_variables [\#132](https://github.com/voxpupuli/puppet-gluster/pull/132) ([tequeter](https://github.com/tequeter))
 - update dependency for puppetlabs-apt [\#130](https://github.com/voxpupuli/puppet-gluster/pull/130) ([TheMeier](https://github.com/TheMeier))
 - Fix/types: Fix signature of gluster::volume [\#119](https://github.com/voxpupuli/puppet-gluster/pull/119) ([ntnn](https://github.com/ntnn))
-- release 3.0.0 [\#105](https://github.com/voxpupuli/puppet-gluster/pull/105) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v3.0.0) (2017-02-12)
 
@@ -56,10 +84,6 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - Repo refactor [\#103](https://github.com/voxpupuli/puppet-gluster/pull/103) ([martialblog](https://github.com/martialblog))
-
-**Merged pull requests:**
-
-- release 2.3.0 [\#99](https://github.com/voxpupuli/puppet-gluster/pull/99) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v2.3.0](https://github.com/voxpupuli/puppet-gluster/tree/v2.3.0) (2017-01-13)
 
@@ -164,7 +188,6 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - Release 2.0.0 [\#51](https://github.com/voxpupuli/puppet-gluster/pull/51) ([bastelfreak](https://github.com/bastelfreak))
-- Fix error message: Undefined variable ::operatingsystemmajrelease [\#44](https://github.com/voxpupuli/puppet-gluster/pull/44) ([dhoppe](https://github.com/dhoppe))
 - GH-22: Add tags to metadata.json [\#41](https://github.com/voxpupuli/puppet-gluster/pull/41) ([jyaworski](https://github.com/jyaworski))
 - Use force Parameter when adding brick to existing volume [\#38](https://github.com/voxpupuli/puppet-gluster/pull/38) ([rauchrob](https://github.com/rauchrob))
 - Update hyperlink in README.md [\#37](https://github.com/voxpupuli/puppet-gluster/pull/37) ([rauchrob](https://github.com/rauchrob))
@@ -182,4 +205,4 @@ These should not affect the functionality of the module.
 
 
 
-\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
