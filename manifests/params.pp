@@ -63,6 +63,12 @@ class gluster::params {
       $client_package = 'glusterfs'
       $service_name   = 'glusterd'
     }
+    'Suse': {
+      $repo = false
+      $server_package = 'glusterfs'
+      $client_package = 'glusterfs'
+      $service_name   = 'glusterd'
+    }
     default: {
       $repo = false
       # these packages are the upstream names
