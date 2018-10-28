@@ -77,10 +77,10 @@ class gluster::repo::apt (
             /i\d86/      => 'i386',
             default      => false,
           }
-          if versioncmp($release, '3.12') < 0 {
-            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
+          if versioncmp($repo_ver, '3.12') < 0 {
+            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/Debian/${::lsbdistcodename}/apt/"
           } else {
-            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
+            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${repo_ver}/Debian/${::lsbdistcodename}/${arch}/apt/"
           }
         }
       }
