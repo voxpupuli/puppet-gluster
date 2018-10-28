@@ -45,7 +45,8 @@ class gluster::repo::apt (
     '3.10'                                    => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
     '3.11'                                    => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
     '3.12'                                    => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-    default                                   => '849512C2CA648EF425048F55C883F50CB2289A17',
+    '3.13'                                    => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
+    default                                   => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
   }
 
   # Key location is different for some releases
