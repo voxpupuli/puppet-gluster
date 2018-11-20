@@ -1,3 +1,4 @@
+gluster_volumes = {}
 peer_count = 0
 peer_list = ''
 volume_bricks = {}
@@ -37,17 +38,46 @@ if binary
   output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
   if output != 'No volumes present in cluster'
     output.split.each do |vol|
+      # Create hash entry for each volume in a structured fact.
+      gluster_volumes[vol] = {}
+
       # If a brick has trailing informaion such as (arbiter) remove it
       info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
       vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
+      gluster_volumes[vol]['status'] = vol_status
+
       bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
       volume_bricks[vol] = bricks
-      options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
-      volume_options[vol] = options if options
+      gluster_volumes[vol]['bricks'] = bricks
+
+      # Get the volume options.
+      options = info.scan(%r{^((?!features\.)\w+\.[^:]+: .+)$}).flatten
+      if options
+        volume_options[vol] = options
+        gluster_volumes[vol]['options'] = {}
+        # Convert options into key: value pairs for easy retrieval if needed.
+        options.each do |option|
+          option_name, set_value = option.split(': ', 2)
+          gluster_volumes[vol]['options'][option_name] = set_value
+        end
+      end
+
+      # Get the volume features. They are handled differently than options.
+      features = info.scan(%r{^(features\.[^:]+: .+)$}).flatten
+      if features
+        gluster_volumes[vol]['features'] = {}
+        # Convert features into key: value pairs for easy retrieval if needed.
+        features.each do |feature|
+          feature_name, set_value = feature.split(': ', 2)
+          gluster_volumes[vol]['features'][feature_name] = set_value
+        end
+      end
+
       next unless vol_status == 'Started'
       status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
       if status =~ %r{^Brick}
         volume_ports[vol] = status.scan(%r{^Brick [^\t]+\t+(\d+)}).flatten.uniq.sort
+        gluster_volumes[vol]['ports'] = volume_ports[vol]
       end
     end
   end
@@ -80,6 +110,7 @@ if binary
     end
     if volume_options
       volume_options.each do |vol, opts|
+        # Create flat facts for each volume
         Facter.add("gluster_volume_#{vol}_options".to_sym) do
           setcode do
             opts.join(',')
@@ -94,6 +125,12 @@ if binary
             ports.join(',')
           end
         end
+      end
+    end
+    # Create a new structured fact containing all volume info.
+    Facter.add(:gluster_volumes) do
+      setcode do
+        gluster_volumes
       end
     end
   end
