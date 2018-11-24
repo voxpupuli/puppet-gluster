@@ -1,6 +1,11 @@
+# vim: syntax=ruby tabstop=2 softtabstop=2 shiftwidth=2
+
+require 'rexml/document'
+
+gluster_peers = {}
+gluster_volumes = {}
 peer_count = 0
 peer_list = ''
-volume_bricks = {}
 volume_options = {}
 volume_ports = {}
 
@@ -19,40 +24,87 @@ if !binary or !File.executable? binary
 end
 
 if binary
-  # the Gluster binary command to use
+  # Gluster facts don't make sense if the Gluster binary isn't present
+
+  # The Gluster binary command to use
   Facter.add(:gluster_binary) do
     setcode do
       binary
     end
   end
-  output = Facter::Util::Resolution.exec("#{binary} peer status")
-  peer_count = Regexp.last_match[1].to_i if output =~ %r{^Number of Peers: (\d+)$}
-  if peer_count > 0
-    peer_list = output.scan(%r{^Hostname: (.+)$}).flatten.join(',')
-    other_names = output.scan(%r{^Other names:\n((.+\n)+)}).flatten.join.scan(%r{(.+)\n?}).sort.uniq.flatten.join(',')
-    peer_list += ',' + other_names if other_names
+
+  # Get our peer information from gluster peer status --xml (Code credit to github user: coder-hugo)
+  peer_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} peer status --xml"))
+  REXML::XPath.match(peer_status_xml, '/cliOutput/peerStatus/peer').each do |peer_xml|
+    # Get the peer hostname
+    peer = peer_xml.elements['hostname'].text.to_s
+
+    # Define a per-peer hash to contain our data elements
+    gluster_peers[peer] = {}
+
+    gluster_peers[peer]['uuid'] = peer_xml.elements['uuid'].text.to_s
+    gluster_peers[peer]['connected'] = peer_xml.elements['connected'].text.to_i
+    gluster_peers[peer]['state'] = peer_xml.elements['state'].text.to_i
+    gluster_peers[peer]['status'] = peer_xml.elements['stateStr'].text.to_s
   end
-  # note the stderr redirection here
-  # `gluster volume list` spits to stderr :(
-  output = Facter::Util::Resolution.exec("#{binary} volume list 2>&1")
-  if output != 'No volumes present in cluster'
-    output.split.each do |vol|
-      # If a brick has trailing informaion such as (arbiter) remove it
-      info = Facter::Util::Resolution.exec("#{binary} volume info #{vol} | sed 's/ (arbiter)//g'")
-      vol_status = Regexp.last_match[1] if info =~ %r{^Status: (.+)$}
-      bricks = info.scan(%r{^Brick[^:]+: (.+)$}).flatten
-      volume_bricks[vol] = bricks
-      options = info.scan(%r{^(\w+\.[^:]+: .+)$}).flatten
-      volume_options[vol] = options if options
-      next unless vol_status == 'Started'
-      status = Facter::Util::Resolution.exec("#{binary} volume status #{vol} 2>/dev/null")
-      if status =~ %r{^Brick}
-        volume_ports[vol] = status.scan(%r{^Brick [^\t]+\t+(\d+)}).flatten.uniq.sort
+
+  # Extract and format the data needed for the legacy peer facts.
+  peer_count = gluster_peers.size
+  peer_list = gluster_peers.keys.join(',')
+
+  # Get our volume information from gluster volume info
+  volume_info_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume info --xml"))
+  REXML::XPath.match(volume_info_xml, '/cliOutput/volInfo/volumes/volume').each do |volume_xml|
+    volume = volume_xml.elements['name'].text.to_s
+
+    # Create hash entry for each volume in a structured fact.
+    gluster_volumes[volume] = {}
+
+    vol_status = volume_xml.elements['statusStr'].text.to_s
+    gluster_volumes[volume]['status'] = vol_status
+
+    # Define gluster_volumes[volume]['bricks'] as an array so we can .push() to it.
+    gluster_volumes[volume]['bricks'] = []
+
+    REXML::XPath.match(volume_xml, 'bricks/brick').each do |brick_xml|
+      # We need to loop over the bricks so that we can change the text from :REXML::Text. to String
+      brick_name = brick_xml.elements['name'].text.to_s
+      gluster_volumes[volume]['bricks'].push(brick_name)
+    end
+
+    options = REXML::XPath.match(volume_xml, 'options/option').map { |option| "#{option.elements['name'].text}: #{option.elements['value'].text}" }
+    if options
+      volume_options[volume] = options
+      gluster_volumes[volume]['features'] = {}
+      gluster_volumes[volume]['options'] = {}
+      # Convert options into key: value pairs for easy retrieval if needed.
+      options.each do |option|
+        option_name, set_value = option.split(': ', 2)
+
+        if option_name =~ %r{^features\.}
+          gluster_volumes[volume]['features'][option_name] = set_value
+        else
+          gluster_volumes[volume]['options'][option_name] = set_value
+        end
       end
+    end
+
+    next unless vol_status == 'Started'
+
+    volume_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume status #{volume} --xml"))
+    volume_ports[volume] = REXML::XPath.match(volume_status_xml, "/cliOutput/volStatus/volumes/volume/node[starts-with(hostname/text(), '#{Facter.value('hostname')}')]/port/text()")
+
+    # Define gluster_volumes[volume]['ports'] as an array so we can .push() to it.
+    gluster_volumes[volume]['ports'] = []
+
+    volume_ports[volume].each do |port|
+      # port is of type: :REXML::Text.  Convert it to String and then Integer
+      port_number = port.to_s.to_i
+      gluster_volumes[volume]['ports'].push(port_number)
     end
   end
 
-  # Gluster facts don't make sense if the Gluster binary isn't present
+  # Export our facts
   Facter.add(:gluster_peer_count) do
     setcode do
       peer_count
@@ -65,21 +117,35 @@ if binary
     end
   end
 
-  unless volume_bricks.empty?
+  # Create a new structured facts containing all peer and volume info.
+  Facter.add(:gluster_peers) do
+    setcode do
+      gluster_peers
+    end
+  end
+
+  Facter.add(:gluster_volumes) do
+    setcode do
+      gluster_volumes
+    end
+  end
+
+  unless gluster_volumes.empty?
     Facter.add(:gluster_volume_list) do
       setcode do
-        volume_bricks.keys.join(',')
+        gluster_volumes.keys.join(',')
       end
     end
-    volume_bricks.each do |vol, bricks|
-      Facter.add("gluster_volume_#{vol}_bricks".to_sym) do
+    gluster_volumes.keys.each do |volume|
+      Facter.add("gluster_volume_#{volume}_bricks".to_sym) do
         setcode do
-          bricks.join(',')
+          gluster_volumes[volume]['bricks'].join(',')
         end
       end
     end
     if volume_options
       volume_options.each do |vol, opts|
+        # Create flat facts for each volume
         Facter.add("gluster_volume_#{vol}_options".to_sym) do
           setcode do
             opts.join(',')
