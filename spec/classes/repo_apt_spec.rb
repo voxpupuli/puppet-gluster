@@ -53,6 +53,26 @@ describe 'gluster::repo::apt', type: :class do
           end
         end
 
+        context 'Specific Gluster release 4.1' do
+          let :params do
+            {
+              release: '4.1'
+            }
+          end
+
+          it 'installs' do
+            is_expected.to contain_apt__source('glusterfs-LATEST').with(
+              repos: 'main',
+              release: facts[:lsbdistcodename].to_s,
+              key: {
+                'id' => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
+                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/4.1/rsa.pub'
+              },
+              location: "http://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
+            )
+          end
+        end
+
         context 'Specific Gluster release 3.9' do
           let :params do
             {
