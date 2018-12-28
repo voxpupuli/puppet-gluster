@@ -31,44 +31,34 @@
 # Copyright 2015 RL Solutions, unless otherwise noted
 #
 class gluster::repo::apt (
-  $version         = $::gluster::params::version,
-  $release         = $::gluster::params::release,
-  $priority        = $::gluster::params::repo_priority,
+  $version  = $::gluster::params::version,
+  $release  = $::gluster::params::release,
+  $priority = $::gluster::params::repo_priority,
 ) {
   include '::apt'
 
-  ensure_packages(['apt-transport-https'], {'ensure' => 'present'})
-
-  # Key has changed since 3.9
   $repo_key_name = $release ? {
-    '3.8'                                     => 'A4703C37D3F4DE7F1819E980FE79BB52D5DC52DC',
-    '3.10'                                    => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
-    '3.11'                                    => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
-    '3.12'                                    => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-    '3.13'                                    => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
-    '4.0'                                     => '55F839E173AC06F364120D46FA86EEACB306CEE1',
-    '4.1'                                     => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
-    '^5\.(\d)+$'                              => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
-    default                                   => '849512C2CA648EF425048F55C883F50CB2289A17',
+    '3.10'       => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
+    '3.11'       => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
+    '3.12'       => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
+    '3.13'       => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
+    '4.0'        => '55F839E173AC06F364120D46FA86EEACB306CEE1',
+    '4.1'        => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
+    '^5\.(\d)+$' => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
+    default      => '849512C2CA648EF425048F55C883F50CB2289A17',
   }
 
-  # Key location is different for some releases
-  $repo_key_source = $release ? {
-    '3.8'   => "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/rsa.pub",
-    default => "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub",
-  }
+  $repo_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub"
 
   # basic sanity check
   if $version == 'LATEST' {
     $repo_ver = $version
+  } elsif $version =~ /^\d\.\d+$/ {
+    $repo_ver = "${version}/LATEST"
+  } elsif $version =~ /^(\d)\.(\d+)\.(\d+).*$/ {
+    $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
   } else {
-    if $version =~ /^\d\.\d+$/ {
-      $repo_ver = "${version}/LATEST"
-    } elsif $version =~ /^(\d)\.(\d+)\.(\d+).*$/ {
-      $repo_ver =  "${1}.${2}/${1}.${2}.${3}"
-    } else {
-      fail("${version} doesn't make sense for ${::operatingsystem}!")
-    }
+    fail("${version} doesn't make sense for ${::operatingsystem}!")
   }
 
   # the Gluster repo only supports x86_64 and i386. armhf is only supported for Raspbian. The Ubuntu PPA also supports armhf and arm64.
@@ -82,9 +72,9 @@ class gluster::repo::apt (
             default      => false,
           }
           if versioncmp($release, '3.12') < 0 {
-            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
+            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
           } else {
-            $repo_url  = "http://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
+            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
           }
         }
       }
