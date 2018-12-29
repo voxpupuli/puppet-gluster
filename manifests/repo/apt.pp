@@ -61,14 +61,14 @@ class gluster::repo::apt (
     fail("${version} doesn't make sense for ${::operatingsystem}!")
   }
 
-  # the Gluster repo only supports x86_64 and i386. armhf is only supported for Raspbian. The Ubuntu PPA also supports armhf and arm64.
+  # the Gluster repo only supports x86_64 (amd64) and arm64. The Ubuntu PPA also supports armhf and arm64.
   case $::operatingsystem {
     'Debian': {
       case $::lsbdistcodename {
         'jessie', 'stretch':  {
           $arch = $::architecture ? {
             'amd64'      => 'amd64',
-            /i\d86/      => 'i386',
+            'arm64'      => 'arm64',
             default      => false,
           }
           if versioncmp($release, '3.12') < 0 {
