@@ -30,12 +30,12 @@ class gluster::repo (
 ) inherits ::gluster::params {
   case $::osfamily {
     'RedHat': {
-      class { '::gluster::repo::yum':
+      class { 'gluster::repo::yum':
         release => $release,
       }
     }
     'Debian': {
-      class { '::gluster::repo::apt':
+      class { 'gluster::repo::apt':
         version  => $version,
       }
     }

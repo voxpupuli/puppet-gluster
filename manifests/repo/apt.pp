@@ -35,7 +35,7 @@ class gluster::repo::apt (
   $release  = $::gluster::params::release,
   $priority = $::gluster::params::repo_priority,
 ) {
-  include '::apt'
+  include 'apt'
 
   $repo_key_name = $release ? {
     '3.10'       => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',

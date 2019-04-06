@@ -54,7 +54,7 @@ class gluster  (
   Optional[Hash] $volumes = undef,
 ) inherits ::gluster::params {
 
-  class { '::gluster::install':
+  class { 'gluster::install':
     server         => $server,
     server_package => $server_package,
     client         => $client,
@@ -65,7 +65,7 @@ class gluster  (
 
   if $server {
     # if we installed the server bits, manage the service
-    class { '::gluster::service':
+    class { 'gluster::service':
       ensure => $::gluster::params::service_enable,
     }
 

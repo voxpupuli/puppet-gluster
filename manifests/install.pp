@@ -40,7 +40,7 @@ class gluster::install (
   if $repo {
     # install the correct repo
     if ! defined ( Class['::gluster::repo'] ) {
-      class { '::gluster::repo':
+      class { 'gluster::repo':
         version => $version,
       }
     }

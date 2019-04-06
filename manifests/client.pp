@@ -33,7 +33,7 @@ class gluster::client (
   $version        = $::gluster::params::version,
 ) inherits ::gluster::params {
 
-  class { '::gluster::install':
+  class { 'gluster::install':
     server         => false,
     client         => true,
     repo           => $repo,
