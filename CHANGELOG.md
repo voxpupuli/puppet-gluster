@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v5.0.0) (2019-04-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v4.1.0...v5.0.0)
+
+**Breaking changes:**
+
+- modulesync 2.7.0 and drop puppet 4 [\#193](https://github.com/voxpupuli/puppet-gluster/pull/193) ([bastelfreak](https://github.com/bastelfreak))
+- Add arm64, remove i386 compatibility from ::gluster::repo:apt [\#189](https://github.com/voxpupuli/puppet-gluster/pull/189) ([jacksgt](https://github.com/jacksgt))
+- Remove 3.8 repo, use pl-apt 4.4 https support, clean coding [\#170](https://github.com/voxpupuli/puppet-gluster/pull/170) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Suse support [\#175](https://github.com/voxpupuli/puppet-gluster/pull/175) ([bsauvajon](https://github.com/bsauvajon))
+
+**Fixed bugs:**
+
+- Broken facts on gluster3.2 [\#56](https://github.com/voxpupuli/puppet-gluster/issues/56)
+
+**Closed issues:**
+
+- Gluster 3.10 support [\#109](https://github.com/voxpupuli/puppet-gluster/issues/109)
+- Deal with replica add-brick math [\#2](https://github.com/voxpupuli/puppet-gluster/issues/2)
+
+**Merged pull requests:**
+
+- Allow puppetlabs/apt 7.x [\#194](https://github.com/voxpupuli/puppet-gluster/pull/194) ([dhoppe](https://github.com/dhoppe))
+- Add Gluster APT Repo PGP fingerprints for 3.13, 4.0, 4.1 and 5+ [\#188](https://github.com/voxpupuli/puppet-gluster/pull/188) ([jacksgt](https://github.com/jacksgt))
+- modulesync 2.1.0 and allow puppet 6.x [\#183](https://github.com/voxpupuli/puppet-gluster/pull/183) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v4.1.0](https://github.com/voxpupuli/puppet-gluster/tree/v4.1.0) (2018-09-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v4.0.0...v4.1.0)
