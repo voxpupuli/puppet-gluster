@@ -3,7 +3,8 @@
 # @param title
 #    the name of the volume, a colon, and the name of the option
 # @param value
-#    the value to set for this option
+#    the value to set for this option. Boolean values will be coerced to
+#    'on'/'off'.
 # @param ensure
 #    whether to set or remove an option
 #
@@ -30,31 +31,29 @@ define gluster::volume::option (
   Enum['present', 'absent']                   $ensure = 'present',
 ) {
 
-  $arr = split( $title, ':' )
-  $count = count($arr)
+  $arr = $title.split(':')
   # do we have more than one array element?
-  if $count != 2 {
+  if count($arr) != 2 {
     fail("${title} does not parse as volume:option")
   }
-  $vol = $arr[0]
-  $opt = $arr[1]
+  [$vol, $opt] = $arr
+
+  $_value = $value ? {
+    Boolean => gluster::onoff($value),
+    default => String($value),
+  }
 
   $cmd = if $ensure == 'absent' {
     "reset ${vol} ${opt}"
   } else {
-    "set ${vol} ${opt} ${value}"
-  }
-
-  $_value = $value ? {
-    Boolean => if $value {
-      'on'
-    } else {
-      'off'
-    },
-    default => $value,
+    "set ${vol} ${opt} ${_value}"
   }
 
   exec { "gluster option ${vol} ${opt} ${_value}":
-    command => "${facts['gluster_binary']} volume ${cmd}",
+    path    => '/usr/bin:/usr/sbin:/bin',
+    command => "${::gluster_binary} volume ${cmd}",
+    unless  => unless $ensure == 'absent' {
+      gluster::cmd_volume_get_option($vol, $opt, $_value)
+    },
   }
 }
