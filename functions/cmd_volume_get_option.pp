@@ -18,7 +18,7 @@ function gluster::cmd_volume_get_option(
   Gluster::VolumeOption $opt,
   Optional[Any]         $comparison = undef,
 ) {
-  $_cmd = "${::gluster_binary} volume get ${vol} ${opt}"
+  $_cmd = "${facts['gluster_binary']} volume get ${vol} ${opt}"
 
   unless $comparison {
     return $_cmd

@@ -51,7 +51,7 @@ define gluster::volume::option (
 
   exec { "gluster option ${vol} ${opt} ${_value}":
     path    => '/usr/bin:/usr/sbin:/bin',
-    command => "${::gluster_binary} volume ${cmd}",
+    command => "${facts['gluster_binary']} volume ${cmd}",
     unless  => unless $ensure == 'absent' {
       gluster::cmd_volume_get_option($vol, $opt, $_value)
     },
