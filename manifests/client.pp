@@ -32,6 +32,7 @@ class gluster::client (
     client         => true,
     repo           => $repo,
     version        => $version,
+    release        => $release,
     client_package => $client_package,
   }
 }

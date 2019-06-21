@@ -58,6 +58,7 @@ class gluster  (
     client_package => $client_package,
     version        => $version,
     repo           => $repo,
+    release        => $release,
   }
 
   if $server {
