@@ -73,6 +73,27 @@ describe 'gluster::repo::apt', type: :class do
           end
         end
 
+        context 'Gluster release 6.3' do
+          let :params do
+            {
+              release: '6',
+              version: '6.3'
+            }
+          end
+
+          it 'installs' do
+            is_expected.to contain_apt__source('glusterfs-6.3').with(
+              repos: 'main',
+              release: facts[:lsbdistcodename].to_s,
+              key: {
+                'id' => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
+                'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/6/rsa.pub'
+              },
+              location: "https://download.gluster.org/pub/gluster/glusterfs/6/6.3/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
+            )
+          end
+        end
+
         context 'Specific Gluster release 3.12' do
           let :params do
             {
