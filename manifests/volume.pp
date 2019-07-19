@@ -222,12 +222,9 @@ define gluster::volume (
       }
 
       # did the options change?
-      $current_options = getvar("gluster_volume_${title}_options")
-      if $current_options {
-        $_current = sort( split($current_options, ',') )
-      } else {
-        $_current = []
-      }
+      $current_options_hash = pick(fact("gluster_volumes.${title}.options"), {})
+      $_current = sort(join_keys_to_values($current_options_hash, ': '))
+
       if $_current != $_options {
         #
         # either of $current_options or $_options may be empty.
@@ -258,7 +255,7 @@ define gluster::volume (
             create_resources( ::gluster::volume::option, $remove )
           } else {
             $remove_str = join( keys($remove), ', ' )
-            notice("NOT REMOVING the following options for volume ${title}:${remove_str}.")
+            notice("NOT REMOVING the following options for volume ${title}: ${remove_str}.")
           }
         }
         if ! empty($to_add) {
