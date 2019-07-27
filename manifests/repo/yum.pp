@@ -23,9 +23,9 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo::yum (
-  $release         = $::gluster::params::release,
-  $repo_key_source = $::gluster::params::repo_gpg_key_source,
-  $priority        = $::gluster::params::repo_priority,
+  $release         = $gluster::params::release,
+  $repo_key_source = $gluster::params::repo_gpg_key_source,
+  $priority        = $gluster::params::repo_priority,
 ) inherits ::gluster::params {
 
   # CentOS Gluster repo only supports x86_64

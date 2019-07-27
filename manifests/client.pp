@@ -28,9 +28,9 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::client (
-  $repo           = $::gluster::params::repo,
-  $client_package = $::gluster::params::client_package,
-  $version        = $::gluster::params::version,
+  $repo           = $gluster::params::repo,
+  $client_package = $gluster::params::client_package,
+  $version        = $gluster::params::version,
 ) inherits ::gluster::params {
 
   class { 'gluster::install':
