@@ -31,9 +31,9 @@
 # Copyright 2015 RL Solutions, unless otherwise noted
 #
 class gluster::repo::apt (
-  $version  = $::gluster::params::version,
-  $release  = $::gluster::params::release,
-  $priority = $::gluster::params::repo_priority,
+  $version  = $gluster::params::version,
+  $release  = $gluster::params::release,
+  $priority = $gluster::params::repo_priority,
 ) {
   include 'apt'
 

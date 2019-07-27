@@ -42,15 +42,15 @@
 # Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster  (
-  $client                 = $::gluster::params::install_client,
-  $client_package         = $::gluster::params::client_package,
-  $pool                   = $::gluster::params::pool,
-  $repo                   = $::gluster::params::repo,
-  $release                = $::gluster::params::release,
-  $server                 = $::gluster::params::install_server,
-  $server_package         = $::gluster::params::server_package,
-  $use_exported_resources = $::gluster::params::export_resources,
-  $version                = $::gluster::params::version,
+  $client                 = $gluster::params::install_client,
+  $client_package         = $gluster::params::client_package,
+  $pool                   = $gluster::params::pool,
+  $repo                   = $gluster::params::repo,
+  $release                = $gluster::params::release,
+  $server                 = $gluster::params::install_server,
+  $server_package         = $gluster::params::server_package,
+  $use_exported_resources = $gluster::params::export_resources,
+  $version                = $gluster::params::version,
   Optional[Hash] $volumes = undef,
 ) inherits ::gluster::params {
 
@@ -66,7 +66,7 @@ class gluster  (
   if $server {
     # if we installed the server bits, manage the service
     class { 'gluster::service':
-      ensure => $::gluster::params::service_enable,
+      ensure => $gluster::params::service_enable,
     }
 
     if $use_exported_resources {
