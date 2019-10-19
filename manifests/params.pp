@@ -1,23 +1,7 @@
-#
-# == Class gluster::params
-#
-# establishes various defaults for use in other gluster manifests
-#
-# === Parameters
-#
-# None!
-#
-# === Examples
-#
-# None!  This class should not be called in your manifests.
-#
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise noted
+# @summary establishes various defaults for use in other gluster manifests
+# @api private
+# @author Scott Merrill <smerrill@covermymeds.com>
+# @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::params {
 

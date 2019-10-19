@@ -1,45 +1,38 @@
-# == Define: gluster::peer
-#
 # Connects to a Gluster peer. Intended to be exported by each member of
-# a Gluster Trusted Storage Pool. Each server should also collect all
+# a Gluster Trusted Storage Pool.  Each server should also collect all
 # such exported resources for local realization.
 #
 # If the title of the exported resource is NOT the FQDN of the host
 # on which the resource is being realized, then try to initiate a
 # Gluster peering relationship.
 #
-# === Pamameters
+# @summary Connects to a Gluster peer.
 #
-# pool: the name of the storage pool to which this server should be assigned.
+# @param pool
+#    the name of the storage pool to which this server should be assigned.
+# @param fqdn
+#    the name of this peer to use in the pool
 #
-# === Examples
+# @example Export this host's gluster::peer resource, and then collect all others:
+#   @@gluster::peer { $::fqdn:
+#     pool => 'production',
+#   }
+#   Gluster::Peer <<| pool == 'production' |>>
 #
-# Export this host's gluster::peer resource, and then collect all others:
-# @@gluster::peer { $::fqdn:
-#   pool => 'production',
-# }
-# Gluster::Peer <<| pool == 'production' |>>
+# @example explicitly define peers:
+#   gluster::peer { 'gluster1.example.com':
+#     pool => 'pool1',
+#   }
 #
-# You can also explicitly define peers:
-# gluster::peer { 'gluster1.example.com':
-#   pool => 'pool1',
-# }
+# @author Scott Merrill <smerrill@covermymeds.com>
 #
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise notes
-#
-#
-# Note: http://www.gluster.org/pipermail/gluster-users/2013-December/038354.html
-#       When server-a probes server-b, server-b will only record the IP address
-#       for server-a.  When server-b next runs Puppet, it will probe server-a
-#       because server-a's fqdn is not in the list of peers. The peering will
-#       have been successfully established the first time, so this second
-#       peering attempt only resolves a cosmetic issue, not a functional one.
+# @note Copyright 2014 CoverMyMeds, unless otherwise notes
+# @see http://www.gluster.org/pipermail/gluster-users/2013-December/038354.html
+#   When server-a probes server-b, server-b will only record the IP address
+#   for server-a.  When server-b next runs Puppet, it will probe server-a
+#   because server-a's fqdn is not in the list of peers. The peering will
+#   have been successfully established the first time, so this second
+#   peering attempt only resolves a cosmetic issue, not a functional one.
 #
 define gluster::peer (
   $pool = 'default',

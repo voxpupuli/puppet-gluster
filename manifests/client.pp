@@ -1,37 +1,31 @@
-# == Class: gluster::client
+# @summary Ensure that the Gluster FUSE client package is installed
 #
-# Ensure that the Gluster FUSE client package is installed
-# Note: this is a convenience class to ensure that *just* the client
-# is installed.  If you need both client and server, please use
-# ::gluster::install or ::gluster::init
+# @note This is a convenience class to ensure that *just* the client
+#   is installed.  If you need both client and server, please use
+#   the main gluster class
 #
-# === Parameters
+# @param repo
+#   Whether to use the GlusterFS repository
+# @param client_package
+#   The name of the client package to install.
+# @param version
+#   The version of the client tools to install.
 #
-# repo: boolean value to determine whether to use the GlusterFS repository
-# client_package: the name of the client package to install.
-# version: the version of the client tools to install.
+# @example
+#   class { gluster::client:
+#     repo           => true,
+#     client_package => 'glusterfs-fuse',
+#     version        => 'LATEST',
+#   }
 #
-# === Example
-#
-# class { gluster::client:
-#   repo => true,
-#   client_package => 'glusterfs-fuse',
-#   version => 'LATEST',
-# }
-#
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise noted
+# @author Scott Merrill <smerrill@covermymeds.com>
+# @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::client (
-  $repo           = $gluster::params::repo,
-  $client_package = $gluster::params::client_package,
-  $version        = $gluster::params::version,
-) inherits ::gluster::params {
+  Boolean $repo = $gluster::params::repo,
+  String $client_package = $gluster::params::client_package,
+  String $version = $gluster::params::version,
+) inherits gluster::params {
 
   class { 'gluster::install':
     server         => false,

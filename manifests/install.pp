@@ -1,32 +1,29 @@
-# == Class gluster::install
+# @summary install the Gluster packages
+# @api private
 #
-# install the Gluster packages
+# @param server
+#    whether or not to install the server components
+# @param client
+#    whether or not to install the client components
+# @param server_package
+#    the server package name
+# @param client_package
+#    the client package name
+# @param repo
+#    whether or not to use a repo, or the distribution's default packages
+# @param version
+#    the Gluster version to install
 #
-# === Parameters
+# @example
+#   class { gluster::install:
+#     server  => true,
+#     client  => true,
+#     repo    => true,
+#     version => 3.5,
+#   }
 #
-# server: whether or not to install the server components
-# client: whether or not to install the client components
-# server_package: the server package name
-# client_package: the client package name
-# repo: whether or not to use a repo, or the distribution's default packages
-# version: the Gluster version to install
-#
-# === Example
-#
-# class { gluster::install:
-#   server  => true,
-#   client  => true,
-#   repo    => true,
-#   version => 3.5,
-# }
-#
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise noted
+# @author Scott Merrill <smerrill@covermymeds.com>
+# @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
   Boolean $server        = $gluster::params::install_server,
@@ -35,7 +32,7 @@ class gluster::install (
   String $version        = $gluster::params::version,
   String $server_package = $gluster::params::server_package,
   String $client_package = $gluster::params::client_package,
-) inherits ::gluster::params {
+) inherits gluster::params {
 
   if $repo {
     # install the correct repo
