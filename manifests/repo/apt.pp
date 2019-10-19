@@ -80,7 +80,6 @@ class gluster::repo::apt (
     "glusterfs-${version}" => {
       ensure       => present,
       location     => $repo_url,
-      release      => $::lsbdistcodename,
       repos        => 'main',
       key          => {
         id         => $repo_key_name,
