@@ -55,21 +55,17 @@ class gluster::repo::apt (
   }
 
   # the Gluster repo only supports x86_64 (amd64) and arm64. The Ubuntu PPA also supports armhf and arm64.
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     'Debian': {
-      case $::lsbdistcodename {
-        'jessie', 'stretch':  {
-          $arch = $::architecture ? {
-            'amd64'      => 'amd64',
-            'arm64'      => 'arm64',
-            default      => false,
-          }
-          if versioncmp($release, '3.12') < 0 {
-            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
-          } else {
-            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
-          }
-        }
+      $arch = $facts['architecture'] ? {
+        'amd64' => 'amd64',
+        'arm64' => 'arm64',
+        default => false,
+      }
+      if versioncmp($release, '3.12') < 0 {
+        $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${facts['lsbdistcodename']}/apt/"
+      } else {
+        $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${facts['lsbdistcodename']}/${arch}/apt/"
       }
     }
     default: {
@@ -77,7 +73,7 @@ class gluster::repo::apt (
     }
   }
   if ! $arch {
-    fail("Architecture ${::architecture} not yet supported for ${::operatingsystem}.")
+    fail("Architecture ${facts['architecture']} not yet supported for ${facts['operatingsystem']}.")
   }
 
   $repo = {
