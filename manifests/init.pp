@@ -1,48 +1,45 @@
-# == Class: Gluster
+# @summary Installs GlusterFS and optionally creates a trusted storage pool
 #
-# Installs GlusterFS and optionally creates a trusted storage pool
+# @param client
+#    whether to install the Gluster client package(s)
+# @param pool
+#    the name of the trusted storage pool to create
+# @param repo
+#    whether to install and manage the upstream Gluster repo
+# @param server
+#    whether to the install the Gluster server packages
+# @param use_exported_resources
+#    whether or not to export this server's gluster::server and collect other
+#    gluster::server resources
+# @param version
+#    the version to install
+# @param volumes
+#    optional list of volumes (and their properties) to create
 #
-# === Parameters
-#
-# client: whether to install the Gluster client package(s)
-# pool: the name of the trusted storage pool to create
-# repo: whether to install and manage the upstream Gluster repo
-# server: whether to the install the Gluster server packages
-# use_exported_resources: whether or not to export this server's gluster::server and
-#                         collect other gluster::server resources
-# version: the version to install
-# volumes: optional list of volumes (and their properties) to create
-#
-# === Example
-#
-# class { ::gluster:
-#   client                 => false,
-#   server                 => true,
-#   pool                   => 'production',
-#   use_exported_resources => true,
-#   version                => '3.5',
-#   volumes                => { 'data1' => {
-#                                 replica => 2,
-#                                 bricks  => [ 'srv1.local:/export/brick1/brick',
-#                                              'srv2.local:/export/brick1/brick',
-#                                              'srv3.local:/export/brick1/brick',
-#                                              'srv4.local:/export/brick1/brick', ],
-#                                 options => [ 'server.allow-insecure: on',
-#                                              'nfs.disable: true', ],
+# @example
+#   class { ::gluster:
+#     client                 => false,
+#     server                 => true,
+#     pool                   => 'production',
+#     use_exported_resources => true,
+#     version                => '3.5',
+#     volumes                => { 'data1' => {
+#                                   replica => 2,
+#                                   bricks  => [ 'srv1.local:/export/brick1/brick',
+#                                                'srv2.local:/export/brick1/brick',
+#                                                'srv3.local:/export/brick1/brick',
+#                                                'srv4.local:/export/brick1/brick', ],
+#                                   options => [ 'server.allow-insecure: on',
+#                                                'nfs.disable: true', ],
+#                                 },
 #                               },
-#                             },
-#  }
+#   }
 #
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise noted
+# @author Scott Merrill <smerrill@covermymeds.com>
+# @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster  (
-  $client                 = $gluster::params::install_client,
+  Boolean $client = $gluster::params::install_client,
   $client_package         = $gluster::params::client_package,
   $pool                   = $gluster::params::pool,
   $repo                   = $gluster::params::repo,

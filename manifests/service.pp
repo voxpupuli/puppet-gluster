@@ -1,25 +1,20 @@
+# @summary manage the glusterd service
+# @api private
 #
-# == Class gluster::service
+# @param ensure
+#   State of the service to ensure
+# @param enable
+#   Whether or not to enable the service
+# @param service_name
+#   Name of the service to manage
 #
-# manage the glusterd service
+# @example
+#   class { gluster::service:
+#     ensure => running,
+#   }
 #
-# === Parameters
-#
-# ensure: whether or not to run the glusterd service
-#
-# === Examples
-#
-# class { gluster::service:
-#   ensure => running,
-# }
-#
-# === Authors
-#
-# Scott Merrill <smerrill@covermymeds.com>
-#
-# === Copyright
-#
-# Copyright 2014 CoverMyMeds, unless otherwise noted
+# @author Scott Merrill <smerrill@covermymeds.com>
+# @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::service (
   $ensure       = $gluster::params::service_ensure,
