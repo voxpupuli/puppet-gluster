@@ -31,11 +31,6 @@ class gluster::repo::apt (
   include 'apt'
 
   $repo_key_name = $release ? {
-    '3.10'       => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
-    '3.11'       => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
-    '3.12'       => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-    '3.13'       => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
-    '4.0'        => '55F839E173AC06F364120D46FA86EEACB306CEE1',
     '4.1'        => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
     '^5\.(\d)+$' => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
     /^6/         => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
@@ -64,11 +59,7 @@ class gluster::repo::apt (
         'arm64' => 'arm64',
         default => false,
       }
-      if versioncmp($release, '3.12') < 0 {
-        $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${facts['lsbdistcodename']}/apt/"
-      } else {
-        $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${facts['lsbdistcodename']}/${arch}/apt/"
-      }
+      $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${facts['lsbdistcodename']}/${arch}/apt/"
     }
     default: {
       fail('gluster::repo::apt currently only works on Debian')
