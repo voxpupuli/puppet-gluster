@@ -48,7 +48,7 @@ define gluster::volume (
   Boolean $rebalance                          = true,
   Boolean $heal                               = true,
   Boolean $remove_options                     = false,
-  Optional[Array] $options                    = undef,
+  Array[String[1]] $options                   = [],
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
@@ -74,7 +74,7 @@ define gluster::volume (
 
   $_transport = "transport ${transport}"
 
-  if $options and ! empty( $options ) {
+  if ! empty( $options ) {
     $_options = sort( $options )
   } else {
     $_options = undef
