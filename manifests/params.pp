@@ -11,17 +11,13 @@ class gluster::params {
   $release        = '6'
   $version        = 'LATEST'
 
-  # we explicitly do NOT set a priority here. The user must define
-  # a priority in order to ensure that it is activated
-  $repo_priority = undef
-
   # Set distro/release specific names, repo versions, repo gpg keys, package versions, etc
   # if the user didn't specify a version, just use "installed" for package version.
   # if they did specify a version, assume they provided a valid one
   case $::osfamily {
     'RedHat': {
-      $repo                 = true
-      $repo_gpg_key_source  = 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
+      $repo             = true
+      $repo_key_source  = 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
 
       $server_package = $::operatingsystemmajrelease ? {
         # RHEL 6 and 7 provide Gluster packages natively
@@ -36,30 +32,33 @@ class gluster::params {
       $service_name = 'glusterd'
     }
     'Debian': {
-      $repo           = true
-      $server_package = 'glusterfs-server'
-      $client_package = 'glusterfs-client'
-      $service_name   = 'glusterd'
+      $repo            = true
+      $server_package  = 'glusterfs-server'
+      $client_package  = 'glusterfs-client'
+      $service_name    = 'glusterd'
+      $repo_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub"
     }
     'Archlinux': {
       $repo = false
-      $server_package = 'glusterfs'
-      $client_package = 'glusterfs'
-      $service_name   = 'glusterd'
+      $server_package  = 'glusterfs'
+      $client_package  = 'glusterfs'
+      $service_name    = 'glusterd'
+      $repo_key_source = undef
     }
     'Suse': {
       $repo = false
-      $server_package = 'glusterfs'
-      $client_package = 'glusterfs'
-      $service_name   = 'glusterd'
+      $server_package  = 'glusterfs'
+      $client_package  = 'glusterfs'
+      $service_name    = 'glusterd'
+      $repo_key_source = undef
     }
     default: {
       $repo = false
       # these packages are the upstream names
-      $server_package = 'glusterfs-server'
-      $client_package = 'glusterfs-fuse'
-
-      $service_name = 'glusterfs-server'
+      $server_package  = 'glusterfs-server'
+      $client_package  = 'glusterfs-fuse'
+      $repo_key_source = undef
+      $service_name    = 'glusterfs-server'
     }
   }
 

@@ -21,17 +21,27 @@
 # @author Scott Merrill <smerrill@covermymeds.com>
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
+#
 class gluster::client (
-  Boolean $repo = $gluster::params::repo,
-  String $client_package = $gluster::params::client_package,
-  String $version = $gluster::params::version,
+  Boolean $repo             = $gluster::params::repo,
+  String $client_package    = $gluster::params::client_package,
+  String $version           = $gluster::params::version,
+  String $release           = $gluster::params::release,
+  Optional $repo_key_source = $gluster::params::repo_key_source,
 ) inherits gluster::params {
 
+  # if we manage the repository, we also need a GPG key
+  if $repo {
+    assert_type(Variant[Stdlib::Absolutepath, Stdlib::HTTPSUrl], $repo_key_source)
+  }
+
   class { 'gluster::install':
-    server         => false,
-    client         => true,
-    repo           => $repo,
-    version        => $version,
-    client_package => $client_package,
+    server          => false,
+    client          => true,
+    repo            => $repo,
+    version         => $version,
+    client_package  => $client_package,
+    release         => $release,
+    repo_key_source => $repo_key_source,
   }
 }

@@ -13,6 +13,8 @@
 #    whether or not to use a repo, or the distribution's default packages
 # @param version
 #    the Gluster version to install
+# @param priority
+#   The priority for the apt/yum repository. Useful to overwrite other repositories like EPEL
 #
 # @example
 #   class { gluster::install:
@@ -26,19 +28,27 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  Boolean $server        = $gluster::params::install_server,
-  Boolean $client        = $gluster::params::install_client,
-  Boolean $repo          = $gluster::params::repo,
-  String $version        = $gluster::params::version,
-  String $server_package = $gluster::params::server_package,
-  String $client_package = $gluster::params::client_package,
-) inherits gluster::params {
+  Boolean $server,
+  Boolean $client,
+  Boolean $repo,
+  String $version,
+  String $release,
+  Optional $repo_key_source           = undef,
+  Optional[String[1]] $server_package = undef,
+  Optional[String[1]] $client_package = undef,
+  Optional[Integer] $priority         = undef,
+) {
+
+  assert_private()
 
   if $repo {
     # install the correct repo
     if ! defined ( Class['::gluster::repo'] ) {
       class { 'gluster::repo':
-        version => $version,
+        version         => $version,
+        release         => $release,
+        priority        => $priority,
+        repo_key_source => $repo_key_source,
       }
     }
   }
