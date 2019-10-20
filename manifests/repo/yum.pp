@@ -7,6 +7,8 @@
 #    where to find this repo's GPG key
 # @param priority
 #    YUM priority to set for the Gluster repo
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
 #
 # @note Currently only released versions are supported. If you want to use
 #   QA releases or pre-releases, you'll need to edit line 47

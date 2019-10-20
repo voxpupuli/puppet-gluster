@@ -5,6 +5,8 @@
 # @param release The release to use when building the repo URL
 # @param priority
 #   The priority for the apt/yum repository. Useful to overwrite other repositories like EPEL
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
 #
 # Currently only released versions are supported.  If you want to use
 # QA releases or pre-releases, you'll need to edit line 54 below

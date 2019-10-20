@@ -10,6 +10,9 @@
 # @param priority
 #   The priority for the apt/yum repository. Useful to overwrite other repositories like EPEL
 #
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
+#
 # @example
 #   class { gluster::repo
 #     version => '3.5.2',

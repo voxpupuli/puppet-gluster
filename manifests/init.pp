@@ -18,7 +18,7 @@
 # @param priority
 #   The priority for the apt/yum repository. Useful to overwrite other repositories like EPEL
 # @param repo_key_source
-#   Link/path to the GPG key for the repository. Currently only used at RedHat based platforms
+#   HTTP Link or absolute path to the GPG key for the repository.
 # @example
 #   class { ::gluster:
 #     client                 => false,

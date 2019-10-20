@@ -10,6 +10,8 @@
 #   The name of the client package to install.
 # @param version
 #   The version of the client tools to install.
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
 #
 # @example
 #   class { gluster::client:
