@@ -7,6 +7,8 @@
 #    where to find this repo's GPG key
 # @param priority
 #    YUM priority to set for the Gluster repo
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
 #
 # @note Currently only released versions are supported. If you want to use
 #   QA releases or pre-releases, you'll need to edit line 47
@@ -15,10 +17,12 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo::yum (
-  String $release = $gluster::params::release,
-  String $repo_key_source = $gluster::params::repo_gpg_key_source,
-  Optional[String] $priority = $gluster::params::repo_priority,
-) inherits gluster::params {
+  String $release,
+  Variant[Stdlib::Absolutepath,Stdlib::HTTPSUrl] $repo_key_source,
+  Optional[Integer] $priority = undef,
+) {
+
+  assert_private()
 
   # CentOS Gluster repo only supports x86_64
   if $::architecture != 'x86_64' {

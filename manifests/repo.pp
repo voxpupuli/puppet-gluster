@@ -7,6 +7,12 @@
 # @param version
 #    the version of the upstream repo to enable
 #
+# @param priority
+#   The priority for the apt/yum repository. Useful to overwrite other repositories like EPEL
+#
+# @param repo_key_source
+#   HTTP Link or absolute path to the GPG key for the repository.
+#
 # @example
 #   class { gluster::repo
 #     version => '3.5.2',
@@ -16,18 +22,28 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo (
-  $release = $gluster::params::release,
-  $version = $gluster::params::version,
-) inherits gluster::params {
+  $release,
+  $version,
+  Variant[Stdlib::Absolutepath,Stdlib::HTTPSUrl] $repo_key_source,
+  Optional[Integer] $priority = undef,
+) {
+
+  assert_private()
+
   case $::osfamily {
     'RedHat': {
       class { 'gluster::repo::yum':
-        release => $release,
+        release         => $release,
+        priority        => $priority,
+        repo_key_source => $repo_key_source,
       }
     }
     'Debian': {
       class { 'gluster::repo::apt':
-        version  => $version,
+        release         => $release,
+        version         => $version,
+        priority        => $priority,
+        repo_key_source => $repo_key_source,
       }
     }
     default: { fail("${::osfamily} not yet supported!") }

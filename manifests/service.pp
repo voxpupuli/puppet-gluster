@@ -22,6 +22,8 @@ class gluster::service (
   $service_name = $gluster::params::service_name,
 ) inherits ::gluster::params {
 
+  assert_private()
+
   service { $service_name :
     ensure     => $ensure,
     enable     => $enable,
