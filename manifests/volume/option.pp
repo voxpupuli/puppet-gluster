@@ -26,7 +26,7 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume::option (
-  Optional[String] $value  = undef,
+  Optional[Variant[String,Integer]] $value  = undef,
   Enum['present', 'absent'] $ensure = 'present',
 ) {
 
