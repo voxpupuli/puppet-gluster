@@ -26,7 +26,7 @@ class gluster::params {
       $server_package = $::operatingsystemmajrelease ? {
         # RHEL provide Gluster packages natively
         /(6|7)/ => 'glusterfs-server',
-        8       => 'glusterfs',
+        /8/     => 'glusterfs',
         default => false
       }
       $client_package = $::operatingsystemmajrelease ? {
