@@ -31,14 +31,14 @@ class gluster::repo::apt (
   include 'apt'
 
   $repo_key_name = $release ? {
-    '3.10'       => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
-    '3.11'       => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
-    '3.12'       => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-    '3.13'       => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
-    '4.0'        => '55F839E173AC06F364120D46FA86EEACB306CEE1',
-    '4.1'        => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
-    '^5\.(\d)+$' => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
-    default      => '849512C2CA648EF425048F55C883F50CB2289A17',
+    '3.9'   => '849512C2CA648EF425048F55C883F50CB2289A17',
+    '3.10'  => 'C784DD0FD61E38B8B1F65E10DAD761554A72C1DF',
+    '3.11'  => 'DE82F0BACC4DB70DBEF95CA65EC2255642304A6E',
+    '3.12'  => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
+    '3.13'  => '9B5AE8E6FD2581F293104ACC38675E5F30F779AF',
+    '4.0'   => '55F839E173AC06F364120D46FA86EEACB306CEE1',
+    '4.1'   => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
+    default => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
   }
 
   $repo_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub"
@@ -64,10 +64,17 @@ class gluster::repo::apt (
             'arm64'      => 'arm64',
             default      => false,
           }
-          if versioncmp($release, '3.12') < 0 {
-            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/apt/"
+
+          $_repo_base = 'https://download.gluster.org/pub/gluster/glusterfs'
+          $repo_url = if versioncmp($release, '4.1') < 0 {
+            "${_repo_base}/01.old-releases/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
           } else {
-            $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
+            $_release = if $release == '4.1' {
+              $release
+            } else {
+              $release[0]
+            }
+            "${_repo_base}/${_release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
           }
         }
         default: {
