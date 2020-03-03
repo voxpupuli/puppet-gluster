@@ -70,6 +70,9 @@ class gluster::repo::apt (
             $repo_url  = "https://download.gluster.org/pub/gluster/glusterfs/${release}/LATEST/Debian/${::lsbdistcodename}/${arch}/apt/"
           }
         }
+        default: {
+          fail('unsupported distribution codename')
+        }
       }
     }
     default: {
