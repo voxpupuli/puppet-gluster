@@ -34,10 +34,16 @@ class gluster::repo::yum (
     }
   }
 
+  $_release = if versioncmp($release, '4.1') <= 0 {
+    $release
+  } else {
+    $release[0]
+  }
+
   yumrepo { "glusterfs-${::architecture}":
     enabled  => 1,
-    baseurl  => "http://mirror.centos.org/centos/${::operatingsystemmajrelease}/storage/${::architecture}/gluster-${release}/",
-    descr    => "CentOS-${::operatingsystemmajrelease} - Gluster ${release}",
+    baseurl  => "http://mirror.centos.org/centos/${::operatingsystemmajrelease}/storage/${::architecture}/gluster-${_release}/",
+    descr    => "CentOS-${::operatingsystemmajrelease} - Gluster ${_release}",
     gpgcheck => 1,
     gpgkey   => $repo_key_source,
     priority => $priority,
