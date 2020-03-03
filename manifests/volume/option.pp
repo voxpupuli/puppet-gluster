@@ -26,8 +26,8 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 define gluster::volume::option (
-  Optional[String] $value  = undef,
-  Enum['present', 'absent'] $ensure = 'present',
+  Optional[Variant[Boolean, String, Numeric]] $value  = undef,
+  Enum['present', 'absent']                   $ensure = 'present',
 ) {
 
   $arr = split( $title, ':' )
@@ -39,13 +39,22 @@ define gluster::volume::option (
   $vol = $arr[0]
   $opt = $arr[1]
 
-  if $ensure == 'absent' {
-    $cmd = "reset ${vol} ${opt}"
+  $cmd = if $ensure == 'absent' {
+    "reset ${vol} ${opt}"
   } else {
-    $cmd = "set ${vol} ${opt} ${value}"
+    "set ${vol} ${opt} ${value}"
   }
 
-  exec { "gluster option ${vol} ${opt} ${value}":
-    command => "${::gluster_binary} volume ${cmd}",
+  $_value = $value ? {
+    Boolean => if $value {
+      'on'
+    } else {
+      'off'
+    },
+    default => $value,
+  }
+
+  exec { "gluster option ${vol} ${opt} ${_value}":
+    command => "${facts['gluster_binary']} volume ${cmd}",
   }
 }
