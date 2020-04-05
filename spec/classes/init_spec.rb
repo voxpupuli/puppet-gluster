@@ -179,9 +179,7 @@ describe 'gluster', type: :class do
         end
 
         it 'fails' do
-          expect do
-            is_expected.to contain_gluster__volume('data1')
-          end.to raise_error(Puppet::Error, %r{})
+          is_expected.to compile.and_raise_error(%r{Expected value of type Hash, got Array})
         end
       end
     end
