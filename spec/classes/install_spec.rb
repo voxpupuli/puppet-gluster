@@ -56,16 +56,17 @@ describe 'gluster::install', type: :class do
       end
       context 'installing on an unsupported architecture' do
         let :facts do
-          super().merge(
-            architecture: 'zLinux'
-          )
+          # deep_merge modifies facts in place
+          facts = super().dup
+          facts[:os] = facts[:os].merge(architecture: 'zLinux')
+          facts
         end
 
         case facts[:osfamily]
         when 'Archlinux', 'Suse'
           it { is_expected.not_to create_class('gluster::repo') }
         else
-          it { is_expected.to raise_error(Puppet::Error, %r{not yet supported}) }
+          it { is_expected.to compile.and_raise_error(%r{not yet supported}) }
         end
       end
     end

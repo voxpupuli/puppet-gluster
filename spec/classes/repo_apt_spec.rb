@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'gluster::repo::apt', type: :class do
   on_supported_os.each do |os, os_facts|
-    context "on #{os}", if: os_facts[:osfamily] == 'Debian' do
+    context "on #{os}", if: os_facts[:os]['family'] == 'Debian' do
       let(:facts) { os_facts }
       let(:pre_condition) { 'require gluster::params' }
 
@@ -17,17 +17,20 @@ describe 'gluster::repo::apt', type: :class do
           )
         end
       end
+
       context 'unsupported architecture' do
-        let :facts do
-          super().merge(
-            architecture: 'zLinux'
-          )
+        let(:facts) do
+          # deep_merge modifies the facts in place
+          facts = super().dup
+          facts[:os] = facts[:os].merge(architecture: 'zLinux')
+          facts
         end
 
         it 'does not install' do
           is_expected.to compile.and_raise_error(%r{Architecture zLinux not yet supported})
         end
       end
+
       context 'latest Gluster with priority' do
         let :params do
           {

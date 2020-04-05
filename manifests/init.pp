@@ -68,7 +68,7 @@ class gluster  (
 
     if $use_exported_resources {
       # first we export this server's instance
-      @@gluster::peer { $::fqdn:
+      @@gluster::peer { $facts['networking']['fqdn']:
         pool => $pool,
       }
 
