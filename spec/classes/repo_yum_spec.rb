@@ -30,9 +30,7 @@ describe 'gluster::repo::yum', type: :class do
           end
 
           it 'does not install' do
-            expect do
-              is_expected.to create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
-            end.to raise_error(Puppet::Error, %r{doesn't make sense!})
+            is_expected.to compile.and_raise_error(%r{doesn't make sense!})
           end
         end
         context 'unsupported architecture' do
@@ -43,9 +41,7 @@ describe 'gluster::repo::yum', type: :class do
           end
 
           it 'does not install' do
-            expect do
-              is_expected.to create_file('/etc/yum.repos.d/glusterfs-x86_64.repo')
-            end.to raise_error(Puppet::Error, %r{not yet supported})
+            is_expected.to compile.and_raise_error(%r{not yet supported})
           end
         end
         context 'latest Gluster with priority' do
