@@ -99,7 +99,9 @@ describe 'gluster::peer', type: :define do
         gluster_binary: '/usr/sbin/gluster',
         gluster_peer_count: 0,
         gluster_peer_list: '',
-        fqdn: 'peer1.example.com'
+        networking: {
+          fqdn: 'peer1.example.com'
+        }
       }
     end
 

@@ -21,28 +21,34 @@ class gluster::repo::yum (
 ) inherits gluster::params {
 
   # CentOS Gluster repo only supports x86_64
-  if $::architecture != 'x86_64' {
-    fail("Architecture ${::architecture} not yet supported for ${::operatingsystem}.")
+  if $facts['os']['architecture'] != 'x86_64' {
+    fail("Architecture ${facts['os']['architecture']} not yet supported for ${facts['os']['name']}.")
   }
 
   if $priority {
     if ! defined( Package['yum-plugin-priorities'] ) {
       package { 'yum-plugin-priorities':
         ensure => installed,
-        before => Yumrepo["glusterfs-${::architecture}"],
+        before => Yumrepo["glusterfs-${facts['os']['architecture']}"],
       }
     }
   }
 
-  yumrepo { "glusterfs-${::architecture}":
+  $_release = if versioncmp($release, '4.1') <= 0 {
+    $release
+  } else {
+    $release[0]
+  }
+
+  yumrepo { "glusterfs-${facts['os']['architecture']}":
     enabled  => 1,
-    baseurl  => "http://mirror.centos.org/centos/${::operatingsystemmajrelease}/storage/${::architecture}/gluster-${release}/",
-    descr    => "CentOS-${::operatingsystemmajrelease} - Gluster ${release}",
+    baseurl  => "http://mirror.centos.org/centos/${facts['os']['release']['major']}/storage/${facts['os']['architecture']}/gluster-${_release}/",
+    descr    => "CentOS-${facts['os']['release']['major']} - Gluster ${_release}",
     gpgcheck => 1,
     gpgkey   => $repo_key_source,
     priority => $priority,
   }
 
-  Yumrepo["glusterfs-${::architecture}"] -> Package<| tag == 'gluster-packages' |>
+  Yumrepo["glusterfs-${facts['os']['architecture']}"] -> Package<| tag == 'gluster-packages' |>
 
 }

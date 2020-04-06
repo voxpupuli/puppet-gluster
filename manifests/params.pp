@@ -8,7 +8,7 @@ class gluster::params {
   # parameters dealing with installation
   $install_server = true
   $install_client = true
-  $release        = '3.12'
+  $release        = '7.3'
   $version        = 'LATEST'
 
   # we explicitly do NOT set a priority here. The user must define
@@ -18,18 +18,18 @@ class gluster::params {
   # Set distro/release specific names, repo versions, repo gpg keys, package versions, etc
   # if the user didn't specify a version, just use "installed" for package version.
   # if they did specify a version, assume they provided a valid one
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       $repo                 = true
       $repo_gpg_key_source  = 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
 
-      $server_package = $::operatingsystemmajrelease ? {
+      $server_package = $facts['os']['release']['major'] ? {
         # RHEL provide Gluster packages natively
         /(6|7)/ => 'glusterfs-server',
         /8/     => 'glusterfs',
         default => false
       }
-      $client_package = $::operatingsystemmajrelease ? {
+      $client_package = $facts['os']['release']['major'] ? {
         /(6|7|8)/ => 'glusterfs-fuse',
         default => false,
       }

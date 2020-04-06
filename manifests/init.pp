@@ -48,7 +48,7 @@ class gluster  (
   $server_package         = $gluster::params::server_package,
   $use_exported_resources = $gluster::params::export_resources,
   $version                = $gluster::params::version,
-  Optional[Hash] $volumes = undef,
+  Hash[String, Any] $volumes = {},
 ) inherits ::gluster::params {
 
   class { 'gluster::install':
@@ -68,7 +68,7 @@ class gluster  (
 
     if $use_exported_resources {
       # first we export this server's instance
-      @@gluster::peer { $::fqdn:
+      @@gluster::peer { $facts['networking']['fqdn']:
         pool => $pool,
       }
 
@@ -76,8 +76,10 @@ class gluster  (
       Gluster::Peer <<| pool == $pool |>>
     }
 
-    if $volumes {
-      create_resources( ::gluster::volume, $volumes )
+    $volumes.each |$volume, $options| {
+      gluster::volume { $volume:
+        * => $options,
+      }
     }
   }
 }

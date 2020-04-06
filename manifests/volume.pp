@@ -54,10 +54,10 @@ define gluster::volume (
   Optional[Integer] $arbiter                  = undef,
 ) {
 
-  if $force {
-    $_force = 'force'
+  $_force = if $force {
+    'force'
   } else {
-    $_force = ''
+    ''
   }
 
   if $stripe {
@@ -66,10 +66,10 @@ define gluster::volume (
     $_stripe = ''
   }
 
-  if $replica {
-    $_replica = "replica ${replica}"
+  $_replica = if $replica {
+    "replica ${replica}"
   } else {
-    $_replica = ''
+    ''
   }
 
   $_transport = "transport ${transport}"

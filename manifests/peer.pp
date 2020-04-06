@@ -36,7 +36,7 @@
 #
 define gluster::peer (
   $pool = 'default',
-  $fqdn = $::fqdn,
+  $fqdn = $facts['networking']['fqdn'],
 ) {
 
   # we can't do much without the Gluster binary
@@ -45,7 +45,7 @@ define gluster::peer (
   if getvar('::gluster_binary') {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
-    if $fqdn != $::fqdn {
+    if $fqdn != $facts['networking']['fqdn'] {
 
       # and we don't want to attach a server that is already a member
       # of the current pool
