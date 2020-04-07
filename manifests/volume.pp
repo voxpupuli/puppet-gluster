@@ -99,20 +99,18 @@ define gluster::volume (
 
   $args = join(delete($cmd_args, ''), ' ')
 
-  if getvar('::gluster_binary'){
+  $_gluster_binary = $facts.dig('gluster_binary')
+  if $_gluster_binary {
     # we need the Gluster binary to do anything!
 
-    if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
-      $already_exists = true
-    } else {
-      $already_exists = false
-    }
+    $_gluster_volume_list = $facts.dig('gluster_volume_list')
+    $already_exists = $_gluster_volume_list and $title in $_gluster_volume_list.split(',')
 
-    if $already_exists == false {
+    unless $already_exists {
       # this volume has not yet been created
 
       exec { "gluster create volume ${title}":
-        command => "${::gluster_binary} volume create ${title} ${args}",
+        command => "${_gluster_binary} volume create ${title} ${args}",
       }
 
       # if we have volume options, activate them now
@@ -144,20 +142,22 @@ define gluster::volume (
           before  => Exec["gluster start volume ${title}"],
         }
 
-        create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)
+        create_resources('::gluster::volume::option', $hoh, $new_volume_defaults)
       }
 
       # don't forget to start the new volume!
       exec { "gluster start volume ${title}":
-        command => "${::gluster_binary} volume start ${title}",
+        command => "${_gluster_binary} volume start ${title}",
         require => Exec["gluster create volume ${title}"],
       }
 
-    } elsif $already_exists {
+    } else {
       # this volume exists
 
       # our fact lists bricks comma-separated, but we need an array
-      $vol_bricks = split( getvar( "::gluster_volume_${title}_bricks" ), ',')
+      $vol_bricks = $facts.dig("gluster_volume_${title}_bricks").then |$bs| {
+        $bs.split(',')
+      }
       if $bricks != $vol_bricks {
         # this resource's list of bricks does not match the existing
         # volume's list of bricks
@@ -193,12 +193,12 @@ define gluster::volume (
 
           $new_bricks_list = join($new_bricks, ' ')
           exec { "gluster add bricks to ${title}":
-            command => "${::gluster_binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
+            command => "${_gluster_binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
           }
 
           if $rebalance {
             exec { "gluster rebalance ${title}":
-              command => "${::gluster_binary} volume rebalance ${title} start",
+              command => "${_gluster_binary} volume rebalance ${title} start",
               require => Exec["gluster add bricks to ${title}"],
             }
           }
@@ -208,7 +208,7 @@ define gluster::volume (
           # the self heal daemon comes back to life.
           # as such, we sleep 5 here before starting the heal
             exec { "gluster heal ${title}":
-              command => "/bin/sleep 5; ${::gluster_binary} volume heal ${title} full",
+              command => "/bin/sleep 5; ${_gluster_binary} volume heal ${title} full",
               require => Exec["gluster add bricks to ${title}"],
             }
           }
@@ -222,15 +222,14 @@ define gluster::volume (
       }
 
       # did the options change?
-      $current_options_hash = pick(fact("gluster_volumes.${title}.options"), {})
-      $_current = sort(join_keys_to_values($current_options_hash, ': '))
-
+      $current_options = $facts.dig("gluster_volume_${title}.options").pick({})
+      $_current = sort(join_keys_to_values($current_options, ': '))
       if $_current != $_options {
         #
         # either of $current_options or $_options may be empty.
         # we need to account for this situation
         #
-        if is_array($_current) and is_array($_options) {
+        if $_current =~ Array and $_options =~ Array {
           $to_remove = difference($_current, $_options)
           $to_add = difference($_options, $_current)
         } else {
@@ -242,7 +241,7 @@ define gluster::volume (
             $to_add = $_options
           }
         }
-        if ! empty($to_remove) {
+        unless $to_remove.empty {
           # we have some options active that are not defined here. Remove them
           #
           # the syntax to remove ::gluster::volume::options is a little different
@@ -252,18 +251,18 @@ define gluster::volume (
           $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", 'G' ), "\n" )
           $remove = parseyaml($remove_yaml)
           if $remove_options {
-            create_resources( ::gluster::volume::option, $remove )
+            create_resources('::gluster::volume::option', $remove )
           } else {
             $remove_str = join( keys($remove), ', ' )
             notice("NOT REMOVING the following options for volume ${title}: ${remove_str}.")
           }
         }
-        if ! empty($to_add) {
+        unless $to_add.empty {
           # we have some options defined that are not active. Add them
           $add_opts = prefix( $to_add, "${title}:" )
           $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", 'G' ), "\n" )
           $add = parseyaml($add_yaml)
-          create_resources( ::gluster::volume::option, $add )
+          create_resources('::gluster::volume::option', $add )
         }
       }
     }
