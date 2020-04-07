@@ -4,7 +4,7 @@
   "author": "Vox Pupuli",
   "license": "MIT",
   "summary": "Create and manage Gluster pools, volumes, and mounts",
-  "source": "git://github.com/voxpupuli/puppet-gluster",
+  "source": "https://github.com/voxpupuli/puppet-gluster.git",
   "project_page": "https://github.com/voxpupuli/puppet-gluster",
   "issues_url": "https://github.com/voxpupuli/puppet-gluster/issues",
   "tags": [
