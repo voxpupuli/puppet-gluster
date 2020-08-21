@@ -38,7 +38,6 @@ define gluster::peer (
   $pool = 'default',
   $fqdn = $facts['networking']['fqdn'],
 ) {
-
   # we can't do much without the Gluster binary
   # but we don't necessarily want the Puppet run to fail if the
   # gluster_binary fact is absent!
@@ -46,7 +45,6 @@ define gluster::peer (
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
     if $fqdn != $facts['networking']['fqdn'] {
-
       # and we don't want to attach a server that is already a member
       # of the current pool
       if getvar('::gluster_peer_list') {
@@ -61,8 +59,8 @@ define gluster::peer (
       }
       if !$already_in_pool {
         exec { "gluster peer probe ${title}":
-            command => "${::gluster_binary} peer probe ${title}",
-          }
+          command => "${::gluster_binary} peer probe ${title}",
+        }
       }
     }
   }

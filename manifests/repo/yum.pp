@@ -19,14 +19,13 @@ class gluster::repo::yum (
   String $repo_key_source = $gluster::params::repo_gpg_key_source,
   Optional[String] $priority = $gluster::params::repo_priority,
 ) inherits gluster::params {
-
   # CentOS Gluster repo only supports x86_64
   if $facts['os']['architecture'] != 'x86_64' {
     fail("Architecture ${facts['os']['architecture']} not yet supported for ${facts['os']['name']}.")
   }
 
   if $priority {
-    if ! defined( Package['yum-plugin-priorities'] ) {
+    if ! defined( Package['yum-plugin-priorities']) {
       package { 'yum-plugin-priorities':
         ensure => installed,
         before => Yumrepo["glusterfs-${facts['os']['architecture']}"],
@@ -50,5 +49,4 @@ class gluster::repo::yum (
   }
 
   Yumrepo["glusterfs-${facts['os']['architecture']}"] -> Package<| tag == 'gluster-packages' |>
-
 }

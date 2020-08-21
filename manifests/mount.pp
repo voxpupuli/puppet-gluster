@@ -49,7 +49,6 @@ define gluster::mount (
   Optional[String] $direct_io_mode                                      = undef,
   Optional[Boolean] $readdirp                                           = undef,
 ) {
-
   if $log_level {
     $ll = "log-level=${log_level}"
   } else {
@@ -80,7 +79,7 @@ define gluster::mount (
     $r = undef
   }
 
-  $mount_options = [ $options, $ll, $lf, $t, $dim, $r, ]
+  $mount_options = [$options, $ll, $lf, $t, $dim, $r,]
   $_options = join(delete_undef_values($mount_options), ',')
 
   mount { $title:

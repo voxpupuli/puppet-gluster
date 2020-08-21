@@ -33,10 +33,9 @@ class gluster::install (
   String $server_package = $gluster::params::server_package,
   String $client_package = $gluster::params::client_package,
 ) inherits gluster::params {
-
   if $repo {
     # install the correct repo
-    if ! defined ( Class['::gluster::repo'] ) {
+    if ! defined ( Class['::gluster::repo']) {
       class { 'gluster::repo':
         version => $version,
       }
@@ -53,33 +52,41 @@ class gluster::install (
   if $client_package == $server_package {
     if $server {
       # we use ensure_packages here because on some distributions the client and server package have different names
-      ensure_packages($server_package, {
-        ensure => $_version,
-        tag    => 'gluster-packages',
-        notify => Class['::gluster::service'],
-      })
+      ensure_packages($server_package,
+        {
+          ensure => $_version,
+          tag    => 'gluster-packages',
+          notify => Class['::gluster::service'],
+        }
+      )
     } elsif $client {
-      ensure_packages($client_package, {
-        ensure => $_version,
-        tag    => 'gluster-packages',
-      })
+      ensure_packages($client_package,
+        {
+          ensure => $_version,
+          tag    => 'gluster-packages',
+        }
+      )
     }
   } else {
     if $client {
       # we use ensure_packages here because on some distributions the client and server package have different names
-      ensure_packages($client_package, {
-        ensure => $_version,
-        tag    => 'gluster-packages',
-      })
+      ensure_packages($client_package,
+        {
+          ensure => $_version,
+          tag    => 'gluster-packages',
+        }
+      )
     }
 
     if $server {
       # we use ensure_packages here because on some distributions the client and server package have different names
-      ensure_packages($server_package, {
-        ensure => $_version,
-        notify => Class['::gluster::service'],
-        tag    => 'gluster-packages',
-      })
+      ensure_packages($server_package,
+        {
+          ensure => $_version,
+          notify => Class['::gluster::service'],
+          tag    => 'gluster-packages',
+        }
+      )
     }
   }
 }

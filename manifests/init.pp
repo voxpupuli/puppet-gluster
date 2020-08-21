@@ -38,7 +38,7 @@
 # @author Scott Merrill <smerrill@covermymeds.com>
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
-class gluster  (
+class gluster (
   Boolean $client = $gluster::params::install_client,
   $client_package         = $gluster::params::client_package,
   $pool                   = $gluster::params::pool,
@@ -50,7 +50,6 @@ class gluster  (
   $version                = $gluster::params::version,
   Hash[String, Any] $volumes = {},
 ) inherits ::gluster::params {
-
   class { 'gluster::install':
     server         => $server,
     server_package => $server_package,

@@ -29,7 +29,6 @@ define gluster::volume::option (
   Optional[Variant[Boolean, String, Numeric]] $value  = undef,
   Enum['present', 'absent']                   $ensure = 'present',
 ) {
-
   $arr = split( $title, ':' )
   $count = count($arr)
   # do we have more than one array element?
