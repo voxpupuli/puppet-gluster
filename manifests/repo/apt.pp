@@ -109,5 +109,4 @@ class gluster::repo::apt (
   create_resources(apt::source, $repo)
 
   Apt::Source["glusterfs-${version}"] -> Package<| tag == 'gluster-packages' |>
-
 }

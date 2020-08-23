@@ -53,7 +53,6 @@ define gluster::volume (
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
 ) {
-
   $_force = if $force {
     'force'
   } else {
@@ -99,7 +98,7 @@ define gluster::volume (
 
   $args = join(delete($cmd_args, ''), ' ')
 
-  if getvar('::gluster_binary'){
+  if getvar('::gluster_binary') {
     # we need the Gluster binary to do anything!
 
     if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
@@ -152,7 +151,6 @@ define gluster::volume (
         command => "${::gluster_binary} volume start ${title}",
         require => Exec["gluster create volume ${title}"],
       }
-
     } elsif $already_exists {
       # this volume exists
 
@@ -204,20 +202,19 @@ define gluster::volume (
           }
 
           if $replica and $heal {
-          # there is a delay after which a brick is added before
-          # the self heal daemon comes back to life.
-          # as such, we sleep 5 here before starting the heal
+            # there is a delay after which a brick is added before
+            # the self heal daemon comes back to life.
+            # as such, we sleep 5 here before starting the heal
             exec { "gluster heal ${title}":
               command => "/bin/sleep 5; ${::gluster_binary} volume heal ${title} full",
               require => Exec["gluster add bricks to ${title}"],
             }
           }
-
         } elsif count($bricks) < $vol_count {
           # removing bricks
-          notify{ 'removing bricks is not currently supported.': }
+          notify { 'removing bricks is not currently supported.': }
         } else {
-          notify{ "unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${_bricks}\nCurrent: ${vol_bricks}": }
+          notify { "unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${_bricks}\nCurrent: ${vol_bricks}": }
         }
       }
 

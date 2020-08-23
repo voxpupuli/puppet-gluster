@@ -26,7 +26,6 @@ class gluster::client (
   String $client_package = $gluster::params::client_package,
   String $version = $gluster::params::version,
 ) inherits gluster::params {
-
   class { 'gluster::install':
     server         => false,
     client         => true,

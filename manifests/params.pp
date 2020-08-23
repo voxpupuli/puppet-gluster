@@ -4,7 +4,6 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::params {
-
   # parameters dealing with installation
   $install_server = true
   $install_client = true
@@ -62,7 +61,6 @@ class gluster::params {
       $service_name = 'glusterfs-server'
     }
   }
-
 
   # parameters dealing with a Gluster server instance
   $service_enable = true
