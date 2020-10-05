@@ -219,9 +219,9 @@ define gluster::volume (
             }
           } elsif count($bricks) < $vol_count {
             # removing bricks
-            notify { 'removing bricks is not currently supported.': }
+            notice("removing bricks is not currently supported.\nDefined: ${_bricks}\nCurrent: ${vol_bricks}")
           } else {
-            notify { "unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${_bricks}\nCurrent: ${vol_bricks}": }
+            notice("unable to resolve brick changes for Gluster volume ${title}!\nDefined: ${_bricks}\nCurrent: ${vol_bricks}")
           }
         }
 
