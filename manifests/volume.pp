@@ -157,12 +157,12 @@ define gluster::volume (
           require => Exec["gluster create volume ${title}"],
         }
       }
-    } elsif $already_exists {
+    } elsif $already_exists and "gluster_volume_${title}_bricks" in $facts {
       # this volume exists
 
       if $ensure == 'present' {
         # our fact lists bricks comma-separated, but we need an array
-        $vol_bricks = split( getvar( "::gluster_volume_${title}_bricks" ), ',')
+        $vol_bricks = split( $facts["gluster_volume_${title}_bricks"], ',')
         if $bricks != $vol_bricks {
           # this resource's list of bricks does not match the existing
           # volume's list of bricks
