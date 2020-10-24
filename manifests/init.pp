@@ -49,7 +49,7 @@ class gluster (
   $use_exported_resources = $gluster::params::export_resources,
   $version                = $gluster::params::version,
   Hash[String, Any] $volumes = {},
-) inherits ::gluster::params {
+) inherits gluster::params {
   class { 'gluster::install':
     server         => $server,
     server_package => $server_package,
