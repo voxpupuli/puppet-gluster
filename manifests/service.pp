@@ -20,7 +20,7 @@ class gluster::service (
   $ensure       = $gluster::params::service_ensure,
   $enable       = $gluster::params::service_enable,
   $service_name = $gluster::params::service_name,
-) inherits ::gluster::params {
+) inherits gluster::params {
   service { $service_name :
     ensure     => $ensure,
     enable     => $enable,
