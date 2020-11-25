@@ -1,8 +1,3 @@
 ---
-.travis.yml:
-  docker_sets:
-    - set: centos7-64
-    - set: debian9-64
-  secure: "l2HEhssQyDQGrdBkGS8f/gQ4FA5vVLM0JegyAVaaIXpRrJYgRiDAvC+u81HS//+J0v9cr4jo74ncl1HGU0QJZURJX/L8DJqUVXzSZpe9HmfrQpV1RDUSNMqzaIq5Z268Ou9n1Jkeg58WJyIaks9PQhXoWRRSnaCyDHrbGM8XcAU="
 spec/spec_helper_acceptance.rb:
   unmanaged: false
