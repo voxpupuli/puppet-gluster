@@ -148,7 +148,7 @@ if binary
         # Create flat facts for each volume
         Facter.add("gluster_volume_#{vol}_options".to_sym) do
           setcode do
-            opts.join(',')
+            opts
           end
         end
       end
