@@ -55,7 +55,7 @@ define gluster::volume (
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
-  Optional[Boolean] $foce_binary              = false,
+  Optional[Boolean] $force_binary              = false,
 ) {
   $_force = if $force {
     'force'
@@ -101,17 +101,17 @@ define gluster::volume (
   ]
 
   $args = join(delete($cmd_args, ''), ' ')
-
   if($force_binary) {
     $real_binary = getvar('::gluster_binary') ? {
-      String  => getvar('::gluster_binary')
+      String  => getvar('::gluster_binary'),
       default => lookup('gluster::gluster_binary',String,deep)
     }
   } else {
     $real_binary = getvar('::gluster_binary')
   }
 
-  if getvar('$real_binary') {
+  if('$real_binary') {
+notify{"$name - Volume-Gluster - ${real_binary} -": }
     # we need the Gluster binary to do anything!
 
     if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
@@ -119,7 +119,6 @@ define gluster::volume (
     } else {
       $already_exists = false
     }
-
     if $already_exists == false {
       # this volume has not yet been created
 
@@ -154,8 +153,9 @@ define gluster::volume (
           # we need to ensure that these are applied AFTER the volume is created
           # but BEFORE the volume is started
           $new_volume_defaults = {
-            require => Exec["gluster create volume ${title}"],
-            before  => Exec["gluster start volume ${title}"],
+            require      => Exec["gluster create volume ${title}"],
+            before       => Exec["gluster start volume ${title}"],
+            force_binary => $force_binary,
           }
 
           create_resources(::gluster::volume::option, $hoh, $new_volume_defaults)

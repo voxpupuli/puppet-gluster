@@ -44,14 +44,14 @@ define gluster::peer (
   # gluster_binary fact is absent!
   if($force_binary) {
     $real_binary = getvar('::gluster_binary') ? {
-      String  => getvar('::gluster_binary')
+      String  => getvar('::gluster_binary'),
       default => lookup('gluster::gluster_binary',String,deep)
     }
   } else {
     $real_binary = getvar('::gluster_binary')
   }
 
-  if getvar($real_binary) {
+  if($real_binary) {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
     if $fqdn != $facts['networking']['fqdn'] {

@@ -28,7 +28,18 @@
 define gluster::volume::option (
   Optional[Variant[Boolean, String, Numeric]] $value  = undef,
   Enum['present', 'absent']                   $ensure = 'present',
+  Optional[Boolean] $force_binary = false,
 ) {
+
+  if($force_binary) {
+    $real_binary = getvar('::gluster_binary') ? {
+      String  => getvar('::gluster_binary'),
+      default => lookup('gluster::gluster_binary',String,deep)
+    }
+  } else {
+    $real_binary = getvar('::gluster_binary')
+  }
+
   $arr = split( $title, ':' )
   $count = count($arr)
   # do we have more than one array element?
@@ -54,6 +65,6 @@ define gluster::volume::option (
   }
 
   exec { "gluster option ${vol} ${opt} ${_value}":
-    command => "${facts['gluster_binary']} volume ${cmd}",
+    command => "${real_binary} volume ${cmd}",
   }
 }
