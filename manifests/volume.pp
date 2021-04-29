@@ -55,6 +55,7 @@ define gluster::volume (
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
+  Optional[Boolean] $foce_binary              = false,
 ) {
   $_force = if $force {
     'force'
@@ -101,7 +102,16 @@ define gluster::volume (
 
   $args = join(delete($cmd_args, ''), ' ')
 
-  if getvar('::gluster_binary') {
+  if($force_binary) {
+    $real_binary = getvar('::gluster_binary') ? {
+      String  => getvar('::gluster_binary')
+      default => lookup('gluster::gluster_binary',String,deep)
+    }
+  } else {
+    $real_binary = getvar('::gluster_binary')
+  }
+
+  if getvar('$real_binary') {
     # we need the Gluster binary to do anything!
 
     if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
@@ -116,7 +126,7 @@ define gluster::volume (
       # nothing to do if volume does not exist and it should be absent
       if $ensure == 'present' {
         exec { "gluster create volume ${title}":
-          command => "${::gluster_binary} volume create ${title} ${args}",
+          command => "${real_binary} volume create ${title} ${args}",
         }
 
         # if we have volume options, activate them now
@@ -153,7 +163,7 @@ define gluster::volume (
 
         # don't forget to start the new volume!
         exec { "gluster start volume ${title}":
-          command => "${::gluster_binary} volume start ${title}",
+          command => "${real_binary} volume start ${title}",
           require => Exec["gluster create volume ${title}"],
         }
       }
@@ -198,12 +208,12 @@ define gluster::volume (
 
             $new_bricks_list = join($new_bricks, ' ')
             exec { "gluster add bricks to ${title}":
-              command => "${::gluster_binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
+              command => "${real_binary} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
             }
 
             if $rebalance {
               exec { "gluster rebalance ${title}":
-                command => "${::gluster_binary} volume rebalance ${title} start",
+                command => "${real_binary} volume rebalance ${title} start",
                 require => Exec["gluster add bricks to ${title}"],
               }
             }
@@ -213,7 +223,7 @@ define gluster::volume (
               # the self heal daemon comes back to life.
               # as such, we sleep 5 here before starting the heal
               exec { "gluster heal ${title}":
-                command => "/bin/sleep 5; ${::gluster_binary} volume heal ${title} full",
+                command => "/bin/sleep 5; ${real_binary} volume heal ${title} full",
                 require => Exec["gluster add bricks to ${title}"],
               }
             }
@@ -273,7 +283,7 @@ define gluster::volume (
       } else {
         # stop and remove volume
         exec { "gluster stop and remove ${title}":
-          command => "/bin/yes | ( ${::gluster_binary} volume stop ${title} force && ${::gluster_binary} volume delete ${title} )",
+          command => "/bin/yes | ( ${real_binary} volume stop ${title} force && ${real_binary} volume delete ${title} )",
         }
       }
     }

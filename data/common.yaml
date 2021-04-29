@@ -1,0 +1,2 @@
+---
+gluster::gluster_binary: '/usr/sbin/gluster'
