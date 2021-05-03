@@ -51,11 +51,11 @@ define gluster::volume (
   Boolean $rebalance                          = true,
   Boolean $heal                               = true,
   Boolean $remove_options                     = false,
+  Boolean $force_binary                       = false,
   Optional[Array] $options                    = undef,
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
-  Optional[Boolean] $force_binary              = false,
 ) {
   $_force = if $force {
     'force'

@@ -35,9 +35,9 @@
 #   peering attempt only resolves a cosmetic issue, not a functional one.
 #
 define gluster::peer (
-  $pool = 'default',
-  $fqdn = $facts['networking']['fqdn'],
-  Optional[Boolean] $force_binary = false,
+  $pool                 = 'default',
+  $fqdn                 = $facts['networking']['fqdn'],
+  Boolean $force_binary = false,
 ) {
   # we can't do much without the Gluster binary
   # but we don't necessarily want the Puppet run to fail if the
