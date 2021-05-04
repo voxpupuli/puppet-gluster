@@ -19,20 +19,11 @@ class gluster::params {
   # if they did specify a version, assume they provided a valid one
   case $facts['os']['family'] {
     'RedHat': {
-      $repo                 = true
-      $repo_gpg_key_source  = 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
-
-      $server_package = $facts['os']['release']['major'] ? {
-        # RHEL 6 and 7 provide Gluster packages natively
-        /(6|7)/ => 'glusterfs-server',
-        default => false
-      }
-      $client_package = $facts['os']['release']['major'] ? {
-        /(6|7)/ => 'glusterfs-fuse',
-        default => false,
-      }
-
-      $service_name = 'glusterd'
+      $repo                = true
+      $repo_gpg_key_source = 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
+      $server_package      = 'glusterfs-server'
+      $client_package      = 'glusterfs-fuse'
+      $service_name        = 'glusterd'
     }
     'Debian': {
       $repo           = true
