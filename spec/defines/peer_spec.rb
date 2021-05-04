@@ -6,7 +6,7 @@ describe 'gluster::peer', type: :define do
   let(:params) do
     {
       fqdn: 'peer1.example.com',
-      force_binary: 'true'
+      force_binary: true
     }
   end
 
