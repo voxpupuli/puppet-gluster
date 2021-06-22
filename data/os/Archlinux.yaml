@@ -1,0 +1,5 @@
+---
+gluster::params::repo: false
+gluster::params::server_package: 'glusterfs'
+gluster::params::client_package: 'glusterfs'
+gluster::params::service_name: 'glusterd'

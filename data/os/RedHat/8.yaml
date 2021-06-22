@@ -1,0 +1,2 @@
+---
+gluster::params::client_package: 'glusterfs'

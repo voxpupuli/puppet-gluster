@@ -1,0 +1,5 @@
+---
+gluster::params::repo: true
+gluster::params::repo_gpg_key_source: 'https://raw.githubusercontent.com/CentOS-Storage-SIG/centos-release-storage-common/master/RPM-GPG-KEY-CentOS-SIG-Storage'
+gluster::params::client_package: false
+gluster::params::server_package: 'glusterfs-server'

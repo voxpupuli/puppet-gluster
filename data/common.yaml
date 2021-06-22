@@ -1,2 +1,15 @@
 ---
-gluster::gluster_binary: '/usr/sbin/gluster'
+gluster::params::client_package: 'glusterfs-fuse'
+gluster::params::export_resources: true
+gluster::params::gluster_binary: '/usr/sbin/gluster'
+gluster::params::pool: 'default'
+gluster::params::repo: false
+gluster::params::server_package: 'glusterfs-server'
+gluster::params::service_enable: true
+gluster::params::service_ensure: true
+gluster::params::service_name: 'glusterfs-server'
+gluster::params::install_server: true
+gluster::params::install_client: true
+gluster::params::release: '7.3'
+gluster::params::version: 'LATEST'
+gluster::params::repo_priorityi: undef

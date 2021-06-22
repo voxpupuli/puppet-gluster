@@ -32,7 +32,7 @@ class gluster::install (
   String $version        = $gluster::params::version,
   String $server_package = $gluster::params::server_package,
   String $client_package = $gluster::params::client_package,
-) inherits gluster::params {
+) {
   if $repo {
     # install the correct repo
     if ! defined ( Class['gluster::repo']) {

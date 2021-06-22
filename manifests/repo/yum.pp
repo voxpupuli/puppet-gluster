@@ -18,7 +18,7 @@ class gluster::repo::yum (
   String $release = $gluster::params::release,
   String $repo_key_source = $gluster::params::repo_gpg_key_source,
   Optional[String] $priority = $gluster::params::repo_priority,
-) inherits gluster::params {
+) {
   # CentOS Gluster repo only supports x86_64
   if $facts['os']['architecture'] != 'x86_64' {
     fail("Architecture ${facts['os']['architecture']} not yet supported for ${facts['os']['name']}.")
