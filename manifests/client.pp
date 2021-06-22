@@ -22,9 +22,9 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::client (
-  Boolean $repo = $gluster::params::repo,
-  String $client_package = $gluster::params::client_package,
-  String $version = $gluster::params::version,
+  Boolean $repo = lookup('gluster::repo'),
+  String $client_package = lookup('gluster::client_package'),
+  String $version = lookup('gluster::version'),
 ) {
   class { 'gluster::install':
     server         => false,

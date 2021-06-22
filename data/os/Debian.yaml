@@ -1,5 +1,5 @@
 ---
-gluster::params::repo: true
-gluster::params::server_package: 'glusterfs-server'
-gluster::params::client_package: 'glusterfs-client'
-gluster::params::service_name: 'glusterd'
+gluster::repo: true
+gluster::server_package: 'glusterfs-server'
+gluster::client_package: 'glusterfs-client'
+gluster::service_name: 'glusterd'

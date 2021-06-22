@@ -1,2 +1,2 @@
 ---
-gluster::params::client_package: 'glusterfs'
+gluster::client_package: 'glusterfs'

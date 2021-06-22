@@ -26,12 +26,12 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  Boolean $server        = $gluster::params::install_server,
-  Boolean $client        = $gluster::params::install_client,
-  Boolean $repo          = $gluster::params::repo,
-  String $version        = $gluster::params::version,
-  String $server_package = $gluster::params::server_package,
-  String $client_package = $gluster::params::client_package,
+  Boolean $server        = lookup('gluster::install_server'),
+  Boolean $client        = lookup('gluster::install_client'),
+  Boolean $repo          = lookup('gluster::repo'),
+  String $version        = lookup('gluster::version'),
+  String $server_package = lookup('gluster::server_package'),
+  String $client_package = lookup('gluster::client_package'),
 ) {
   if $repo {
     # install the correct repo
