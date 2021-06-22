@@ -15,9 +15,9 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo::yum (
-  String $release = lookup('gluster::release'),
-  String $repo_key_source = lookup('gluster::repo_gpg_key_source'),
-  Optional[String] $priority = lookup('gluster::repo_priority'),
+  String $release = lookup('gluster::release',String, deep),
+  String $repo_key_source = lookup('gluster::repo_gpg_key_source',String, deep),
+  Optional[String] $priority = lookup('gluster::repo_priority',String, deep),
 ) {
   # CentOS Gluster repo only supports x86_64
   if $facts['os']['architecture'] != 'x86_64' {

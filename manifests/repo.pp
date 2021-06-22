@@ -16,8 +16,8 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::repo (
-  $release = lookup('gluster::release'),
-  $version = lookup('gluster::version'),
+  $release = lookup('gluster::release',String, deep),
+  $version = lookup('gluster::version',String, deep),
 ) {
   case $facts['os']['family'] {
     'RedHat': {

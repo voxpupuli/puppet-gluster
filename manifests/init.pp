@@ -39,15 +39,15 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster (
-  Boolean $client             = lookup('gluster::install_client'),
-  $client_package             = lookup('gluster::client_package'),
-  $pool                       = lookup('gluster::pool'),
-  $repo                       = lookup('gluster::repo'),
-  $release                    = lookup('gluster::release'),
-  $server                     = lookup('gluster::install_server'),
-  $server_package             = lookup('gluster::server_package'),
-  $use_exported_resources     = lookup('gluster::export_resources'),
-  $version                    = lookup('gluster::version'),
+  Boolean $client             = lookup('gluster::install_client',Boolean, deep),
+  $client_package             = lookup('gluster::client_package',String, deep),
+  $pool                       = lookup('gluster::pool',String, deep),
+  $repo                       = lookup('gluster::repo',String, deep),
+  $release                    = lookup('gluster::release',String, deep),
+  $server                     = lookup('gluster::install_server',String, deep),
+  $server_package             = lookup('gluster::server_package',String, deep),
+  $use_exported_resources     = lookup('gluster::export_resources',String, deep),
+  $version                    = lookup('gluster::version',String, deep),
   Hash[String, Any] $volumes  = {},
 ) {
   class { 'gluster::install':
@@ -62,7 +62,7 @@ class gluster (
   if $server {
     # if we installed the server bits, manage the service
     class { 'gluster::service':
-      ensure => lookup('gluster::service_enable'),
+      ensure => lookup('gluster::service_enable',String, deep),
     }
 
     if $use_exported_resources {
