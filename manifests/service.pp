@@ -19,7 +19,7 @@
 class gluster::service (
   $ensure       = lookup('gluster::service_ensure', Boolean, deep),
   $enable       = lookup('gluster::service_enable', Boolean, deep),
-  $service_name = lookup('gluster::service_name', Boolean, deep),
+  $service_name = lookup('gluster::service_name', String, deep),
 ) {
   service { $service_name :
     ensure     => $ensure,
