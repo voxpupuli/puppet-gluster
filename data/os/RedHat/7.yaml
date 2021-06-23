@@ -1,2 +1,3 @@
 ---
 gluster::client_package: 'glusterfs-fuse'
+gluster::service_name: 'glusterd'
