@@ -17,9 +17,9 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::service (
-  $ensure       = lookup('gluster::service_ensure',String, deep),
-  $enable       = lookup('gluster::service_enable',String, deep),
-  $service_name = lookup('gluster::service_name',String, deep),
+  $ensure       = lookup('gluster::service_ensure', Boolean, deep),
+  $enable       = lookup('gluster::service_enable', Boolean, deep),
+  $service_name = lookup('gluster::service_name', Boolean, deep),
 ) {
   service { $service_name :
     ensure     => $ensure,
