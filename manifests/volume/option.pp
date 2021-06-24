@@ -30,7 +30,6 @@ define gluster::volume::option (
   Enum['present', 'absent']                   $ensure = 'present',
   Optional[Boolean] $force_binary = false,
 ) {
-
   if($force_binary) {
     $real_binary = getvar('::gluster_binary') ? {
       String  => getvar('::gluster_binary'),

@@ -111,7 +111,6 @@ define gluster::volume (
   }
 
   if('$real_binary') {
-notify{"$name - Volume-Gluster - ${real_binary} -": }
     # we need the Gluster binary to do anything!
 
     if getvar('::gluster_volume_list') and member( split( $::gluster_volume_list, ',' ), $title ) {
