@@ -12,4 +12,4 @@ gluster::install_server: true
 gluster::install_client: true
 gluster::release: '7.3'
 gluster::version: 'LATEST'
-gluster::repo_priorityi: '50'
+gluster::repo_priority: '50'
