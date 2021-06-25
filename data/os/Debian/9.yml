@@ -1,0 +1,2 @@
+---
+gluster::service_name: 'glusterfs-server'
