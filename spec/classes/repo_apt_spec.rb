@@ -4,7 +4,6 @@ describe 'gluster::repo::apt', type: :class do
   on_supported_os.each do |os, os_facts|
     context "on #{os}", if: os_facts[:os]['family'] == 'Debian' do
       let(:facts) { os_facts }
-      let(:pre_condition) { 'require gluster::params' }
 
       context 'with all defaults' do
         it { is_expected.to contain_class('gluster::repo::apt') }
