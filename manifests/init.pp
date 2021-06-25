@@ -46,7 +46,7 @@ class gluster (
   $release                    = lookup('gluster::release', String, deep),
   $server                     = lookup('gluster::install_server', String, deep),
   $server_package             = lookup('gluster::server_package', String, deep),
-  $use_exported_resources     = lookup('gluster::export_resources', String, deep),
+  $use_exported_resources     = lookup('gluster::export_resources', Boolean, deep),
   $version                    = lookup('gluster::version', String, deep),
   Hash[String, Any] $volumes  = {},
 ) {
