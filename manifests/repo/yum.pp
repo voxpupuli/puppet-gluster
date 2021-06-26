@@ -24,6 +24,7 @@ class gluster::repo::yum (
     fail("Architecture ${facts['os']['architecture']} not yet supported for ${facts['os']['name']}.")
   }
 
+  notify{"${facts['os']['release']['major']} -/- versioncmp("${facts['os']['release']['major']}",'7')":}
   if versioncmp("${facts['os']['release']['major']}",'7') >= 0 {
     if ! defined( Package['yum-plugin-priorities']) {
       package { 'yum-plugin-priorities':
