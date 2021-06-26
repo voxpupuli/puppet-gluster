@@ -2,4 +2,3 @@
 gluster::repo: true
 gluster::server_package: 'glusterfs-server'
 gluster::client_package: 'glusterfs-client'
-gluster::service_name: 'glusterd'
