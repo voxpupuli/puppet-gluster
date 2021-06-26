@@ -124,7 +124,7 @@ define gluster::volume (
       # nothing to do if volume does not exist and it should be absent
       if $ensure == 'present' {
         exec { "gluster create volume ${title}":
-          command => "${real_binary} volume create ${title} ${args}",
+          command => "getvar(${real_binary}) volume create ${title} ${args}",
         }
 
         # if we have volume options, activate them now
