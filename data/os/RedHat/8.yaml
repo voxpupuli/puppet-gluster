@@ -1,3 +1,4 @@
 ---
 gluster::client_package: 'glusterfs'
 gluster::service_name: 'glusterd'
+gluster::release: '9.1'
