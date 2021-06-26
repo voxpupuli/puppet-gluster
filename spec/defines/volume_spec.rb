@@ -14,7 +14,8 @@ describe 'gluster::volume', type: :define do
       options: [
         'server.allow-insecure: on',
         'nfs.ports-insecure: on'
-      ]
+      ],
+      force_binary: true,
     }
   end
 
