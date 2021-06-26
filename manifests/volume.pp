@@ -118,13 +118,13 @@ define gluster::volume (
     } else {
       $already_exists = false
     }
-    if $already_exists == false {
+    if $already_exists == false and defined($real_binary) {
       # this volume has not yet been created
 
       # nothing to do if volume does not exist and it should be absent
       if $ensure == 'present' {
         exec { "gluster create volume ${title}":
-          command => "getvar(${real_binary}) volume create ${title} ${args}",
+          command => "${real_binary} volume create ${title} ${args}",
         }
 
         # if we have volume options, activate them now
