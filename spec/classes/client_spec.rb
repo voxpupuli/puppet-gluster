@@ -20,7 +20,7 @@ describe 'gluster::client', type: :class do
                        when '9'
                          'glusterfs-client'
                        end
-                     when 'SLES'
+                     when 'Suse'
                        'glusterfs'
                      when 'Archlinux'
                        'glusterfs'
