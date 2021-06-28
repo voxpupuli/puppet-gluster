@@ -50,7 +50,7 @@ class gluster::install (
   }
 
   if $client_package == $server_package {
-    if $server {
+    if $install_server {
       # we use ensure_packages here because on some distributions the client and server package have different names
       ensure_packages($server_package,
         {
@@ -59,7 +59,7 @@ class gluster::install (
           notify => Class['gluster::service'],
         }
       )
-    } elsif $client {
+    } elsif $install_client {
       ensure_packages($client_package,
         {
           ensure => $_version,
@@ -68,7 +68,7 @@ class gluster::install (
       )
     }
   } else {
-    if $client {
+    if $install_client {
       # we use ensure_packages here because on some distributions the client and server package have different names
       ensure_packages($client_package,
         {
@@ -78,7 +78,7 @@ class gluster::install (
       )
     }
 
-    if $server {
+    if $install_server {
       # we use ensure_packages here because on some distributions the client and server package have different names
       ensure_packages($server_package,
         {
