@@ -55,7 +55,7 @@ define gluster::volume (
   Optional[Integer] $stripe                   = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
-  Optional[Boolean] $force_binary              = false,
+  Optional[Boolean] $force_binary             = false,
 ) {
   $_force = if $force {
     'force'
@@ -118,7 +118,7 @@ define gluster::volume (
     } else {
       $already_exists = false
     }
-    if $already_exists == false and defined($real_binary) {
+    if $already_exists == false {
       # this volume has not yet been created
 
       # nothing to do if volume does not exist and it should be absent
