@@ -21,16 +21,14 @@
 # @author Scott Merrill <smerrill@covermymeds.com>
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
-class gluster::client (
-  Boolean $repo = lookup('gluster::repo',Boolean, deep),
-  String $client_package = lookup('gluster::client_package',String, deep),
-  String $version = lookup('gluster::version',String, deep),
-) {
+class gluster::client
+{
+  include gluster
   class { 'gluster::install':
     server         => false,
     client         => true,
-    repo           => $repo,
-    version        => $version,
-    client_package => $client_package,
+    repo           => $gluster::repo,
+    version        => $gluster::version,
+    client_package => $gluster::client_package,
   }
 }
