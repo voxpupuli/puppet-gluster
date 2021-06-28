@@ -58,7 +58,7 @@ class gluster::repo::apt (
   case $facts['os']['name'] {
     'Debian': {
       case $facts['os']['distro']['codename'] {
-        'jessie', 'stretch':  {
+        'stretch','buster':  {
           $arch = $facts['os']['architecture'] ? {
             'amd64'      => 'amd64',
             'arm64'      => 'arm64',
