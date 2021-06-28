@@ -7,7 +7,7 @@ describe 'gluster::client', type: :class do
         facts
       end
 
-      client_package = case facts[:os]['name']
+      client_pkg = case facts[:os]['name']
                        when 'RedHat'
                          case facts[:os]['release']['major']
                          when '8'
@@ -26,7 +26,7 @@ describe 'gluster::client', type: :class do
           it {
             is_expected.to contain_class('gluster')
             is_expected.to contain_class('gluster::install').with(
-              client_package: client_package,
+              client_package: client_pkg,
               version: 'LATEST'
             )
           }
