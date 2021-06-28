@@ -12,7 +12,7 @@ describe 'gluster::client', type: :class do
         context 'with all defaults' do
           it { is_expected.to contain_class('gluster::client') }
           it { is_expected.to compile.with_all_deps }
-          it 'includes gluster::install' do
+          it 'includes gluster' do
             is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-fuse',
