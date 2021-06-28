@@ -39,16 +39,16 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster (
-  Boolean $install_client,
-  String $client_package,
-  String $pool,
-  Boolean $repo,
-  String $release,
-  Boolean $install_server,
-  String $server_package,
-  Boolean $use_exported_resources,
-  String $version,
-  String $gluster_binary,
+  Optional[Boolean] $install_client,
+  Optional[String] $client_package,
+  Optional[String] $pool,
+  Optional[Boolean] $repo,
+  Optional[String] $release,
+  Optional[Boolean] $install_server,
+  Optional[String] $server_package,
+  Optional[Boolean] $use_exported_resources,
+  Optional[String] $version,
+  Optional[String] $gluster_binary,
   Hash[String, Any] $volumes  = {},
 ) {
   class { 'gluster::install':
