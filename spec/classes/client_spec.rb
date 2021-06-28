@@ -7,7 +7,7 @@ describe 'gluster::client', type: :class do
         facts
       end
 
-      client_name = case facts[:os]['name']
+      client_name = case facts[:os]['family']
                      when 'RedHat'
                        case facts[:os]['release']['major']
                        when '7'
