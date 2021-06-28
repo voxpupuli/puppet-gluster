@@ -7,22 +7,20 @@ describe 'gluster::service', type: :class do
         facts
       end
 
+      service_name = case facts[:os]['name']
+                     when 'Debian'
+                       case facts[:os]['release']['major']
+                       when '9'
+                         'glusterfs-server'
+                       end
+                     else
+                       'glusterd'
+                     end
+
       context 'with all defaults' do
         it { is_expected.to compile.with_all_deps }
         it 'starts the service' do
-          case facts[:osfamily]
-          when 'Redhat'
-            is_expected.to create_service('glusterd')
-          when 'Debian'
-            case facts[:os]['release']['major']
-            when '9'
-              is_expected.to create_service('glusterfs-server')
-            else
-              is_expected.to create_service('glusterd')
-            end
-          when 'Archlinux'
-            is_expected.to create_service('glusterd')
-          end
+          is_expected.to create_service(service_name)
         end
       end
     end

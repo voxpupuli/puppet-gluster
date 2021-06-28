@@ -67,6 +67,7 @@ describe 'gluster::volume', type: :define do
     end
 
     describe 'with minimal params' do
+      let(:title) { 'storage1' }
       let(:args) do
         'replica 2 transport tcp srv1.local:/export/brick1/brick srv2.local:/export/brick1/brick srv1.local:/export/brick2/brick srv2.local:/export/brick2/brick'
       end
