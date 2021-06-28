@@ -52,9 +52,9 @@ class gluster (
   Hash[String, Any] $volumes  = {},
 ) {
   class { 'gluster::install':
-    server         => $install_server,
+    install_server         => $install_server,
     server_package => $server_package,
-    client         => $install_client,
+    install_client         => $install_client,
     client_package => $client_package,
     version        => $version,
     repo           => $repo,
