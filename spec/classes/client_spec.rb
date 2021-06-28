@@ -32,9 +32,14 @@ describe 'gluster::client', type: :class do
         context 'with all defaults' do
           it { is_expected.to contain_class('gluster::client') }
           it { is_expected.to compile.with_all_deps }
-          it 'includes gluster::install' do
-            is_expected.to create_class('gluster')
-          end
+          it {
+            is_expected.to contain_class('gluster')
+            is_expected.to contain_class('gluster::install').with(
+              repo: true,
+              client_package: 'glusterfs_client',
+              version: 'Latest'
+            )
+          }
         end
         context 'when a version number is specified' do
           let :params do
