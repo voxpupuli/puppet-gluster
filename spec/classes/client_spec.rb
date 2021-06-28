@@ -26,7 +26,7 @@ describe 'gluster::client', type: :class do
           it {
             is_expected.to contain_class('gluster')
             is_expected.to contain_class('gluster::install').with(
-              client_package: client_pkg,
+              client_package: 'glusterfs-fuse',
               version: 'LATEST'
             )
           }
