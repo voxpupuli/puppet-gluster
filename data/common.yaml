@@ -13,3 +13,4 @@ gluster::install_client: true
 gluster::release: '7.3'
 gluster::version: 'LATEST'
 gluster::repo_priority: '50'
+gluster::use_exported_resources: true
