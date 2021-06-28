@@ -21,8 +21,7 @@
 # @author Scott Merrill <smerrill@covermymeds.com>
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
-class gluster::client
-{
+class gluster::client {
   include gluster
   class { 'gluster::install':
     server         => false,
