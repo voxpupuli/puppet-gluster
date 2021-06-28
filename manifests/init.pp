@@ -39,27 +39,28 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster (
-  Boolean $client             = lookup('gluster::install_client', Boolean, deep),
-  $client_package             = lookup('gluster::client_package', String, deep),
-  $pool                       = lookup('gluster::pool', String, deep),
-  $repo                       = lookup('gluster::repo', String, deep),
-  $release                    = lookup('gluster::release', String, deep),
-  $server                     = lookup('gluster::install_server', Boolean, deep),
-  $server_package             = lookup('gluster::server_package', String, deep),
-  $use_exported_resources     = lookup('gluster::export_resources', Boolean, deep),
-  $version                    = lookup('gluster::version', String, deep),
+  Boolean $install_client,
+  String $client_package,
+  String $pool,
+  Boolean $repo,
+  String $release,
+  Boolean $install_server,
+  String $server_package,
+  Boolean $use_exported_resources,
+  String $version,
+  String $gluster_binary,
   Hash[String, Any] $volumes  = {},
 ) {
   class { 'gluster::install':
-    server         => $server,
+    server         => $install_server,
     server_package => $server_package,
-    client         => $client,
+    client         => $install_client,
     client_package => $client_package,
     version        => $version,
     repo           => $repo,
   }
 
-  if $server {
+  if $install_server {
     # if we installed the server bits, manage the service
     class { 'gluster::service':
       ensure => lookup('gluster::service_enable', Boolean, deep),
