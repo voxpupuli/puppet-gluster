@@ -13,31 +13,19 @@ describe 'gluster::client', type: :class do
           it { is_expected.to contain_class('gluster::client') }
           it { is_expected.to compile.with_all_deps }
           it 'includes gluster' do
-            is_expected.to create_class('gluster').with(
-              repo: true,
-              client_package: 'glusterfs-fuse',
-              version: 'LATEST'
-            )
+            is_expected.to create_class('gluster')
           end
         end
         context 'when a version number is specified' do
 
           it 'includes gluster::install with version 3.6.1' do
-            is_expected.to create_class('gluster::install').with(
-              repo: true,
-              client_package: 'glusterfs-fuse',
-              version: '3.6.1'
-            )
+            is_expected.to create_class('gluster')
           end
         end
         context 'when repo is false' do
 
           it 'includes gluster::install with repo=>false' do
-            is_expected.to create_class('gluster::install').with(
-              repo: false,
-              client_package: 'glusterfs-fuse',
-              version: 'LATEST'
-            )
+            is_expected.to create_class('gluster')
           end
         end
       when 'Debian'
@@ -45,11 +33,7 @@ describe 'gluster::client', type: :class do
           it { is_expected.to contain_class('gluster::client') }
           it { is_expected.to compile.with_all_deps }
           it 'includes gluster::install' do
-            is_expected.to create_class('gluster::install').with(
-              repo: true,
-              client_package: 'glusterfs-client',
-              version: 'LATEST'
-            )
+            is_expected.to create_class('gluster')
           end
         end
         context 'when a version number is specified' do
