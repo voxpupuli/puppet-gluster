@@ -6,8 +6,8 @@ describe 'gluster server' do
       pp = <<-EOS
 
        class { 'gluster':
-         client  => false,
-         server  => true,
+         install_client  => false,
+         install_server  => true,
        }
 
       EOS
