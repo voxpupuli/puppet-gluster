@@ -44,9 +44,9 @@ describe 'gluster::install', type: :class do
           it { is_expected.not_to create_package('glusterfs-client') }
         end
       end
-      context 'when server is false' do
+      context 'when install_server is false' do
         let :params do
-          { server: false }
+          { install_server: false }
         end
 
         case facts[:osfamily]

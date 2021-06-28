@@ -30,9 +30,9 @@ describe 'gluster', type: :class do
           it { is_expected.to contain_yumrepo('glusterfs-x86_64') }
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
-              server: true,
+              install_server: true,
               server_package: 'glusterfs',
-              client: true,
+              install_client: true,
               client_package: 'glusterfs-fuse',
               version: 'LATEST',
               repo: true
@@ -51,9 +51,9 @@ describe 'gluster', type: :class do
 
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
-              server: true,
+              install_server: true,
               server_package: 'custom-gluster-server',
-              client: true,
+              install_client: true,
               client_package: 'custom-gluster-client',
               version: '3.1.4',
               repo: false
@@ -70,9 +70,9 @@ describe 'gluster', type: :class do
           it { is_expected.to contain_apt__source('glusterfs-LATEST') }
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
-              server: true,
+              install_server: true,
               server_package: 'glusterfs-server',
-              client: true,
+              install_client: true,
               client_package: 'glusterfs-client',
               version: 'LATEST',
               repo: true
@@ -91,9 +91,9 @@ describe 'gluster', type: :class do
 
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
-              server: true,
+              install_server: true,
               server_package: 'custom-gluster-server',
-              client: true,
+              install_client: true,
               client_package: 'custom-gluster-client',
               version: '3.1.4',
               repo: false
