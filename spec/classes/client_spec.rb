@@ -7,18 +7,20 @@ describe 'gluster::client', type: :class do
         facts
       end
 
-      client_pkg = case facts[:os]['name']
-                       when 'RedHat'
-                         case facts[:os]['release']['major']
-                         when '8'
-                           'glusterfs'
-                         else
-                           'glusterfs-fuse'
-                         end
-                       when 'Debian'
-                           'glusterfs-client'
+      client_name = case facts[:os]['name']
+                     when 'RedHat'
+                       case facts[:os]['release']['major']
+                       when '7'
+                         'glusterfs-fuse'
+                       when '8'
+                         'glusterfs'
                        end
-
+                     when 'Debian'
+                       case facts[:os]['release']['major']
+                       when '9'
+                         'glusterfs-client'
+                       end
+                     end
 
         context 'with all defaults' do
           it { is_expected.to contain_class('gluster::client') }
@@ -26,7 +28,7 @@ describe 'gluster::client', type: :class do
           it {
             is_expected.to contain_class('gluster')
             is_expected.to contain_class('gluster::install').with(
-              client_package: 'glusterfs-fuse',
+              client_package: client_name,
               version: 'LATEST'
             )
           }
