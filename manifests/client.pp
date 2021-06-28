@@ -22,11 +22,5 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::client {
-  class { 'gluster::install':
-    server         => false,
-    client         => true,
-    repo           => $gluster::repo,
-    version        => $gluster::version,
-    client_package => $gluster::client_package,
-  }
+  include gluster
 }
