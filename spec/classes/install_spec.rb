@@ -34,7 +34,7 @@ describe 'gluster::install', type: :class do
       end
       context 'when client is false' do
         let :params do
-          { client: false }
+          { install_client: false }
         end
 
         case facts[:osfamily]
