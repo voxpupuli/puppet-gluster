@@ -26,9 +26,9 @@
 # @note Copyright 2014 CoverMyMeds, unless otherwise noted
 #
 class gluster::install (
-  Boolean $server        = lookup('gluster::install_server',String, deep),
-  Boolean $client        = lookup('gluster::install_client',String, deep),
-  Boolean $repo          = lookup('gluster::repo',String, deep),
+  Boolean $server        = lookup('gluster::install_server', Boolean, deep),
+  Boolean $client        = lookup('gluster::install_client', Boolean, deep),
+  Boolean $repo          = lookup('gluster::repo', Boolean, deep),
   String $version        = lookup('gluster::version',String, deep),
   String $server_package = lookup('gluster::server_package',String, deep),
   String $client_package = lookup('gluster::client_package',String, deep),
