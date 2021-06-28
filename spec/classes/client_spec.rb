@@ -21,11 +21,6 @@ describe 'gluster::client', type: :class do
           end
         end
         context 'when a version number is specified' do
-          let :params do
-            {
-              version: '3.6.1'
-            }
-          end
 
           it 'includes gluster::install with version 3.6.1' do
             is_expected.to create_class('gluster::install').with(
@@ -36,11 +31,6 @@ describe 'gluster::client', type: :class do
           end
         end
         context 'when repo is false' do
-          let :params do
-            {
-              repo: false
-            }
-          end
 
           it 'includes gluster::install with repo=>false' do
             is_expected.to create_class('gluster::install').with(
@@ -78,11 +68,6 @@ describe 'gluster::client', type: :class do
           end
         end
         context 'when repo is false' do
-          let :params do
-            {
-              repo: false
-            }
-          end
 
           it 'includes gluster::install with repo=>false' do
             is_expected.to create_class('gluster::install').with(
