@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pp'
 
 describe 'gluster::service', type: :class do
   on_supported_os.each do |os, facts|
@@ -10,10 +11,10 @@ describe 'gluster::service', type: :class do
       service_name = case facts[:os]['family']
                      when 'Debian'
                        case facts[:os]['release']['major']
-                       when '9'
-                         'glusterfs-server'
                        when '10'
                          'glusterd'
+                       when '9'
+                         'glusterfs-server'
                        end
                       when 'Redhat'
                        'glusterd'
@@ -22,6 +23,7 @@ describe 'gluster::service', type: :class do
                       when 'Archlinux'
                         'glusterd'
                      end
+      pp service_name
 
       context 'with all defaults' do
         it { is_expected.to compile.with_all_deps }
