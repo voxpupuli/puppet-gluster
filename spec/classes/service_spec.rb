@@ -23,6 +23,7 @@ describe 'gluster::service', type: :class do
                       when 'Archlinux'
                         'glusterd'
                      end
+      print 'ServiceName:'
       pp service_name
 
       context 'with all defaults' do
