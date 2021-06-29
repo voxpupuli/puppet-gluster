@@ -121,7 +121,7 @@ describe 'gluster', type: :class do
       end
 
       context 'when volumes defined' do
-        let :facts do
+        let(:facts) do
           super().merge(
             gluster_binary: '/sbin/gluster',
             gluster_peer_list: 'example1,example2',
@@ -152,7 +152,7 @@ describe 'gluster', type: :class do
       end
 
       context 'when volumes defined without replica' do
-        let :facts do
+        let(:facts) do
           super().merge(
             gluster_binary: '/sbin/gluster',
             gluster_peer_list: 'example1,example2',
