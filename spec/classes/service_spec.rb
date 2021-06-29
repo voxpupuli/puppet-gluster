@@ -7,7 +7,7 @@ describe 'gluster::service', type: :class do
         facts
       end
 
-      service_name = case facts[:os]['name']
+      service_name = case facts[:os]['family']
                      when 'Debian'
                        case facts[:os]['release']['major']
                        when '9'
