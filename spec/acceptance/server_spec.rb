@@ -18,7 +18,7 @@ describe 'gluster server' do
   end
 
   context 'packages installed' do
-    if os[:family] == 'debian'
+    if os[:family] == 'Debian'
 
       describe package('glusterfs-server') do
         it { is_expected.to be_installed }
