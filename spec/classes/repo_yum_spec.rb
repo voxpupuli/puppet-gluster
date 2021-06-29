@@ -8,7 +8,7 @@ describe 'gluster::repo::yum', type: :class do
       end
 
       case facts[:osfamily]
-      when 'Redhat'
+      when 'RedHat'
         context 'with all defaults' do
           it { is_expected.to contain_class('gluster::repo::yum') }
           it { is_expected.to compile.with_all_deps }

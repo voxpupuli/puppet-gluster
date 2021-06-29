@@ -23,7 +23,7 @@ describe 'gluster', type: :class do
       end
 
       case facts[:osfamily]
-      when 'Redhat'
+      when 'RedHat'
         context 'RedHat specific stuff' do
           it { is_expected.to contain_service('glusterd') }
           it { is_expected.to contain_class('gluster::repo::yum') }

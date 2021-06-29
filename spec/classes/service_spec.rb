@@ -16,7 +16,7 @@ describe 'gluster::service', type: :class do
                        when '9'
                          'glusterfs-server'
                        end
-                      when 'Redhat'
+                      when 'RedHat'
                        'glusterd'
                       when 'Suse'
                        'glusterd'

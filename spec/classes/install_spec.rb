@@ -13,7 +13,7 @@ describe 'gluster::install', type: :class do
       context 'with defaults' do
         it { is_expected.to compile.with_all_deps }
         case facts[:osfamily]
-        when 'Redhat'
+        when 'RedHat'
           # rubocop:disable RSpec/RepeatedExample
           it { is_expected.to create_package('glusterfs-server') }
           it { is_expected.to create_package('glusterfs-fuse') }
@@ -38,7 +38,7 @@ describe 'gluster::install', type: :class do
         end
 
         case facts[:osfamily]
-        when 'Redhat'
+        when 'RedHat'
           it { is_expected.not_to create_package('glusterfs-fuse') }
         when 'Debian'
           it { is_expected.not_to create_package('glusterfs-client') }
@@ -50,7 +50,7 @@ describe 'gluster::install', type: :class do
         end
 
         case facts[:osfamily]
-        when 'Redhat', 'Debian'
+        when 'RedHat', 'Debian'
           it { is_expected.not_to create_package('glusterfs-server') }
         end
       end
