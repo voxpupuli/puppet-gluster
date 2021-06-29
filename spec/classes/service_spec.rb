@@ -12,9 +12,15 @@ describe 'gluster::service', type: :class do
                        case facts[:os]['release']['major']
                        when '9'
                          'glusterfs-server'
+                       when '10'
+                         'glusterd'
                        end
-                     else
+                      when 'Redhat'
                        'glusterd'
+                      when 'Suse'
+                       'glusterd'
+                      when 'Archlinux'
+                        'glusterd'
                      end
 
       context 'with all defaults' do
