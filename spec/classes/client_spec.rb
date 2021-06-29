@@ -19,6 +19,8 @@ describe 'gluster::client', type: :class do
                        case facts[:os]['release']['major']
                        when '9'
                          'glusterfs-client'
+                       when '10'
+                         'glusterfs-client'
                        end
                      when 'Suse'
                        'glusterfs'
