@@ -7,6 +7,39 @@ describe 'gluster', type: :class do
         facts
       end
 
+      case facts[:os]['family']
+      when 'Debian'
+       case facts[:os]['release']['major']
+       when '10'
+         service_name = 'glusterd'
+       when '9'
+         service_name =  'glusterfs-server'
+       end
+       client_package = 'glusterfs-client'
+       server_package = 'glusterfs-server'
+       repo = true
+      when 'RedHat'
+       case facts[:os]['release']['major']
+       when '7'
+        client_package = 'glusterfs-fuse'
+       when '8'
+         client_package = 'glusterfs'
+       end
+       service_name = 'glusterd'
+       server_package = 'glusterfs-server'
+       repo = true
+      when 'Suse'
+       service_name = 'glusterd'
+       client_package = 'glusterfs'
+       server_package = 'glusterfs'
+       repo = false
+      when 'Archlinux'
+       service_name = 'glusterd'
+       client_package = 'glusterfs'
+       server_package = 'glusterfs'
+       repo = false
+      end
+
       context 'with all defaults' do
         it { is_expected.to contain_class('gluster') }
         unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse'
@@ -22,20 +55,26 @@ describe 'gluster', type: :class do
         end
       end
 
-      case facts[:osfamily]
-      when 'RedHat'
-        context 'RedHat specific stuff' do
-          it { is_expected.to contain_service('glusterd') }
-          it { is_expected.to contain_class('gluster::repo::yum') }
-          it { is_expected.to contain_yumrepo('glusterfs-x86_64') }
+        context 'specific stuff' do
+          it { is_expected.to contain_service(service_name) }
+          unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse'
+            case facts[:os]['family']
+            when 'RedHat'
+              it { is_expected.to contain_class('gluster::repo::yum') }
+              it { is_expected.to contain_yumrepo('glusterfs-x86_64') }
+            when 'Debian'
+              it { is_expected.to contain_class('gluster::repo::apt') }
+              it { is_expected.to contain_apt__source('glusterfs-LATEST') }
+            end
+          end
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               install_server: true,
-              server_package: 'glusterfs',
+              server_package: server_package,
               install_client: true,
-              client_package: 'glusterfs-fuse',
+              client_package: client_package,
               version: 'LATEST',
-              repo: true
+              repo: repo
             )
           end
         end
@@ -62,31 +101,6 @@ describe 'gluster', type: :class do
           it 'installs custom-gluster-client and custom-gluster-server' do
             is_expected.to create_package('custom-gluster-client')
             is_expected.to create_package('custom-gluster-server')
-          end
-        end
-      when 'Debian'
-        context 'Debian specific stuff' do
-          it { is_expected.to contain_class('gluster::repo::apt') }
-          it { is_expected.to contain_apt__source('glusterfs-LATEST') }
-          it 'creates gluster::install' do
-            is_expected.to create_class('gluster::install').with(
-              install_server: true,
-              server_package: 'glusterfs-server',
-              install_client: true,
-              client_package: 'glusterfs-client',
-              version: 'LATEST',
-              repo: true
-            )
-          end
-        end
-        context 'specific version and package names defined' do
-          let :params do
-            {
-              server_package: 'custom-gluster-server',
-              client_package: 'custom-gluster-client',
-              version: '3.1.4',
-              repo: false
-            }
           end
 
           it 'creates gluster::install' do
@@ -183,4 +197,3 @@ describe 'gluster', type: :class do
       end
     end
   end
-end
