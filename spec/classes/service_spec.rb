@@ -23,7 +23,7 @@ describe 'gluster::service', type: :class do
                       when 'Archlinux'
                         'glusterd'
                      end
-      pp "ServiceName: ", service_name, "Family: ", facts[:os]['family'], "Version: ", facts[:os]['release']['major']
+      print "ServiceName: ", service_name, "Family: ", facts[:os]['family'], "Version: ", facts[:os]['release']['major'],"\n"
 
       context 'with all defaults' do
         it { is_expected.to compile.with_all_deps }
