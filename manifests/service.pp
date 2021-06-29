@@ -21,7 +21,6 @@ class gluster::service (
   $enable       = lookup('gluster::service_enable', Boolean, deep),
   $service_name = lookup('gluster::service_name', String, deep),
 ) {
-  notify{"${name} - ${facts['os']['release']['major']} - ${service_name}":}
   service { $service_name :
     ensure     => $ensure,
     enable     => $enable,
