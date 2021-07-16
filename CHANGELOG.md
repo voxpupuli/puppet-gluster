@@ -4,7 +4,42 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v5.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v5.0.0) (2019-04-30)
+## [v6.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v6.0.0) (2021-07-16)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v5.0.0...v6.0.0)
+
+**Breaking changes:**
+
+- remove EOL OSs and Dependencies; drop puppet 5 support [\#230](https://github.com/voxpupuli/puppet-gluster/pull/230) ([rwaffen](https://github.com/rwaffen))
+- Fix failing CI tests / switch default glusterfs version from 3.12 -\> 7.3 [\#212](https://github.com/voxpupuli/puppet-gluster/pull/212) ([runejuhl](https://github.com/runejuhl))
+
+**Implemented enhancements:**
+
+- Create new structured facts for `gluster_peers` and `gluster_volumes` [\#186](https://github.com/voxpupuli/puppet-gluster/pull/186) ([tparkercbn](https://github.com/tparkercbn))
+
+**Fixed bugs:**
+
+- Use $fact to retrieve fact [\#215](https://github.com/voxpupuli/puppet-gluster/pull/215) ([scornelissen85](https://github.com/scornelissen85))
+
+**Closed issues:**
+
+- Newer versions of Gluster  [\#217](https://github.com/voxpupuli/puppet-gluster/issues/217)
+- With Puppet 6 it is unable to use volume with dash in name [\#214](https://github.com/voxpupuli/puppet-gluster/issues/214)
+- Support commas in volume options [\#53](https://github.com/voxpupuli/puppet-gluster/issues/53)
+- Weak regex for volume port Fact [\#33](https://github.com/voxpupuli/puppet-gluster/issues/33)
+
+**Merged pull requests:**
+
+- Allow latest stdlib/apt modules [\#229](https://github.com/voxpupuli/puppet-gluster/pull/229) ([bastelfreak](https://github.com/bastelfreak))
+- modulesync 3.0.0 & puppet-lint autofix [\#221](https://github.com/voxpupuli/puppet-gluster/pull/221) ([bastelfreak](https://github.com/bastelfreak))
+- Make volume ensurable [\#219](https://github.com/voxpupuli/puppet-gluster/pull/219) ([glorpen](https://github.com/glorpen))
+- Use voxpupuli-acceptance [\#213](https://github.com/voxpupuli/puppet-gluster/pull/213) ([ekohl](https://github.com/ekohl))
+- update repo links to https [\#211](https://github.com/voxpupuli/puppet-gluster/pull/211) ([bastelfreak](https://github.com/bastelfreak))
+- Allow puppetlabs/stdlib 6.x [\#210](https://github.com/voxpupuli/puppet-gluster/pull/210) ([dhoppe](https://github.com/dhoppe))
+- Convert gluster::repo::yum to puppet-strings [\#205](https://github.com/voxpupuli/puppet-gluster/pull/205) ([ekohl](https://github.com/ekohl))
+- Rewrite docs to puppet-strings [\#204](https://github.com/voxpupuli/puppet-gluster/pull/204) ([ekohl](https://github.com/ekohl))
+
+## [v5.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v5.0.0) (2019-05-02)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v4.1.0...v5.0.0)
 
@@ -180,7 +215,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Release 2.1.0 [\#62](https://github.com/voxpupuli/puppet-gluster/pull/62) ([DarkGigaByte](https://github.com/DarkGigaByte))
+- Release 2.1.0 [\#62](https://github.com/voxpupuli/puppet-gluster/pull/62) ([QueerCodingGirl](https://github.com/QueerCodingGirl))
 - Debian support [\#59](https://github.com/voxpupuli/puppet-gluster/pull/59) ([NITEMAN](https://github.com/NITEMAN))
 
 ## [v2.0.1](https://github.com/voxpupuli/puppet-gluster/tree/v2.0.1) (2016-05-11)
