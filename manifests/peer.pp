@@ -47,8 +47,8 @@ define gluster::peer (
     if $fqdn != $facts['networking']['fqdn'] {
       # and we don't want to attach a server that is already a member
       # of the current pool
-      if getvar('::gluster_peer_list') {
-        $peers = split($::gluster_peer_list, ',' )
+      if $facts['gluster_peer_list'] {
+        $peers = split($facts['gluster_peer_list'], ',' )
         if ! member($peers, $title) {
           $already_in_pool = false
         } else {
@@ -59,7 +59,7 @@ define gluster::peer (
       }
       if !$already_in_pool {
         exec { "gluster peer probe ${title}":
-          command => "${::gluster_binary} peer probe ${title}",
+          command => "${facts['gluster_binary']} peer probe ${title}",
         }
       }
     }
