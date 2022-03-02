@@ -82,8 +82,32 @@ class gluster::repo::apt (
         }
       }
     }
+    'Ubuntu': {
+      $repo_key_name = 'F7C73FCC930AC9F83B387A5613E01B7B3FE869A9'
+      $repo_key_source = undef
+
+      unless $version == 'LATEST' {
+        fail("Specifying version other than LATEST doesn't make sense for Ubuntu PPA!")
+      }
+      $repo_ver = $version
+
+      $_release = versioncmp($release, '4.1') ? {
+        1       => $release.match(/\A[^.]*/)[0],
+        default => $release,
+      }
+
+      $arch = $facts['os']['architecture'] ? {
+        'amd64'      => 'amd64',
+        'arm64'      => 'arm64',
+        'armhf'      => 'armhf',
+        'i386'       => 'i386',
+        default      => false,
+      }
+
+      $repo_url = "http://ppa.launchpad.net/gluster/glusterfs-${_release}/ubuntu"
+    }
     default: {
-      fail('gluster::repo::apt currently only works on Debian')
+      fail('gluster::repo::apt currently only works on Debian and Ubuntu')
     }
   }
 

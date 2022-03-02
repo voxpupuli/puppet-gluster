@@ -55,13 +55,23 @@ Fedora users can get GlusterFS packages directly from Fedora's repository. Red H
 gluster::repo => false
 ```
 
-For systems using APT, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
+For Debian, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
 
 ```puppet
 class { ::gluster::repo:
   version => '3.5.2',
 }
 ```
+
+For Ubuntu, the [Gluster PPA](https://launchpad.net/~gluster) repositories only contain the latest version of each release.
+Therefore specify the release to install:
+
+```puppet
+class { ::gluster::repo:
+  release => '10',
+}
+```
+
 
 For systems using YUM, the latest package from the 3.8 release branch will be installed. You can specify a specific version and release:
 
