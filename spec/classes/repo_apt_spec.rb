@@ -61,7 +61,7 @@ describe 'gluster::repo::apt', type: :class do
             release: facts[:lsbdistcodename].to_s,
             key: {
               'id' => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
-              'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/4.1/rsa.pub'
+              'source' => 'https://download.gluster.org/pub/gluster/glusterfs/4.1/rsa.pub'
             },
             location: "https://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
           )
@@ -81,7 +81,7 @@ describe 'gluster::repo::apt', type: :class do
             release: facts[:lsbdistcodename].to_s,
             key: {
               'id' => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-              'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.12/rsa.pub'
+              'source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.12/rsa.pub'
             },
             location: "https://download.gluster.org/pub/gluster/glusterfs/01.old-releases/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
           )

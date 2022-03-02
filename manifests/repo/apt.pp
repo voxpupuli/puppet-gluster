@@ -99,7 +99,7 @@ class gluster::repo::apt (
       repos        => 'main',
       key          => {
         id         => $repo_key_name,
-        key_source => $repo_key_source,
+        source     => $repo_key_source,
       },
       pin          => $priority,
       architecture => $arch,
