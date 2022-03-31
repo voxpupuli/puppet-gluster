@@ -30,6 +30,11 @@ class gluster::repo::apt (
 ) {
   include 'apt'
 
+  $_release = versioncmp($release, '4.1') ? {
+    1       => $release.match(/\A[^.]*/)[0],
+    default => $release,
+  }
+
   # the Gluster repo only supports x86_64 (amd64) and arm64. The Ubuntu PPA also supports armhf and arm64.
   case $facts['os']['name'] {
     'Debian': {
@@ -44,7 +49,7 @@ class gluster::repo::apt (
         default => 'F9C958A3AEE0D2184FAD1CBD43607F0DC2F8238C',
       }
 
-      $repo_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${release}/rsa.pub"
+      $repo_key_source = "https://download.gluster.org/pub/gluster/glusterfs/${_release}/rsa.pub"
 
       # basic sanity check
       if $version == 'LATEST' {
@@ -69,11 +74,6 @@ class gluster::repo::apt (
           $repo_url = if versioncmp($release, '4.1') < 0 {
             "${_repo_base}/01.old-releases/${release}/LATEST/Debian/${facts['os']['distro']['codename']}/${arch}/apt/"
           } else {
-            $_release = if $release == '4.1' {
-              $release
-            } else {
-              $release[0]
-            }
             "${_repo_base}/${_release}/LATEST/Debian/${facts['os']['distro']['codename']}/${arch}/apt/"
           }
         }
@@ -90,11 +90,6 @@ class gluster::repo::apt (
         fail("Specifying version other than LATEST doesn't make sense for Ubuntu PPA!")
       }
       $repo_ver = $version
-
-      $_release = versioncmp($release, '4.1') ? {
-        1       => $release.match(/\A[^.]*/)[0],
-        default => $release,
-      }
 
       $arch = $facts['os']['architecture'] ? {
         'amd64'      => 'amd64',
