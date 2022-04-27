@@ -10,10 +10,14 @@ describe 'gluster::repo::apt', type: :class do
         it { is_expected.to contain_class('gluster::repo::apt') }
         it { is_expected.to compile.with_all_deps }
         it 'installs' do
+          location = {
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
+            'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-7/ubuntu',
+          }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
             release: facts[:lsbdistcodename].to_s,
-            location: "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/"
+            location: location[facts[:os]['name']]
           )
         end
       end
@@ -39,10 +43,14 @@ describe 'gluster::repo::apt', type: :class do
         end
 
         it 'installs' do
+          location = {
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
+            'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-7/ubuntu',
+          }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
             release: facts[:lsbdistcodename].to_s,
-            location: "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
+            location: location[facts[:os]['name']],
             pin: '700'
           )
         end
@@ -56,14 +64,25 @@ describe 'gluster::repo::apt', type: :class do
         end
 
         it 'installs' do
+          location = {
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/",
+            'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-4.1/ubuntu',
+          }
+          key = {
+            'Debian' => {
+              'id' => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
+              'source' => 'https://download.gluster.org/pub/gluster/glusterfs/4.1/rsa.pub',
+            },
+            'Ubuntu' => {
+              'id' => 'F7C73FCC930AC9F83B387A5613E01B7B3FE869A9',
+              'source' => nil,
+            },
+          }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
             release: facts[:lsbdistcodename].to_s,
-            key: {
-              'id' => 'EED3351AFD72E5437C050F0388F6CDEE78FA6D97',
-              'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/4.1/rsa.pub'
-            },
-            location: "https://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
+            key: key[facts[:os]['name']],
+            location: location[facts[:os]['name']]
           )
         end
       end
@@ -76,14 +95,25 @@ describe 'gluster::repo::apt', type: :class do
         end
 
         it 'installs' do
+          location = {
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/01.old-releases/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/",
+            'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-3.12/ubuntu',
+          }
+          key = {
+            'Debian' => {
+              'id' => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
+              'source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.12/rsa.pub',
+            },
+            'Ubuntu' => {
+              'id' => 'F7C73FCC930AC9F83B387A5613E01B7B3FE869A9',
+              'source' => nil,
+            },
+          }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
             release: facts[:lsbdistcodename].to_s,
-            key: {
-              'id' => '8B7C364430B66F0B084C0B0C55339A4C6A7BD8D4',
-              'key_source' => 'https://download.gluster.org/pub/gluster/glusterfs/3.12/rsa.pub'
-            },
-            location: "https://download.gluster.org/pub/gluster/glusterfs/01.old-releases/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/"
+            key: key[facts[:os]['name']],
+            location: location[facts[:os]['name']]
           )
         end
       end
