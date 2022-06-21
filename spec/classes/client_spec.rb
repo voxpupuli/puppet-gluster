@@ -69,12 +69,19 @@ describe 'gluster::client', type: :class do
             }
           end
 
-          it 'includes gluster::install with version 3.6.1' do
-            is_expected.to create_class('gluster::install').with(
-              repo: true,
-              client_package: 'glusterfs-client',
-              version: '3.6.1'
-            )
+          case facts[:os][:name]
+          when 'Debian'
+            it 'includes gluster::install with version 3.6.1' do
+              is_expected.to create_class('gluster::install').with(
+                repo: true,
+                client_package: 'glusterfs-client',
+                version: '3.6.1'
+              )
+            end
+          when 'Ubuntu'
+            it 'does not install' do
+              is_expected.to compile.and_raise_error(%r{Specifying version other than LATEST doesn't make sense for Ubuntu PPA!})
+            end
           end
         end
         context 'when repo is false' do
