@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::repo::yum', type: :class do
@@ -12,6 +14,7 @@ describe 'gluster::repo::yum', type: :class do
         context 'with all defaults' do
           it { is_expected.to contain_class('gluster::repo::yum') }
           it { is_expected.to compile.with_all_deps }
+
           it 'installs' do
             is_expected.not_to create_package('yum-plugin-priorities')
             is_expected.to create_yumrepo('glusterfs-x86_64').with(
@@ -22,6 +25,7 @@ describe 'gluster::repo::yum', type: :class do
             )
           end
         end
+
         context 'bogus version' do
           let :params do
             {
@@ -33,6 +37,7 @@ describe 'gluster::repo::yum', type: :class do
             is_expected.to compile.and_raise_error(%r{doesn't make sense!})
           end
         end
+
         context 'unsupported architecture' do
           let :facts do
             super().merge(
@@ -44,6 +49,7 @@ describe 'gluster::repo::yum', type: :class do
             is_expected.to compile.and_raise_error(%r{not yet supported})
           end
         end
+
         context 'latest Gluster with priority' do
           let :params do
             {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::service', type: :class do
@@ -9,6 +11,7 @@ describe 'gluster::service', type: :class do
 
       context 'with all defaults' do
         it { is_expected.to compile.with_all_deps }
+
         it 'starts the service' do
           case facts[:osfamily]
           when 'Redhat'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::install', type: :class do
@@ -12,6 +14,7 @@ describe 'gluster::install', type: :class do
 
       context 'with defaults' do
         it { is_expected.to compile.with_all_deps }
+
         case facts[:osfamily]
         when 'Redhat'
           # rubocop:disable RSpec/RepeatedExample
@@ -25,6 +28,7 @@ describe 'gluster::install', type: :class do
           # rubocop:enable RSpec/RepeatedExample
         end
       end
+
       context 'when repo is false' do
         let :params do
           { repo: false }
@@ -32,6 +36,7 @@ describe 'gluster::install', type: :class do
 
         it { is_expected.not_to create_class('gluster::repo') }
       end
+
       context 'when client is false' do
         let :params do
           { client: false }
@@ -44,6 +49,7 @@ describe 'gluster::install', type: :class do
           it { is_expected.not_to create_package('glusterfs-client') }
         end
       end
+
       context 'when server is false' do
         let :params do
           { server: false }
@@ -54,6 +60,7 @@ describe 'gluster::install', type: :class do
           it { is_expected.not_to create_package('glusterfs-server') }
         end
       end
+
       context 'installing on an unsupported architecture' do
         let :facts do
           # deep_merge modifies facts in place

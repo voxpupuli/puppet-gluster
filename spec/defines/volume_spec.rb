@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::volume', type: :define do
@@ -56,6 +58,7 @@ describe 'gluster::volume', type: :define do
       it { is_expected.to compile.with_all_deps }
     end
   end
+
   describe 'with nonexistent volume' do
     let(:facts) do
       {
@@ -71,6 +74,7 @@ describe 'gluster::volume', type: :define do
       end
 
       it { is_expected.to compile.with_all_deps }
+
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(
           command: "/usr/sbin/gluster volume create #{title} #{args}"
@@ -87,6 +91,7 @@ describe 'gluster::volume', type: :define do
       end
 
       it { is_expected.to compile.with_all_deps }
+
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(
           command: "/usr/sbin/gluster volume create #{title} #{args}"
@@ -107,6 +112,7 @@ describe 'gluster::volume', type: :define do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_exec("gluster create volume #{title}") }
   end
+
   describe 'with empty options' do
     let(:facts) do
       {
