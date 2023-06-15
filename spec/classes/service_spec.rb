@@ -14,11 +14,7 @@ describe 'gluster::service', type: :class do
 
         it 'starts the service' do
           case facts[:osfamily]
-          when 'Redhat'
-            is_expected.to create_service('glusterd')
-          when 'Debian'
-            is_expected.to create_service('glusterd')
-          when 'Archlinux'
+          when 'Archlinux', 'Debian', 'Redhat'
             is_expected.to create_service('glusterd')
           end
         end

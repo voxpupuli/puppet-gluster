@@ -4,6 +4,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable RSpec/MultipleMemoizedHelpers
 describe Facter::Util::Fact do
   before do
     Facter.clear
@@ -538,3 +539,4 @@ describe Facter::Util::Fact do
 
   # }}}
 end
+# rubocop:enable RSpec/MultipleMemoizedHelpers
