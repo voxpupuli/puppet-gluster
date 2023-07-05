@@ -234,14 +234,14 @@ define gluster::volume (
           # either of $current_options or $_options may be empty.
           # we need to account for this situation
           #
-          if is_array($_current) and is_array($_options) {
+          if $_current =~ Array and $_options =~ Array {
             $to_remove = difference($_current, $_options)
             $to_add = difference($_options, $_current)
           } else {
-            if is_array($_current) {
+            if $_current =~ Array {
               # $_options is not an array, so remove all currently set options
               $to_remove = $_current
-            } elsif is_array($_options) {
+            } elsif $_options =~ Array {
               # $current_options is not an array, so add all our defined options
               $to_add = $_options
             }
