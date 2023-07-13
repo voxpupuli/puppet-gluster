@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster', type: :class do
@@ -10,14 +12,15 @@ describe 'gluster', type: :class do
       context 'with all defaults' do
         it { is_expected.to contain_class('gluster') }
         it { is_expected.to contain_class('gluster::params') }
-        unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse'
-          it { is_expected.to contain_class('gluster::repo') }
-        end
+
+        it { is_expected.to contain_class('gluster::repo') } unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse'
         it { is_expected.to compile.with_all_deps }
+
         it 'includes classes' do
           is_expected.to contain_class('gluster::install')
           is_expected.to contain_class('gluster::service')
         end
+
         it 'manages the Gluster service' do
           is_expected.to create_class('gluster::service').with(ensure: true)
         end
@@ -29,6 +32,7 @@ describe 'gluster', type: :class do
           it { is_expected.to contain_service('glusterd') }
           it { is_expected.to contain_class('gluster::repo::yum') }
           it { is_expected.to contain_yumrepo('glusterfs-x86_64') }
+
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -40,6 +44,7 @@ describe 'gluster', type: :class do
             )
           end
         end
+
         context 'specific version and package names defined' do
           let :params do
             {
@@ -60,6 +65,7 @@ describe 'gluster', type: :class do
               repo: false
             )
           end
+
           it 'installs custom-gluster-client and custom-gluster-server' do
             is_expected.to create_package('custom-gluster-client')
             is_expected.to create_package('custom-gluster-server')
@@ -69,6 +75,7 @@ describe 'gluster', type: :class do
         context 'Debian specific stuff' do
           it { is_expected.to contain_class('gluster::repo::apt') }
           it { is_expected.to contain_apt__source('glusterfs-LATEST') }
+
           it 'creates gluster::install' do
             is_expected.to create_class('gluster::install').with(
               server: true,
@@ -80,6 +87,7 @@ describe 'gluster', type: :class do
             )
           end
         end
+
         context 'specific version and package names defined' do
           let :params do
             {
@@ -100,6 +108,7 @@ describe 'gluster', type: :class do
               repo: false
             )
           end
+
           it 'installs custom-gluster-client and custom-gluster-server' do
             is_expected.to create_package('custom-gluster-client')
             is_expected.to create_package('custom-gluster-server')
@@ -151,7 +160,7 @@ describe 'gluster', type: :class do
             volumes:
             {
               'data1' => {
-                'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
+                'bricks' => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
               }
             }
           }
@@ -164,6 +173,7 @@ describe 'gluster', type: :class do
             bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
           )
         end
+
         it 'executes command without replica' do
           is_expected.not_to contain_exec('gluster create volume data1').with(
             command: %r{.* replica .*}

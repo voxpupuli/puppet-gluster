@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # vim: syntax=ruby tabstop=2 softtabstop=2 shiftwidth=2
 
 require 'rexml/document'
@@ -136,29 +138,25 @@ if binary
         gluster_volumes.keys.join(',')
       end
     end
-    gluster_volumes.keys.each do |volume|
+    gluster_volumes.each_key do |volume|
       Facter.add("gluster_volume_#{volume}_bricks".to_sym) do
         setcode do
           gluster_volumes[volume]['bricks'].join(',')
         end
       end
     end
-    if volume_options
-      volume_options.each do |vol, opts|
-        # Create flat facts for each volume
-        Facter.add("gluster_volume_#{vol}_options".to_sym) do
-          setcode do
-            opts.join(',')
-          end
+    volume_options&.each do |vol, opts|
+      # Create flat facts for each volume
+      Facter.add("gluster_volume_#{vol}_options".to_sym) do
+        setcode do
+          opts.join(',')
         end
       end
     end
-    if volume_ports
-      volume_ports.each do |vol, ports|
-        Facter.add("gluster_volume_#{vol}_ports".to_sym) do
-          setcode do
-            ports.join(',')
-          end
+    volume_ports&.each do |vol, ports|
+      Facter.add("gluster_volume_#{vol}_ports".to_sym) do
+        setcode do
+          ports.join(',')
         end
       end
     end
