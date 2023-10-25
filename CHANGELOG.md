@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.1.0](https://github.com/voxpupuli/puppet-gluster/tree/v6.1.0) (2023-10-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v6.0.0...v6.1.0)
+
+**Breaking changes:**
+
+- Drop Debian 9 \(EOL\) [\#245](https://github.com/voxpupuli/puppet-gluster/pull/245) ([smortex](https://github.com/smortex))
+- Drop Puppet 6 support [\#242](https://github.com/voxpupuli/puppet-gluster/pull/242) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Gluster 4.x and GD2 \(GlusterD2\) support [\#153](https://github.com/voxpupuli/puppet-gluster/issues/153)
+- puppetlabs/apt: Allow 9.x [\#248](https://github.com/voxpupuli/puppet-gluster/pull/248) ([smortex](https://github.com/smortex))
+- Add Puppet 8 support [\#247](https://github.com/voxpupuli/puppet-gluster/pull/247) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 9.x [\#246](https://github.com/voxpupuli/puppet-gluster/pull/246) ([bastelfreak](https://github.com/bastelfreak))
+- Add ubuntu support [\#239](https://github.com/voxpupuli/puppet-gluster/pull/239) ([shieldwed](https://github.com/shieldwed))
+
+**Closed issues:**
+
+- New Module Version for Puppet Forge? [\#224](https://github.com/voxpupuli/puppet-gluster/issues/224)
+
+**Merged pull requests:**
+
+- puppet-lint: fix top\_scope\_facts warnings [\#234](https://github.com/voxpupuli/puppet-gluster/pull/234) ([bastelfreak](https://github.com/bastelfreak))
+- Allow stdlib 8.0.0 [\#233](https://github.com/voxpupuli/puppet-gluster/pull/233) ([smortex](https://github.com/smortex))
+- Don't create notice resources when brick count does not match [\#222](https://github.com/voxpupuli/puppet-gluster/pull/222) ([glorpen](https://github.com/glorpen))
+
 ## [v6.0.0](https://github.com/voxpupuli/puppet-gluster/tree/v6.0.0) (2021-07-16)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-gluster/compare/v5.0.0...v6.0.0)
