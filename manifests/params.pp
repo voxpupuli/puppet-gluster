@@ -35,7 +35,11 @@ class gluster::params {
       $service_name = 'glusterd'
     }
     'Debian': {
-      $repo           = true
+      # Ubuntu 22.04 includes GlusterFS in the base repositories
+      $repo = "${facts['os']['name']}_${facts['os']['release']['major']}" ? {
+        'Ubuntu_22.04' => false,
+        default => true
+      }
       $server_package = 'glusterfs-server'
       $client_package = 'glusterfs-client'
       $service_name   = 'glusterd'
