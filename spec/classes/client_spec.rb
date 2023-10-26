@@ -64,14 +64,11 @@ describe 'gluster::client', type: :class do
             client_package: 'glusterfs-client',
             version: 'LATEST'
           }
-          if os == 'ubuntu-22.04-x86_64'
-            repo_params[:repo] = false
-          else
-            repo_params[:repo] = true
-          end
+          repo_params[:repo] = 'ubuntu-22.04-x86_64'.eql?(os)
+
           it 'includes gluster::install' do
             is_expected.to create_class('gluster::install').with(repo_params)
-           end
+          end
         end
 
         context 'when a version number is specified' do
