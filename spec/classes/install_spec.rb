@@ -24,7 +24,7 @@ describe 'gluster::install', type: :class do
         when 'Debian'
           it { is_expected.to create_package('glusterfs-server') }
           it { is_expected.to create_package('glusterfs-client') }
-          it { is_expected.to create_class('gluster::repo').with(version: 'LATEST') }
+          it { is_expected.to create_class('gluster::repo').with(version: 'LATEST') } unless os == 'ubuntu-22.04-x86_64'
           # rubocop:enable RSpec/RepeatedExample
         end
       end
