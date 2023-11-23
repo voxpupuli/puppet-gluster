@@ -58,7 +58,7 @@ gluster::repo => false
 For Debian, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
 
 ```puppet
-class { ::gluster::repo:
+class { gluster::repo:
   version => '3.5.2',
 }
 ```
@@ -67,7 +67,7 @@ For Ubuntu, the [Gluster PPA](https://launchpad.net/~gluster) repositories only 
 Therefore specify the release to install:
 
 ```puppet
-class { ::gluster::repo:
+class { gluster::repo:
   release => '10',
 }
 ```
@@ -76,10 +76,10 @@ class { ::gluster::repo:
 For systems using YUM, the latest package from the 3.8 release branch will be installed. You can specify a specific version and release:
 
 ```puppet
-class { ::gluster::repo:
+class { gluster::repo:
   release => '3.7',
 }
-class { ::gluster:
+class { gluster:
   version => '3.7.12',
 }
 ```
@@ -113,7 +113,7 @@ On Debian-based systems, only the first two version places are significant ("x.y
 ### client.pp
 This class installs **only** the Gluster client package(s). If you need to install both the server and client, please use the `install.pp` (or `init.pp`) classes.
 
-    class { ::gluster::client:
+    class { gluster::client:
       repo    => true,
       version => '3.5.2',
     }
@@ -123,7 +123,7 @@ Use of `gluster::client` is not supported with either `gluster::install` or `glu
 ### service.pp
 This class manages the `glusterd` service.
 
-    class { ::gluster::service:
+    class { gluster::service:
       ensure => running,
     }
 
@@ -138,7 +138,7 @@ The use of exported resources assume you're using PuppetDB, or some other backin
 
 If a `volumes` parameter is passed, the defined Gluster volume(s) can be created at the same time as the storage pool. See the volume defined type below for more details.
 
-    class { ::gluster:
+    class { gluster:
       repo    => true,
       client  => false,
       pool    => 'production',

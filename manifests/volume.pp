@@ -101,7 +101,7 @@ define gluster::volume (
 
   $args = join(delete($cmd_args, ''), ' ')
 
-  if getvar('::gluster_binary') {
+  if getvar('gluster_binary') {
     # we need the Gluster binary to do anything!
 
     if $facts['gluster_volume_list'] and member( split( $facts['gluster_volume_list'], ',' ), $title ) {
@@ -249,14 +249,14 @@ define gluster::volume (
           if ! empty($to_remove) {
             # we have some options active that are not defined here. Remove them
             #
-            # the syntax to remove ::gluster::volume::options is a little different
+            # the syntax to remove gluster::volume::options is a little different
             # so build up the hash correctly
             #
             $remove_opts = prefix( $to_remove, "${title}:" )
             $remove_yaml = join( regsubst( $remove_opts, ': .+$', ":\n  ensure: absent", 'G' ), "\n" )
             $remove = parseyaml($remove_yaml)
             if $remove_options {
-              create_resources( ::gluster::volume::option, $remove )
+              create_resources( gluster::volume::option, $remove )
             } else {
               $remove_str = join( keys($remove), ', ' )
               notice("NOT REMOVING the following options for volume ${title}: ${remove_str}.")
@@ -267,7 +267,7 @@ define gluster::volume (
             $add_opts = prefix( $to_add, "${title}:" )
             $add_yaml = join( regsubst( $add_opts, ': ', ":\n  value: ", 'G' ), "\n" )
             $add = parseyaml($add_yaml)
-            create_resources( ::gluster::volume::option, $add )
+            create_resources( gluster::volume::option, $add )
           }
         }
       } else {

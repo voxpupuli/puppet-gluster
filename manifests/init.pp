@@ -17,7 +17,7 @@
 #    optional list of volumes (and their properties) to create
 #
 # @example
-#   class { ::gluster:
+#   class { gluster:
 #     client                 => false,
 #     server                 => true,
 #     pool                   => 'production',
