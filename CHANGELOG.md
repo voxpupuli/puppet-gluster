@@ -46,7 +46,7 @@ These should not affect the functionality of the module.
 **Breaking changes:**
 
 - modulesync 2.7.0 and drop puppet 4 [\#193](https://github.com/voxpupuli/puppet-gluster/pull/193) ([bastelfreak](https://github.com/bastelfreak))
-- Add arm64, remove i386 compatibility from ::gluster::repo:apt [\#189](https://github.com/voxpupuli/puppet-gluster/pull/189) ([jacksgt](https://github.com/jacksgt))
+- Add arm64, remove i386 compatibility from gluster::repo:apt [\#189](https://github.com/voxpupuli/puppet-gluster/pull/189) ([jacksgt](https://github.com/jacksgt))
 - Remove 3.8 repo, use pl-apt 4.4 https support, clean coding [\#170](https://github.com/voxpupuli/puppet-gluster/pull/170) ([ekohl](https://github.com/ekohl))
 
 **Implemented enhancements:**
@@ -246,7 +246,7 @@ These should not affect the functionality of the module.
 - Mounts can be defined but mount point will not be created [\#16](https://github.com/voxpupuli/puppet-gluster/issues/16)
 - refreshes to gluster::mount fail to remount the volume [\#10](https://github.com/voxpupuli/puppet-gluster/issues/10)
 - Support yum priorities [\#4](https://github.com/voxpupuli/puppet-gluster/issues/4)
-- ::gluster::volume doesn't create volumes from hosts included in the volume [\#3](https://github.com/voxpupuli/puppet-gluster/issues/3)
+- gluster::volume doesn't create volumes from hosts included in the volume [\#3](https://github.com/voxpupuli/puppet-gluster/issues/3)
 - A stopped volume aborts a Puppet run [\#1](https://github.com/voxpupuli/puppet-gluster/issues/1)
 
 **Merged pull requests:**

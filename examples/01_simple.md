@@ -9,7 +9,7 @@ To create a simple two-node replicated Gluster volume, you could use the followi
 
     node /srv[1-2].local/ {
       # first, install Gluster using upstream packages
-      class { ::gluster:
+      class { gluster:
         server                 => true,
         client                 => true,
         repo                   => true,

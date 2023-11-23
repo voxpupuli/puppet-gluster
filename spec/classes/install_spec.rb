@@ -9,7 +9,7 @@ describe 'gluster::install', type: :class do
         facts
       end
       let :pre_condition do
-        'require ::gluster::service'
+        'require gluster::service'
       end
 
       context 'with defaults' do

@@ -22,7 +22,7 @@ Your `/etc/puppet/hieradata/common.yaml` file could then contain:
     gluster::repo: true
     gluster::version: '3.5.2-1.el6'
 
-You can then simply apply `class { ::gluster: }` to any hosts and they will use the upstream Gluster repo, install version 3.5.2-1.el6 of both the server and client, and join the `production` pool.
+You can then simply apply `class { gluster: }` to any hosts and they will use the upstream Gluster repo, install version 3.5.2-1.el6 of both the server and client, and join the `production` pool.
 
 In this way, you could have two servers (srv1.local and srv2.local) operating in a different pool, with a different version of Gluster, and without the client packages installed, while all your other servers use the values from common.yaml.
 

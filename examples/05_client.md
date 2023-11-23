@@ -19,7 +19,7 @@ define gluster_mount (
   $options = undef,
 ) {
     if ! defined ( Class[::gluster::client] ) {
-    include ::gluster::client
+    include gluster::client
   }
 
   if ! defined ( File['/gluster'] ) {
@@ -49,7 +49,7 @@ define gluster_mount (
 
   if ! defined ( Gluster::Mount["/gluster/${title}"] )
     and has_key( $gluster_mounts, $title ) {
-    ::gluster::mount { "/gluster/${title}":
+    gluster::mount { "/gluster/${title}":
       ensure  => 'mounted',
       volume  => $gluster_mounts[$title],
       options => $_options,
