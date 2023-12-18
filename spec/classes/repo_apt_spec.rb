@@ -4,7 +4,8 @@ require 'spec_helper'
 
 describe 'gluster::repo::apt', type: :class do
   on_supported_os.each do |os, os_facts|
-    context "on #{os}", if: os_facts[:os]['family'] == 'Debian' do
+    # Ubuntu 22.04 does not require a repo
+    context "on #{os}", if: os_facts[:os]['family'] == 'Debian' && os_facts[:os]['release']['major'] != '22.04' do
       let(:facts) { os_facts }
       let(:pre_condition) { 'require gluster::params' }
 

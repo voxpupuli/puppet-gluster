@@ -60,12 +60,14 @@ describe 'gluster::client', type: :class do
           it { is_expected.to contain_class('gluster::client') }
           it { is_expected.to compile.with_all_deps }
 
+          repo_params = {
+            client_package: 'glusterfs-client',
+            version: 'LATEST'
+          }
+          repo_params[:repo] = !'ubuntu-22.04-x86_64'.eql?(os)
+
           it 'includes gluster::install' do
-            is_expected.to create_class('gluster::install').with(
-              repo: true,
-              client_package: 'glusterfs-client',
-              version: 'LATEST'
-            )
+            is_expected.to create_class('gluster::install').with(repo_params)
           end
         end
 
