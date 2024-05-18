@@ -10,7 +10,7 @@ To create a simple two-node replicated Gluster volume, you could use the followi
 
     node /srv[1-2].local/ {
       # first, install the upstream Gluster packages
-      class { ::gluster::install:
+      class { gluster::install:
         server  => true,
         client  => true,
         repo    => true,
@@ -18,7 +18,7 @@ To create a simple two-node replicated Gluster volume, you could use the followi
       }
 
       # make sure the service is started
-      class { ::gluster::service:
+      class { gluster::service:
         ensure  => running,
         require => Class[::gluster::install],
       }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::peer', type: :define do
@@ -37,6 +39,7 @@ describe 'gluster::peer', type: :define do
       it { is_expected.to compile }
       it { is_expected.not_to contain_exec('gluster peer probe peer1.example.com') }
     end
+
     describe '2 peers' do
       let(:facts) do
         {
@@ -65,6 +68,7 @@ describe 'gluster::peer', type: :define do
       it { is_expected.to compile }
       it { is_expected.to contain_exec('gluster peer probe peer1.example.com') }
     end
+
     describe '1 peer' do
       let(:facts) do
         {
@@ -78,6 +82,7 @@ describe 'gluster::peer', type: :define do
       it { is_expected.to compile }
       it { is_expected.to contain_exec('gluster peer probe peer1.example.com') }
     end
+
     describe '2 peers' do
       let(:facts) do
         {
@@ -106,6 +111,7 @@ describe 'gluster::peer', type: :define do
     end
 
     it { is_expected.to compile }
+
     it 'we don\'t try to join with ourselves' do
       is_expected.not_to contain_exec('gluster peer probe peer1.example.com')
     end

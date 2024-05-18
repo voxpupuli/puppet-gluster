@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'gluster server' do
@@ -18,13 +20,14 @@ describe 'gluster server' do
   end
 
   context 'packages installed' do
-    if os[:family] == 'debian'
+    case os[:family]
+    when 'debian'
 
       describe package('glusterfs-server') do
         it { is_expected.to be_installed }
       end
 
-    elsif os[:family] == 'redhat'
+    when 'redhat'
 
       describe package('glusterfs') do
         it { is_expected.to be_installed }

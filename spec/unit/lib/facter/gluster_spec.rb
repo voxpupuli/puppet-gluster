@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 # vim: syntax=ruby tabstop=2 softtabstop=2 shiftwidth=2 fdm=marker
 
 require 'spec_helper'
 
+# rubocop:disable RSpec/MultipleMemoizedHelpers
 describe Facter::Util::Fact do
   before do
     Facter.clear
@@ -345,37 +348,42 @@ describe Facter::Util::Fact do
       allow(Facter).to receive(:value) # Stub all other calls
       allow(Facter).to receive(:value).with('gluster_custom_binary').and_return(gluster_binary)
       allow(File).to receive(:executable?).with(gluster_binary).and_return(true)
-      allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} peer status --xml") {
-        'Connection failed. Please check if gluster daemon is operational.'
-      }
-      allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume info --xml") {
-        'Connection failed. Please check if gluster daemon is operational.'
-      }
+      allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} peer status --xml").and_return('Connection failed. Please check if gluster daemon is operational.')
+      allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume info --xml").and_return('Connection failed. Please check if gluster daemon is operational.')
     end
+
     it 'detect gluster binary' do
       expect(Facter.fact(:gluster_binary).value).to eq(gluster_binary)
     end
+
     it 'null peer count' do
       expect(Facter.fact(:gluster_peer_count).value).to eq(0)
     end
+
     it 'empty peer list' do
       expect(Facter.fact(:gluster_peer_list).value).to eq('')
     end
+
     it 'empty peers hash' do
       expect(Facter.fact(:gluster_peers).value).to eq({})
     end
+
     it 'empty volumes hash' do
       expect(Facter.fact(:gluster_volumes).value).to eq({})
     end
+
     it 'nil gluster_volume_list' do
       expect(Facter.fact(:gluster_volume_list)).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_bricks' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_bricks")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_options' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_options")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_ports' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_ports")).to eq(nil)
     end
@@ -392,30 +400,39 @@ describe Facter::Util::Fact do
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} peer status --xml") { gluster_no_peer }
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume info --xml") { gluster_no_volume }
     end
+
     it 'detect gluster binary' do
       expect(Facter.fact(:gluster_binary).value).to eq(gluster_binary)
     end
+
     it 'null peer count' do
       expect(Facter.fact(:gluster_peer_count).value).to eq(0)
     end
+
     it 'empty peer list' do
       expect(Facter.fact(:gluster_peer_list).value).to eq('')
     end
+
     it 'empty peers hash' do
       expect(Facter.fact(:gluster_peers).value).to eq({})
     end
+
     it 'empty volumes hash' do
       expect(Facter.fact(:gluster_volumes).value).to eq({})
     end
+
     it 'nil gluster_volume_list' do
       expect(Facter.fact(:gluster_volume_list)).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_bricks' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_bricks")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_options' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_options")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_ports' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_ports")).to eq(nil)
     end
@@ -432,30 +449,39 @@ describe Facter::Util::Fact do
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} peer status --xml") { gluster_peer_status_xml }
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume info --xml") { gluster_no_volume }
     end
+
     it 'detect gluster binary' do
       expect(Facter.fact(:gluster_binary).value).to eq(gluster_binary)
     end
+
     it 'check gluster_peer_count integer' do
       expect(Facter.fact(:gluster_peer_count).value).to eq(gluster_peer_count)
     end
+
     it 'check gluster_peer_list string' do
       expect(Facter.fact(:gluster_peer_list).value).to eq(gluster_peer_list)
     end
+
     it 'check gluster_peers hash' do
       expect(Facter.fact(:gluster_peers).value).to eq(gluster_peers)
     end
+
     it 'empty volumes hash' do
       expect(Facter.fact(:gluster_volumes).value).to eq({})
     end
+
     it 'nil gluster_volume_list' do
       expect(Facter.fact(:gluster_volume_list)).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_bricks' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_bricks")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_options' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_options")).to eq(nil)
     end
+
     it 'nil gluster_volume_volume_ports' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_ports")).to eq(nil)
     end
@@ -473,30 +499,39 @@ describe Facter::Util::Fact do
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume info --xml") { gluster_volume_info_xml }
       allow(Facter::Util::Resolution).to receive(:exec).with("#{gluster_binary} volume status #{gluster_volume_one} --xml") { gluster_volume_one_status_xml }
     end
+
     it 'detect gluster binary' do
       expect(Facter.fact(:gluster_binary).value).to eq(gluster_binary)
     end
+
     it 'check gluster_peer_count integer' do
       expect(Facter.fact(:gluster_peer_count).value).to eq(gluster_peer_count)
     end
+
     it 'check gluster_peer_list string' do
       expect(Facter.fact(:gluster_peer_list).value).to eq(gluster_peer_list)
     end
+
     it 'check gluster_peers hash' do
       expect(Facter.fact(:gluster_peers).value).to eq(gluster_peers)
     end
+
     it 'check gluster_volumes hash' do
       expect(Facter.fact(:gluster_volumes).value).to eq(gluster_volumes)
     end
+
     it 'check gluster_volume_list string' do
       expect(Facter.fact(:gluster_volume_list).value).to eq(gluster_volume_list)
     end
+
     it 'check gluster_volume_volume_bricks (comma separated string)' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_bricks").value).to eq(gluster_volumes[gluster_volume_one]['bricks'].join(','))
     end
+
     it 'check gluster_volume_volume_options (comma separated string)' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_options").value).to eq(gluster_volume_options[gluster_volume_one].join(','))
     end
+
     it 'check gluster_volume_volume_ports (comma separated string)' do
       expect(Facter.fact(:"gluster_volume_#{gluster_volume_one}_ports").value).to eq(gluster_volume_ports[gluster_volume_one]['ports'].join(','))
     end
@@ -504,3 +539,4 @@ describe Facter::Util::Fact do
 
   # }}}
 end
+# rubocop:enable RSpec/MultipleMemoizedHelpers

@@ -1,14 +1,18 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'gluster::repo::apt', type: :class do
   on_supported_os.each do |os, os_facts|
-    context "on #{os}", if: os_facts[:os]['family'] == 'Debian' do
+    # Ubuntu 22.04 does not require a repo
+    context "on #{os}", if: os_facts[:os]['family'] == 'Debian' && os_facts[:os]['release']['major'] != '22.04' do
       let(:facts) { os_facts }
       let(:pre_condition) { 'require gluster::params' }
 
       context 'with all defaults' do
         it { is_expected.to contain_class('gluster::repo::apt') }
         it { is_expected.to compile.with_all_deps }
+
         it 'installs' do
           location = {
             'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",

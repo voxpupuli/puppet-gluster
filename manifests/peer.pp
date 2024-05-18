@@ -41,7 +41,7 @@ define gluster::peer (
   # we can't do much without the Gluster binary
   # but we don't necessarily want the Puppet run to fail if the
   # gluster_binary fact is absent!
-  if getvar('::gluster_binary') {
+  if getvar('gluster_binary') {
     # we can't join to ourselves, so it only makes sense to operate
     # on other gluster servers in the same pool
     if $fqdn != $facts['networking']['fqdn'] {
