@@ -15,12 +15,12 @@ describe 'gluster::repo::apt', type: :class do
 
         it 'installs' do
           location = {
-            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:os]['distro']['codename']}/#{facts[:os]['architecture']}/apt/",
             'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-7/ubuntu',
           }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
-            release: facts[:lsbdistcodename].to_s,
+            release: facts[:os]['distro']['codename'].to_s,
             location: location[facts[:os]['name']]
           )
         end
@@ -48,12 +48,12 @@ describe 'gluster::repo::apt', type: :class do
 
         it 'installs' do
           location = {
-            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:lsbdistcodename]}/#{facts[:architecture]}/apt/",
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/7/LATEST/Debian/#{facts[:os]['distro']['codename']}/#{facts[:os]['architecture']}/apt/",
             'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-7/ubuntu',
           }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
-            release: facts[:lsbdistcodename].to_s,
+            release: facts[:os]['distro']['codename'].to_s,
             location: location[facts[:os]['name']],
             pin: '700'
           )
@@ -69,7 +69,7 @@ describe 'gluster::repo::apt', type: :class do
 
         it 'installs' do
           location = {
-            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/",
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/4.1/LATEST/Debian/#{facts[:os]['distro']['codename']}/amd64/apt/",
             'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-4.1/ubuntu',
           }
           key = {
@@ -84,7 +84,7 @@ describe 'gluster::repo::apt', type: :class do
           }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
-            release: facts[:lsbdistcodename].to_s,
+            release: facts[:os]['distro']['codename'].to_s,
             key: key[facts[:os]['name']],
             location: location[facts[:os]['name']]
           )
@@ -100,7 +100,7 @@ describe 'gluster::repo::apt', type: :class do
 
         it 'installs' do
           location = {
-            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/01.old-releases/3.12/LATEST/Debian/#{facts[:lsbdistcodename]}/amd64/apt/",
+            'Debian' => "https://download.gluster.org/pub/gluster/glusterfs/01.old-releases/3.12/LATEST/Debian/#{facts[:os]['distro']['codename']}/amd64/apt/",
             'Ubuntu' => 'http://ppa.launchpad.net/gluster/glusterfs-3.12/ubuntu',
           }
           key = {
@@ -115,7 +115,7 @@ describe 'gluster::repo::apt', type: :class do
           }
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
-            release: facts[:lsbdistcodename].to_s,
+            release: facts[:os]['distro']['codename'].to_s,
             key: key[facts[:os]['name']],
             location: location[facts[:os]['name']]
           )

@@ -36,18 +36,22 @@ if binary
   end
 
   # Get our peer information from gluster peer status --xml (Code credit to github user: coder-hugo)
-  peer_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} peer status --xml"))
-  REXML::XPath.match(peer_status_xml, '/cliOutput/peerStatus/peer').each do |peer_xml|
-    # Get the peer hostname
-    peer = peer_xml.elements['hostname'].text.to_s
+  begin
+    peer_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} peer status --xml"))
+    REXML::XPath.match(peer_status_xml, '/cliOutput/peerStatus/peer').each do |peer_xml|
+      # Get the peer hostname
+      peer = peer_xml.elements['hostname'].text.to_s
 
-    # Define a per-peer hash to contain our data elements
-    gluster_peers[peer] = {}
+      # Define a per-peer hash to contain our data elements
+      gluster_peers[peer] = {}
 
-    gluster_peers[peer]['uuid'] = peer_xml.elements['uuid'].text.to_s
-    gluster_peers[peer]['connected'] = peer_xml.elements['connected'].text.to_i
-    gluster_peers[peer]['state'] = peer_xml.elements['state'].text.to_i
-    gluster_peers[peer]['status'] = peer_xml.elements['stateStr'].text.to_s
+      gluster_peers[peer]['uuid'] = peer_xml.elements['uuid'].text.to_s
+      gluster_peers[peer]['connected'] = peer_xml.elements['connected'].text.to_i
+      gluster_peers[peer]['state'] = peer_xml.elements['state'].text.to_i
+      gluster_peers[peer]['status'] = peer_xml.elements['stateStr'].text.to_s
+    end
+  rescue REXML::ParseException
+    # If gluster peer status fails or returns non-XML, gluster_peers remains empty
   end
 
   # Extract and format the data needed for the legacy peer facts.
@@ -55,55 +59,64 @@ if binary
   peer_list = gluster_peers.keys.join(',')
 
   # Get our volume information from gluster volume info
-  volume_info_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume info --xml"))
-  REXML::XPath.match(volume_info_xml, '/cliOutput/volInfo/volumes/volume').each do |volume_xml|
-    volume = volume_xml.elements['name'].text.to_s
+  begin
+    volume_info_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume info --xml"))
+    REXML::XPath.match(volume_info_xml, '/cliOutput/volInfo/volumes/volume').each do |volume_xml|
+      volume = volume_xml.elements['name'].text.to_s
 
-    # Create hash entry for each volume in a structured fact.
-    gluster_volumes[volume] = {}
+      # Create hash entry for each volume in a structured fact.
+      gluster_volumes[volume] = {}
 
-    vol_status = volume_xml.elements['statusStr'].text.to_s
-    gluster_volumes[volume]['status'] = vol_status
+      vol_status = volume_xml.elements['statusStr'].text.to_s
+      gluster_volumes[volume]['status'] = vol_status
 
-    # Define gluster_volumes[volume]['bricks'] as an array so we can .push() to it.
-    gluster_volumes[volume]['bricks'] = []
+      # Define gluster_volumes[volume]['bricks'] as an array so we can .push() to it.
+      gluster_volumes[volume]['bricks'] = []
 
-    REXML::XPath.match(volume_xml, 'bricks/brick').each do |brick_xml|
-      # We need to loop over the bricks so that we can change the text from :REXML::Text. to String
-      brick_name = brick_xml.elements['name'].text.to_s
-      gluster_volumes[volume]['bricks'].push(brick_name)
-    end
+      REXML::XPath.match(volume_xml, 'bricks/brick').each do |brick_xml|
+        # We need to loop over the bricks so that we can change the text from :REXML::Text. to String
+        brick_name = brick_xml.elements['name'].text.to_s
+        gluster_volumes[volume]['bricks'].push(brick_name)
+      end
 
-    options = REXML::XPath.match(volume_xml, 'options/option').map { |option| "#{option.elements['name'].text}: #{option.elements['value'].text}" }
-    if options
-      volume_options[volume] = options
-      gluster_volumes[volume]['features'] = {}
-      gluster_volumes[volume]['options'] = {}
-      # Convert options into key: value pairs for easy retrieval if needed.
-      options.each do |option|
-        option_name, set_value = option.split(': ', 2)
+      options = REXML::XPath.match(volume_xml, 'options/option').map { |option| "#{option.elements['name'].text}: #{option.elements['value'].text}" }
+      if options
+        volume_options[volume] = options
+        gluster_volumes[volume]['features'] = {}
+        gluster_volumes[volume]['options'] = {}
+        # Convert options into key: value pairs for easy retrieval if needed.
+        options.each do |option|
+          option_name, set_value = option.split(': ', 2)
 
-        if option_name =~ %r{^features\.}
-          gluster_volumes[volume]['features'][option_name] = set_value
-        else
-          gluster_volumes[volume]['options'][option_name] = set_value
+          if option_name =~ %r{^features\.}
+            gluster_volumes[volume]['features'][option_name] = set_value
+          else
+            gluster_volumes[volume]['options'][option_name] = set_value
+          end
         end
       end
+
+      next unless vol_status == 'Started'
+
+      begin
+        volume_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume status #{volume} --xml"))
+        volume_ports[volume] = REXML::XPath.match(volume_status_xml, "/cliOutput/volStatus/volumes/volume/node[starts-with(hostname/text(), '#{Facter.value('hostname')}')]/port/text()")
+
+        # Define gluster_volumes[volume]['ports'] as an array so we can .push() to it.
+        gluster_volumes[volume]['ports'] = []
+
+        volume_ports[volume].each do |port|
+          # port is of type: :REXML::Text.  Convert it to String and then Integer
+          port_number = port.to_s.to_i
+          gluster_volumes[volume]['ports'].push(port_number)
+        end
+      rescue REXML::ParseException
+        # If gluster volume status fails or returns non-XML, skip port information
+        gluster_volumes[volume]['ports'] = []
+      end
     end
-
-    next unless vol_status == 'Started'
-
-    volume_status_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume status #{volume} --xml"))
-    volume_ports[volume] = REXML::XPath.match(volume_status_xml, "/cliOutput/volStatus/volumes/volume/node[starts-with(hostname/text(), '#{Facter.value('hostname')}')]/port/text()")
-
-    # Define gluster_volumes[volume]['ports'] as an array so we can .push() to it.
-    gluster_volumes[volume]['ports'] = []
-
-    volume_ports[volume].each do |port|
-      # port is of type: :REXML::Text.  Convert it to String and then Integer
-      port_number = port.to_s.to_i
-      gluster_volumes[volume]['ports'].push(port_number)
-    end
+  rescue REXML::ParseException
+    # If gluster volume info fails or returns non-XML, gluster_volumes remains empty
   end
 
   # Export our facts
