@@ -1,7 +1,7 @@
 
 # Gluster module for Puppet
 
-[![Build Status](https://travis-ci.org/voxpupuli/puppet-gluster.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-gluster)
+![Build Status](https://github.com/voxpupuli/puppet-gluster/actions/workflows/ci.yml/badge.svg?branch=master)
 [![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-gluster/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-gluster)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/gluster.svg)](https://forge.puppetlabs.com/puppet/gluster)
