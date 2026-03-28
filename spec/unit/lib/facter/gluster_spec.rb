@@ -39,14 +39,14 @@ describe Facter::Util::Fact do
         'uuid' => gluster_peer_two_uuid,
         'connected' => 1,
         'state' => 3,
-        'status' => 'Peer in Cluster'
+        'status' => 'Peer in Cluster',
       },
       gluster_peer_three => {
         'uuid' => gluster_peer_three_uuid,
         'connected' => 1,
         'state' => 3,
-        'status' => 'Peer in Cluster'
-      }
+        'status' => 'Peer in Cluster',
+      },
     }
   end
 
@@ -62,15 +62,15 @@ describe Facter::Util::Fact do
         'bricks' => [
           "#{gluster_peer_one}:#{gluster_brick_path}",
           "#{gluster_peer_two}:#{gluster_brick_path}",
-          "#{gluster_peer_three}:#{gluster_brick_path}"
+          "#{gluster_peer_three}:#{gluster_brick_path}",
         ],
         'features' => {
-          'features.cache-invalidation' => 'true'
+          'features.cache-invalidation' => 'true',
         },
         'options' => {
           'nfs.disable' => 'on',
           'performance.readdir-ahead' => 'on',
-          'auth.allow' => '10.10.0.21,10.10.0.22,10.10.0.23'
+          'auth.allow' => '10.10.0.21,10.10.0.22,10.10.0.23',
         },
         'ports' => [
           gluster_peer_one_port,
@@ -78,9 +78,9 @@ describe Facter::Util::Fact do
           gluster_peer_three_port,
           gluster_peer_shd_port.to_i, # Self-heal Daemon
           gluster_peer_shd_port.to_i, # Self-heal Daemon
-          gluster_peer_shd_port.to_i # Self-heal Daemon
-        ]
-      }
+          gluster_peer_shd_port.to_i, # Self-heal Daemon
+        ],
+      },
     }
   end
 
@@ -93,8 +93,8 @@ describe Facter::Util::Fact do
         "features.cache-invalidation: #{gluster_volumes[gluster_volume_one]['features']['features.cache-invalidation']}",
         "nfs.disable: #{gluster_volumes[gluster_volume_one]['options']['nfs.disable']}",
         "performance.readdir-ahead: #{gluster_volumes[gluster_volume_one]['options']['performance.readdir-ahead']}",
-        "auth.allow: #{gluster_volumes[gluster_volume_one]['options']['auth.allow']}"
-      ]
+        "auth.allow: #{gluster_volumes[gluster_volume_one]['options']['auth.allow']}",
+      ],
     }
   end
 
@@ -110,9 +110,9 @@ describe Facter::Util::Fact do
           gluster_peer_three_port,
           gluster_peer_shd_port, # Self-heal Daemon
           gluster_peer_shd_port, # Self-heal Daemon
-          gluster_peer_shd_port # Self-heal Daemon
-        ]
-      }
+          gluster_peer_shd_port, # Self-heal Daemon
+        ],
+      },
     }
   end
 
