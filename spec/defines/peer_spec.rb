@@ -7,7 +7,7 @@ describe 'gluster::peer', type: :define do
 
   let(:params) do
     {
-      fqdn: 'peer1.example.com'
+      fqdn: 'peer1.example.com',
     }
   end
 
@@ -19,7 +19,7 @@ describe 'gluster::peer', type: :define do
   describe 'missing gluster_peer_list fact' do
     let(:facts) do
       {
-        gluster_binary: '/usr/sbin/gluster'
+        gluster_binary: '/usr/sbin/gluster',
       }
     end
 
@@ -32,7 +32,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 1,
-          gluster_peer_list: 'peer1.example.com'
+          gluster_peer_list: 'peer1.example.com',
         }
       end
 
@@ -45,7 +45,7 @@ describe 'gluster::peer', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 2,
-          gluster_peer_list: 'peer1.example.com,peer2.example.com'
+          gluster_peer_list: 'peer1.example.com,peer2.example.com',
         }
       end
 
@@ -61,7 +61,7 @@ describe 'gluster::peer', type: :define do
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 0,
           gluster_peer_list: '',
-          fqdn: 'peer99.example.com'
+          fqdn: 'peer99.example.com',
         }
       end
 
@@ -75,7 +75,7 @@ describe 'gluster::peer', type: :define do
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 1,
           gluster_peer_list: 'peer2.example',
-          fqdn: 'peer99.example.com'
+          fqdn: 'peer99.example.com',
         }
       end
 
@@ -89,7 +89,7 @@ describe 'gluster::peer', type: :define do
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_count: 2,
           gluster_peer_list: 'peer2.example,peer3.example',
-          fqdn: 'peer99.example.com'
+          fqdn: 'peer99.example.com',
         }
       end
 
@@ -105,8 +105,8 @@ describe 'gluster::peer', type: :define do
         gluster_peer_count: 0,
         gluster_peer_list: '',
         networking: {
-          fqdn: 'peer1.example.com'
-        }
+          fqdn: 'peer1.example.com',
+        },
       }
     end
 
@@ -124,7 +124,7 @@ describe 'gluster::peer', type: :define do
         gluster_binary: '/usr/sbin/gluster',
         gluster_peer_count: 0,
         gluster_peer_list: '',
-        fqdn: 'peer99.example.com'
+        fqdn: 'peer99.example.com',
       }
     end
 

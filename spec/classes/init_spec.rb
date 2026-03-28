@@ -13,7 +13,7 @@ describe 'gluster', type: :class do
         it { is_expected.to contain_class('gluster') }
         it { is_expected.to contain_class('gluster::params') }
 
-        it { is_expected.to contain_class('gluster::repo') } unless facts[:os]['family'] == 'Archlinux' || facts[:os]['family'] == 'Suse' || os == 'ubuntu-22.04-x86_64'
+        it { is_expected.to contain_class('gluster::repo') } unless %w[Archlinux Suse].include?(facts[:os]['family']) || os == 'ubuntu-22.04-x86_64'
         it { is_expected.to compile.with_all_deps }
 
         it 'includes classes' do
@@ -40,7 +40,7 @@ describe 'gluster', type: :class do
               client: true,
               client_package: 'glusterfs-fuse',
               version: 'LATEST',
-              repo: true
+              repo: true,
             )
           end
         end
@@ -51,7 +51,7 @@ describe 'gluster', type: :class do
               server_package: 'custom-gluster-server',
               client_package: 'custom-gluster-client',
               version: '3.1.4',
-              repo: false
+              repo: false,
             }
           end
 
@@ -62,7 +62,7 @@ describe 'gluster', type: :class do
               client: true,
               client_package: 'custom-gluster-client',
               version: '3.1.4',
-              repo: false
+              repo: false,
             )
           end
 
@@ -96,7 +96,7 @@ describe 'gluster', type: :class do
               server_package: 'custom-gluster-server',
               client_package: 'custom-gluster-client',
               version: '3.1.4',
-              repo: false
+              repo: false,
             }
           end
 
@@ -107,7 +107,7 @@ describe 'gluster', type: :class do
               client: true,
               client_package: 'custom-gluster-client',
               version: '3.1.4',
-              repo: false
+              repo: false,
             )
           end
 
@@ -123,7 +123,7 @@ describe 'gluster', type: :class do
           super().merge(
             gluster_binary: '/sbin/gluster',
             gluster_peer_list: 'example1,example2',
-            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup',
           )
         end
         let :params do
@@ -133,9 +133,9 @@ describe 'gluster', type: :class do
               'data1' => {
                 'replica' => 2,
                 'bricks'  => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-                'options' => ['server.allow-insecure: on']
-              }
-            }
+                'options' => ['server.allow-insecure: on'],
+              },
+            },
           }
         end
 
@@ -144,7 +144,7 @@ describe 'gluster', type: :class do
             name: 'data1',
             replica: 2,
             bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
-            options: ['server.allow-insecure: on']
+            options: ['server.allow-insecure: on'],
           )
         end
       end
@@ -154,7 +154,7 @@ describe 'gluster', type: :class do
           super().merge(
             gluster_binary: '/sbin/gluster',
             gluster_peer_list: 'example1,example2',
-            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+            gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup',
           )
         end
         let :params do
@@ -162,9 +162,9 @@ describe 'gluster', type: :class do
             volumes:
             {
               'data1' => {
-                'bricks' => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
-              }
-            }
+                'bricks' => ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
+              },
+            },
           }
         end
 
@@ -172,13 +172,13 @@ describe 'gluster', type: :class do
           is_expected.to contain_gluster__volume('data1').with(
             name: 'data1',
             replica: nil,
-            bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick']
+            bricks: ['srv1.local:/brick1/brick', 'srv2.local:/brick1/brick'],
           )
         end
 
         it 'executes command without replica' do
           is_expected.not_to contain_exec('gluster create volume data1').with(
-            command: %r{.* replica .*}
+            command: %r{.* replica .*},
           )
         end
       end
@@ -186,7 +186,7 @@ describe 'gluster', type: :class do
       context 'when volumes incorrectly defined' do
         let :params do
           {
-            volumes: { 'data1' => %w[this is an array] }
+            volumes: { 'data1' => %w[this is an array] },
           }
         end
 
