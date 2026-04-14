@@ -11,12 +11,12 @@ describe 'gluster::volume', type: :define do
         'srv1.local:/export/brick1/brick',
         'srv2.local:/export/brick1/brick',
         'srv1.local:/export/brick2/brick',
-        'srv2.local:/export/brick2/brick'
+        'srv2.local:/export/brick2/brick',
       ],
       options: [
         'server.allow-insecure: on',
-        'nfs.ports-insecure: on'
-      ]
+        'nfs.ports-insecure: on',
+      ],
     }
   end
 
@@ -28,7 +28,7 @@ describe 'gluster::volume', type: :define do
     describe 'missing gluster_peer_list fact' do
       let(:facts) do
         {
-          gluster_binary: '/usr/sbin/gluster'
+          gluster_binary: '/usr/sbin/gluster',
         }
       end
 
@@ -39,7 +39,7 @@ describe 'gluster::volume', type: :define do
       let(:facts) do
         {
           gluster_binary: '/usr/sbin/gluster',
-          gluster_peer_list: 'peer1.example.com,peer2.example.com'
+          gluster_peer_list: 'peer1.example.com,peer2.example.com',
         }
       end
 
@@ -51,7 +51,7 @@ describe 'gluster::volume', type: :define do
         {
           gluster_binary: '/usr/sbin/gluster',
           gluster_peer_list: 'peer1.example.com,peer2.example.com',
-          gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup'
+          gluster_volume_list: 'gl1.example.com:/glusterfs/backup,gl2.example.com:/glusterfs/backup',
         }
       end
 
@@ -64,7 +64,7 @@ describe 'gluster::volume', type: :define do
       {
         gluster_binary: '/usr/sbin/gluster',
         gluster_peer_list: 'srv1.local,srv2.local',
-        gluster_volume_list: 'srv1.local:/glusterfs/backup,srv2.local:/glusterfs/backup'
+        gluster_volume_list: 'srv1.local:/glusterfs/backup,srv2.local:/glusterfs/backup',
       }
     end
 
@@ -77,7 +77,7 @@ describe 'gluster::volume', type: :define do
 
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(
-          command: "/usr/sbin/gluster volume create #{title} #{args}"
+          command: "/usr/sbin/gluster volume create #{title} #{args}",
         )
       end
     end
@@ -94,7 +94,7 @@ describe 'gluster::volume', type: :define do
 
       it do
         is_expected.to contain_exec("gluster create volume #{title}").with(
-          command: "/usr/sbin/gluster volume create #{title} #{args}"
+          command: "/usr/sbin/gluster volume create #{title} #{args}",
         )
       end
     end
@@ -128,7 +128,7 @@ describe 'gluster::volume', type: :define do
       {
         gluster_binary: '/usr/sbin/gluster',
         gluster_peer_count: 0,
-        gluster_peer_list: ''
+        gluster_peer_list: '',
       }
     end
 
@@ -139,7 +139,7 @@ describe 'gluster::volume', type: :define do
   describe 'with empty options' do
     let(:facts) do
       {
-        gluster_binary: '/usr/sbin/gluster'
+        gluster_binary: '/usr/sbin/gluster',
       }
     end
     let(:params) do

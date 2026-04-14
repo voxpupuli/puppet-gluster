@@ -152,7 +152,7 @@ if binary
       end
     end
     gluster_volumes.each_key do |volume|
-      Facter.add("gluster_volume_#{volume}_bricks".to_sym) do
+      Facter.add(:"gluster_volume_#{volume}_bricks") do
         setcode do
           gluster_volumes[volume]['bricks'].join(',')
         end
@@ -160,14 +160,14 @@ if binary
     end
     volume_options&.each do |vol, opts|
       # Create flat facts for each volume
-      Facter.add("gluster_volume_#{vol}_options".to_sym) do
+      Facter.add(:"gluster_volume_#{vol}_options") do
         setcode do
           opts.join(',')
         end
       end
     end
     volume_ports&.each do |vol, ports|
-      Facter.add("gluster_volume_#{vol}_ports".to_sym) do
+      Facter.add(:"gluster_volume_#{vol}_ports") do
         setcode do
           ports.join(',')
         end
