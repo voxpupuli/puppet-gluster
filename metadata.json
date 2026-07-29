@@ -30,8 +30,7 @@
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-      ]
+      "operatingsystemrelease": []
     },
     {
       "operatingsystem": "Archlinux"
@@ -54,7 +53,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">= 4.4.0 < 10.0.0"
+      "version_requirement": ">= 4.4.0 < 11.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -63,8 +62,8 @@
   ],
   "requirements": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 9.0.0"
+      "name": "openvox",
+      "version_requirement": ">= 8.19.0 < 9.0.0"
     }
   ]
 }
