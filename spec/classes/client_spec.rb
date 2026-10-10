@@ -19,7 +19,7 @@ describe 'gluster::client', type: :class do
             is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-fuse',
-              version: 'LATEST'
+              version: 'LATEST',
             )
           end
         end
@@ -27,7 +27,7 @@ describe 'gluster::client', type: :class do
         context 'when a version number is specified' do
           let :params do
             {
-              version: '3.6.1'
+              version: '3.6.1',
             }
           end
 
@@ -35,7 +35,7 @@ describe 'gluster::client', type: :class do
             is_expected.to create_class('gluster::install').with(
               repo: true,
               client_package: 'glusterfs-fuse',
-              version: '3.6.1'
+              version: '3.6.1',
             )
           end
         end
@@ -43,7 +43,7 @@ describe 'gluster::client', type: :class do
         context 'when repo is false' do
           let :params do
             {
-              repo: false
+              repo: false,
             }
           end
 
@@ -51,7 +51,7 @@ describe 'gluster::client', type: :class do
             is_expected.to create_class('gluster::install').with(
               repo: false,
               client_package: 'glusterfs-fuse',
-              version: 'LATEST'
+              version: 'LATEST',
             )
           end
         end
@@ -62,7 +62,7 @@ describe 'gluster::client', type: :class do
 
           repo_params = {
             client_package: 'glusterfs-client',
-            version: 'LATEST'
+            version: 'LATEST',
           }
           repo_params[:repo] = !'ubuntu-22.04-x86_64'.eql?(os)
 
@@ -74,7 +74,7 @@ describe 'gluster::client', type: :class do
         context 'when a version number is specified' do
           let :params do
             {
-              version: '3.6.1'
+              version: '3.6.1',
             }
           end
 
@@ -84,7 +84,7 @@ describe 'gluster::client', type: :class do
               is_expected.to create_class('gluster::install').with(
                 repo: true,
                 client_package: 'glusterfs-client',
-                version: '3.6.1'
+                version: '3.6.1',
               )
             end
           when 'Ubuntu'
@@ -97,7 +97,7 @@ describe 'gluster::client', type: :class do
         context 'when repo is false' do
           let :params do
             {
-              repo: false
+              repo: false,
             }
           end
 
@@ -105,7 +105,7 @@ describe 'gluster::client', type: :class do
             is_expected.to create_class('gluster::install').with(
               repo: false,
               client_package: 'glusterfs-client',
-              version: 'LATEST'
+              version: 'LATEST',
             )
           end
         end

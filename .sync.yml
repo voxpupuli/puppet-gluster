@@ -1,3 +1,7 @@
 ---
+Gemfile:
+  optional:
+    ':test':
+      - gem: 'rexml'
 spec/spec_helper_acceptance.rb:
   unmanaged: false

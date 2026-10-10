@@ -58,7 +58,7 @@ define gluster::peer (
         $already_in_pool = false
       }
       if !$already_in_pool {
-        exec { "gluster peer probe ${title}":
+        exec { "gluster peer probe ${title}": # lint:ignore:exec_idempotency
           command => "${facts['gluster_binary']} peer probe ${title}",
         }
       }

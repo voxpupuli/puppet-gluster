@@ -21,7 +21,7 @@ describe 'gluster::repo::yum', type: :class do
               enabled: 1,
               baseurl: "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/storage/#{facts[:architecture]}/gluster-3.8/",
               gpgcheck: 1,
-              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}"
+              gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}",
             )
           end
         end
@@ -29,7 +29,7 @@ describe 'gluster::repo::yum', type: :class do
         context 'bogus version' do
           let :params do
             {
-              version: 'foobar'
+              version: 'foobar',
             }
           end
 
@@ -41,7 +41,7 @@ describe 'gluster::repo::yum', type: :class do
         context 'unsupported architecture' do
           let :facts do
             super().merge(
-              architecture: 'zLinux'
+              architecture: 'zLinux',
             )
           end
 
@@ -53,7 +53,7 @@ describe 'gluster::repo::yum', type: :class do
         context 'latest Gluster with priority' do
           let :params do
             {
-              priority: '50'
+              priority: '50',
             }
           end
 
@@ -64,7 +64,7 @@ describe 'gluster::repo::yum', type: :class do
               baseurl: "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/storage/#{facts[:architecture]}/gluster-3.8/",
               gpgcheck: 1,
               gpgkey: "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-#{facts[:operatingsystemmajrelease]}",
-              priority: '50'
+              priority: '50',
             )
           end
         end
