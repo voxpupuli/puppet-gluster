@@ -115,7 +115,7 @@ define gluster::volume (
 
       # nothing to do if volume does not exist and it should be absent
       if $ensure == 'present' {
-        exec { "gluster create volume ${title}":
+        exec { "gluster create volume ${title}": # lint:ignore:exec_idempotency
           command => "${facts['gluster_binary']} volume create ${title} ${args}",
         }
 
@@ -152,7 +152,7 @@ define gluster::volume (
         }
 
         # don't forget to start the new volume!
-        exec { "gluster start volume ${title}":
+        exec { "gluster start volume ${title}": # lint:ignore:exec_idempotency
           command => "${facts['gluster_binary']} volume start ${title}",
           require => Exec["gluster create volume ${title}"],
         }
@@ -197,12 +197,12 @@ define gluster::volume (
             }
 
             $new_bricks_list = join($new_bricks, ' ')
-            exec { "gluster add bricks to ${title}":
+            exec { "gluster add bricks to ${title}": # lint:ignore:exec_idempotency
               command => "${facts['gluster_binary']} volume add-brick ${title} ${s} ${r} ${new_bricks_list} ${_force}",
             }
 
             if $rebalance {
-              exec { "gluster rebalance ${title}":
+              exec { "gluster rebalance ${title}": # lint:ignore:exec_idempotency
                 command => "${facts['gluster_binary']} volume rebalance ${title} start",
                 require => Exec["gluster add bricks to ${title}"],
               }
@@ -212,7 +212,7 @@ define gluster::volume (
               # there is a delay after which a brick is added before
               # the self heal daemon comes back to life.
               # as such, we sleep 5 here before starting the heal
-              exec { "gluster heal ${title}":
+              exec { "gluster heal ${title}": # lint:ignore:exec_idempotency
                 command => "/bin/sleep 5; ${facts['gluster_binary']} volume heal ${title} full",
                 require => Exec["gluster add bricks to ${title}"],
               }
@@ -277,7 +277,7 @@ define gluster::volume (
         }
       } else {
         # stop and remove volume
-        exec { "gluster stop and remove ${title}":
+        exec { "gluster stop and remove ${title}": # lint:ignore:exec_idempotency
           command => "/bin/yes | ( ${facts['gluster_binary']} volume stop ${title} force && ${facts['gluster_binary']} volume delete ${title} )",
         }
       }

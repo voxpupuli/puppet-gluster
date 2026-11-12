@@ -21,7 +21,7 @@ describe 'gluster::repo::apt', type: :class do
           is_expected.to contain_apt__source('glusterfs-LATEST').with(
             repos: 'main',
             release: facts[:os]['distro']['codename'].to_s,
-            location: location[facts[:os]['name']]
+            location: location[facts[:os]['name']],
           )
         end
       end
@@ -42,7 +42,7 @@ describe 'gluster::repo::apt', type: :class do
       context 'latest Gluster with priority' do
         let :params do
           {
-            priority: '700'
+            priority: '700',
           }
         end
 
@@ -55,7 +55,7 @@ describe 'gluster::repo::apt', type: :class do
             repos: 'main',
             release: facts[:os]['distro']['codename'].to_s,
             location: location[facts[:os]['name']],
-            pin: '700'
+            pin: '700',
           )
         end
       end
@@ -63,7 +63,7 @@ describe 'gluster::repo::apt', type: :class do
       context 'Specific Gluster release 4.1' do
         let :params do
           {
-            release: '4.1'
+            release: '4.1',
           }
         end
 
@@ -86,7 +86,7 @@ describe 'gluster::repo::apt', type: :class do
             repos: 'main',
             release: facts[:os]['distro']['codename'].to_s,
             key: key[facts[:os]['name']],
-            location: location[facts[:os]['name']]
+            location: location[facts[:os]['name']],
           )
         end
       end
@@ -94,7 +94,7 @@ describe 'gluster::repo::apt', type: :class do
       context 'Specific Gluster release 3.12' do
         let :params do
           {
-            release: '3.12'
+            release: '3.12',
           }
         end
 
@@ -117,7 +117,7 @@ describe 'gluster::repo::apt', type: :class do
             repos: 'main',
             release: facts[:os]['distro']['codename'].to_s,
             key: key[facts[:os]['name']],
-            location: location[facts[:os]['name']]
+            location: location[facts[:os]['name']],
           )
         end
       end

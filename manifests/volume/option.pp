@@ -53,7 +53,7 @@ define gluster::volume::option (
     default => $value,
   }
 
-  exec { "gluster option ${vol} ${opt} ${_value}":
+  exec { "gluster option ${vol} ${opt} ${_value}": # lint:ignore:exec_idempotency
     command => "${facts['gluster_binary']} volume ${cmd}",
   }
 }
